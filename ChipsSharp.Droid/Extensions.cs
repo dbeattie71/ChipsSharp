@@ -1,3 +1,5 @@
+using Java.Lang;
+
 namespace com.android.ex.chips
 {
 	public static class Extensions
@@ -5,6 +7,11 @@ namespace com.android.ex.chips
 		public static string SubString(this string s, int start, int end)
 		{
 			return s.Substring(start, end - start);
+		}
+
+		public static String ToJavaString(this string s)
+		{
+			return new String(s);
 		}
 	}
 }

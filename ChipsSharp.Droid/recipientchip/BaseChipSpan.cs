@@ -1,8 +1,4 @@
-/**
- * BaseRecipientChip defines an object that contains information relevant to a
- * particular recipient.
- */
-
+using ChipsSharp;
 using Java.Lang;
 
 namespace com.android.ex.chips.recipientchip

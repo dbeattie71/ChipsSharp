@@ -1,9 +1,9 @@
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Text.Style;
-using Java.Lang;
+using ChipsSharp;
 
-namespace com.android.ex.chips.recipientchip
+namespace com.android.ex.chips
 {
 	public abstract class DrawableChipSpan : ImageSpan, IDrawableChipSpan
 	{
@@ -22,10 +22,10 @@ namespace com.android.ex.chips.recipientchip
 
 		public abstract void setSelected(bool selected);
 		public abstract bool isSelected();
-		public abstract String getDisplay();
+		public abstract string getDisplay();
 		public abstract ChipEntry getEntry();
-		public abstract void setOriginalText(String text);
-		public abstract String getOriginalText();
+		public abstract void setOriginalText(string text);
+		public abstract string getOriginalText();
 		public abstract Rect getBounds();
 		public abstract void draw(Canvas canvas);
 	}

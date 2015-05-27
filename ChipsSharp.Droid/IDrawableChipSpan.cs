@@ -1,6 +1,7 @@
 using Android.Graphics;
+using ChipsSharp;
 
-namespace com.android.ex.chips.recipientchip
+namespace com.android.ex.chips
 {
 	public interface IDrawableChipSpan : IBaseChipSpan
 	{

@@ -23,7 +23,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using com.android.ex.chips.recipientchip;
+using ChipsSharp;
 using Java.Lang;
 using Java.Util.Regex;
 using Javax.Xml.Validation;
@@ -31,7 +31,8 @@ using Exception = Java.Lang.Exception;
 using LayoutDirection = Android.Views.LayoutDirection;
 using Math = Java.Lang.Math;
 using Object = Java.Lang.Object;
-using String = Java.Lang.String;
+//using String = Java.Lang.String;
+using String = System.String;
 using Uri = Android.Net.Uri;
 
 namespace com.android.ex.chips
@@ -368,7 +369,8 @@ namespace com.android.ex.chips
 
 			outAttrs.ActionId = (int)ImeAction.Done;
 			//			outAttrs.ActionLabel = Context.GetString(Resource.String.done);
-			outAttrs.ActionLabel = new String(Context.GetString(Resource.String.done));
+			//outAttrs.ActionLabel = new String(Context.GetString(Resource.String.done));
+			outAttrs.ActionLabel = Context.GetString(Resource.String.done).ToJavaString();
 			return connection;
 		}
 
@@ -660,7 +662,8 @@ namespace com.android.ex.chips
 			//}
 		}
 
-		private ICharSequence EllipsizeText(ICharSequence text, TextPaint paint, float maxWidth)
+		//private ICharSequence EllipsizeText(ICharSequence text, TextPaint paint, float maxWidth)
+		private string EllipsizeText(string text, TextPaint paint, float maxWidth)
 		{
 			paint.TextSize = mChipFontSize;
 			//if (maxWidth <= 0 && Log.isLoggable(TAG, Log.DEBUG))
@@ -668,8 +671,7 @@ namespace com.android.ex.chips
 			//	Log.d(TAG, "Max width is negative: " + maxWidth);
 			//}
 
-			var foo = TextUtils.EllipsizeFormatted(text, paint, maxWidth, TextUtils.TruncateAt.End);
-			return foo;
+			return TextUtils.EllipsizeFormatted(text.ToJavaString(), paint, maxWidth, TextUtils.TruncateAt.End).ToString();
 		}
 
 		/**
@@ -729,10 +731,11 @@ namespace com.android.ex.chips
 			int height = (int)mChipHeight + Resources.GetDimensionPixelSize(Resource.Dimension.extra_chip_height);
 
 			// Compute the space needed by the more chip before ellipsizing
-			String moreText = new String(String.Format(mMoreItem.Text, mMaxChipsAllowed));
+			//String moreText = new String(String.Format(mMoreItem.Text, mMaxChipsAllowed));
+			String moreText = String.Format(mMoreItem.Text, mMaxChipsAllowed);
 			TextPaint morePaint = new TextPaint(Paint);
 			morePaint.TextSize = mMoreItem.TextSize;
-			int moreChipWidth = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
+			int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
 
 			// Since the icon is a square, it's width is equal to the maximum height it can be inside
 			// the chip.
@@ -744,7 +747,7 @@ namespace com.android.ex.chips
 											   calculateAvailableWidth() - iconWidth - widths[0] -
 											   backgroundPadding.Left - backgroundPadding.Right -
 											   moreChipWidth);
-			int textWidth = (int)paint.MeasureText(ellipsizedText, 0, ellipsizedText.Length());
+			int textWidth = (int)paint.MeasureText(ellipsizedText, 0, ellipsizedText.Length);
 
 			// Make sure there is a minimum chip width so the user can ALWAYS
 			// tap a chip without difficulty.
@@ -759,12 +762,19 @@ namespace com.android.ex.chips
 			background.SetBounds(height / 2, 0, width, height);
 			background.Draw(canvas);
 			// Draw the text vertically aligned
-			int textX = shouldPositionAvatarOnRight()
+			var x = shouldPositionAvatarOnRight()
 				? mChipPadding + backgroundPadding.Left
 				: width - backgroundPadding.Right - mChipPadding - textWidth;
+			var y = getTextYOffset(ellipsizedText, paint, height);
 			paint.Color = Color.ParseColor("#FF5C5C5C");
 			paint.AntiAlias = true;
-			canvas.DrawText(ellipsizedText, 0, ellipsizedText.Length(), textX, getTextYOffset(new String(ellipsizedText.ToString()), paint, height), paint);
+			canvas.DrawText(ellipsizedText,
+			                0,
+			                ellipsizedText.Length,
+			                x,
+			               y,
+			                paint);
+
 			if (icon != null)
 			{
 				// Draw the icon
@@ -852,7 +862,7 @@ namespace com.android.ex.chips
 		protected float getTextYOffset(String text, TextPaint paint, int height)
 		{
 			Rect bounds = new Rect();
-			paint.GetTextBounds(text.ToString(), 0, text.Length(), bounds);
+			paint.GetTextBounds(text, 0, text.Length, bounds);
 			int textHeight = bounds.Bottom - bounds.Top;
 			return height - ((height - textHeight) / 2) - (int)paint.Descent() / 2;
 		}
@@ -1374,14 +1384,16 @@ namespace com.android.ex.chips
 			{
 				// If we can get a name from tokenizing, then generate an entry from
 				// this.
-				display = new String(tokens[0].Name);
+				//display = new String(tokens[0].Name);
+				display = tokens[0].Name;
 				if (!TextUtils.IsEmpty(display))
 				{
 					//return RecipientEntry.constructGeneratedEntry(display, new String(tokens[0].Address), isValid);
 				}
 				else
 				{
-					display = new String(tokens[0].Address);
+					//display = new String(tokens[0].Address);
+					display = tokens[0].Address;
 					if (!TextUtils.IsEmpty(display))
 					{
 						//return RecipientEntry.constructFakeEntry(display, true);
@@ -1394,7 +1406,9 @@ namespace com.android.ex.chips
 			if (mValidator != null && !isValid)
 			{
 				// Try fixing up the entry using the validator.
-				validatedToken = new String(mValidator.FixTextFormatted(token).ToString());
+				var foo = new Java.Lang.String(token);
+				//validatedToken = new String(mValidator.FixTextFormatted(token).ToString());
+				validatedToken = mValidator.FixTextFormatted(new Java.Lang.String(token)).ToString();
 				if (!TextUtils.IsEmpty(validatedToken))
 				{
 					if (validatedToken.Contains(token))
@@ -1405,7 +1419,8 @@ namespace com.android.ex.chips
 						Rfc822Token[] tokenized = Rfc822Tokenizer.Tokenize(validatedToken);
 						if (tokenized.Length > 0)
 						{
-							validatedToken = new String(tokenized[0].Address);
+							//validatedToken = new String(tokenized[0].Address);
+							validatedToken = tokenized[0].Address;
 							isValid = true;
 						}
 					}
@@ -1644,10 +1659,11 @@ namespace com.android.ex.chips
 			}
 			
 			//String text = new String(editable.ToString().Substring(start, tokenEnd).Trim());
-			String text = new String(editable.ToString().SubString(start, tokenEnd).Trim());
+//			String text = new String(editable.ToString().SubString(start, tokenEnd).Trim());
+			String text = editable.ToString().SubString(start, tokenEnd).Trim();
 
 			ClearComposingText();
-			if (text != null && text.Length() > 0)
+			if (text != null && text.Length > 0)
 			{
 				ChipEntry entry = createTokenizedEntry(text);
 				if (entry != null)
@@ -1889,10 +1905,12 @@ namespace com.android.ex.chips
 			int end = text.Length();
 			int start = mTokenizer.FindTokenStart(text, end);
 			//String token = new String(text.ToString().Substring(start, end).Trim());
-			String token = new String(text.ToString().SubString(start, end).Trim());
+			//String token = new String(text.ToString().SubString(start, end).Trim());
+			String token = text.ToString().SubString(start, end).Trim();
 			if (!TextUtils.IsEmpty(token))
 			{
-				char atEnd = token.CharAt(token.Length() - 1);
+				//char atEnd = token.CharAt(token.Length() - 1);
+				char atEnd = token.ElementAt(token.Length - 1);
 				return atEnd == COMMIT_CHAR_COMMA || atEnd == COMMIT_CHAR_SEMICOLON;
 			}
 			return false;
@@ -2148,6 +2166,7 @@ namespace com.android.ex.chips
 
 		private String createAddressText(ChipEntry entry)
 		{
+			
 			String display = entry.getDisplayName();
 			String address = entry.getDestination();
 			if (TextUtils.IsEmpty(display) || TextUtils.Equals(display, address))
@@ -2169,19 +2188,19 @@ namespace com.android.ex.chips
 				Rfc822Token[] tokenized = Rfc822Tokenizer.Tokenize(address);
 				if (tokenized != null && tokenized.Length > 0)
 				{
-					address = new String(tokenized[0].Address);
+					//address = new String(tokenized[0].Address);
+					address = tokenized[0].Address;
 				}
 			}
-			Rfc822Token token = new Rfc822Token(display.ToString(), address.ToString(), null);
-			trimmedDisplayText = new String(token.ToString().Trim());
+			Rfc822Token token = new Rfc822Token(display, address, null);
+			//trimmedDisplayText = new String(token.ToString().Trim());
+			trimmedDisplayText = token.ToString().Trim();
 			//}
 
 			int index = trimmedDisplayText.IndexOf(",");
-			if (mTokenizer != null && !TextUtils.IsEmpty(trimmedDisplayText) && index < trimmedDisplayText.Length() - 1)
+			if (mTokenizer != null && !TextUtils.IsEmpty(trimmedDisplayText) && index < trimmedDisplayText.Length - 1)
 			{
-				string foo = trimmedDisplayText.ToString();
-				var bar = mTokenizer.TerminateToken(trimmedDisplayText.ToString());
-				return new String(bar);
+				return mTokenizer.TerminateToken(trimmedDisplayText);
 			}
 			else
 			{
@@ -2211,7 +2230,7 @@ namespace com.android.ex.chips
 			}
 			else
 			{
-				return new String(new Rfc822Token(display.ToString(), address.ToString(), null).ToString());
+				return new Rfc822Token(display, address, null).ToString();
 			}
 		}
 
@@ -2225,7 +2244,7 @@ namespace com.android.ex.chips
 			}
 			SpannableString chipText;
 			// Always leave a blank space at the end of a chip.
-			int textLength = displayText.Length() - 1;
+			int textLength = displayText.Length - 1;
 			chipText = new SpannableString(displayText);
 			if (!mNoChips)
 			{
@@ -2233,7 +2252,7 @@ namespace com.android.ex.chips
 				{
 					DrawableChipSpan chipSpan = constructChipSpan(entry, pressed, false /* leave space for contact icon */);
 					chipText.SetSpan(chipSpan, 0, textLength, SpanTypes.ExclusiveExclusive);
-					chipSpan.setOriginalText(new String(chipText.ToString()));
+					chipSpan.setOriginalText(chipText.ToString());
 				}
 				catch (NullPointerException e)
 				{
@@ -2268,10 +2287,10 @@ namespace com.android.ex.chips
 			//var entry = createValidatedEntry((ChipEntry)Adapter.GetItem(position));
 			//var entry = ((ChipEntry)Adapter.GetItem(position));
 			//submitItem(entry);
-			submitItem(new String("SomeUserName"), new String("Number"));
+			//submitItem(new String("SomeUserName"), new String("Number"));
 		}
 
-		public void submitItem(String name, String number)
+		public void submitItem(string name, string number)
 		{
 			//RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, true);
 			ChipEntry entry = new ChipEntry(name, number, null);
@@ -2465,7 +2484,7 @@ namespace com.android.ex.chips
 					// That way, if there are duplicates, we always find the correct
 					// recipient.
 					chipStart = editable.ToString().IndexOf(token.ToString(), end);
-					end = Math.Min(editable.Length(), chipStart + token.Length());
+					end = Math.Min(editable.Length(), chipStart + token.Length);
 					// Only set the span if we found a matching token.
 					if (chipStart != -1)
 					{
@@ -2521,7 +2540,7 @@ namespace com.android.ex.chips
 
 		private MoreImageSpan createMoreSpan(int count)
 		{
-			String moreText = new String(String.Format(mMoreItem.Text, count));
+			String moreText = String.Format(mMoreItem.Text, count);
 			TextPaint morePaint = new TextPaint(Paint);
 			morePaint.TextSize = mMoreItem.TextSize;
 			morePaint.Color = new Color(mMoreItem.CurrentTextColor);
@@ -2545,7 +2564,7 @@ namespace com.android.ex.chips
 
 			Bitmap drawable = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
 			Canvas canvas = new Canvas(drawable);
-			canvas.DrawText(moreText, 0, moreText.Length(), 0, adjustedHeight, morePaint);
+			canvas.DrawText(moreText, 0, moreText.Length, 0, adjustedHeight, morePaint);
 
 			Drawable result = new BitmapDrawable(Resources, drawable);
 			result.SetBounds(0, 0, width, height);
@@ -2652,7 +2671,7 @@ namespace com.android.ex.chips
 			int overage = numRecipients - chipLimit;
 
 			// Now checks if the moreSpan is not too big for the available space
-			String moreText = new String(String.Format(mMoreItem.Text, overage));
+			String moreText = String.Format(mMoreItem.Text, overage);
 			TextPaint morePaint = new TextPaint(Paint);
 			morePaint.TextSize = mMoreItem.TextSize;
 			int moreChipWidth = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
@@ -2663,7 +2682,7 @@ namespace com.android.ex.chips
 				totalChipLength -= recipients[chipLimit - 1].getBounds().Right;
 				chipLimit--;
 				overage++;
-				moreText = new String(String.Format(mMoreItem.Text, overage));
+				moreText = String.Format(mMoreItem.Text, overage);
 				moreChipWidth = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft
 								+ mMoreItem.PaddingRight;
 			}
@@ -2752,7 +2771,7 @@ namespace com.android.ex.chips
 						// recipient.
 						//chipStart = editable.ToString().indexOf(token, end);
 						chipStart = editable.ToString().IndexOf(token.ToString(), end);
-						end = chipEnd = Math.Min(editable.Length(), chipStart + token.Length());
+						end = chipEnd = Math.Min(editable.Length(), chipStart + token.Length);
 						// Only set the span if we found a matching token.
 						if (chipStart != -1)
 						{
@@ -3135,7 +3154,7 @@ namespace com.android.ex.chips
 		//RecipientTextWatcher
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
 		{
-			var s = new String(System.Convert.ToString(e.Text));
+			var s = e.Text;
 			//var s = new String(new string(e.Text));
 			var before = e.BeforeCount;
 			var count = e.AfterCount;
@@ -3267,10 +3286,8 @@ namespace com.android.ex.chips
 					//{
 					// Check if this is a valid email address. If it is,
 					// commit it.
-					String text = new String(Text);
-					int tokenStart = mTokenizer.FindTokenStart(text, SelectionEnd);
-
-					String sub = new String(text.Substring(tokenStart, mTokenizer.FindTokenEnd(text, tokenStart)));
+					int tokenStart = mTokenizer.FindTokenStart(Text, SelectionEnd);
+					String sub = Text.SubString(tokenStart, mTokenizer.FindTokenEnd(Text, tokenStart));
 
 					if (!TextUtils.IsEmpty(sub) && mValidator != null && mValidator.IsValid(sub))
 					{

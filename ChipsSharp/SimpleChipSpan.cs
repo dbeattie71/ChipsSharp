@@ -1,7 +1,4 @@
-using Android.Text;
-using ChipsSharp;
-
-namespace com.android.ex.chips.recipientchip
+﻿namespace ChipsSharp
 {
 	public class SimpleChipSpan : BaseChipSpan
 	{
@@ -40,7 +37,7 @@ namespace com.android.ex.chips.recipientchip
 
 		public override void setOriginalText(string text)
 		{
-			if (TextUtils.IsEmpty(text))
+			if (string.IsNullOrEmpty(text))
 			{
 				mOriginalText = text;
 			}
@@ -52,7 +49,8 @@ namespace com.android.ex.chips.recipientchip
 
 		public override string getOriginalText()
 		{
-			if (!TextUtils.IsEmpty(mOriginalText)) return mOriginalText;
+			if (!string.IsNullOrEmpty(mOriginalText))
+				return mOriginalText;
 			return mEntry.getDestination();
 		}
 

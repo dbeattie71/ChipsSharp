@@ -1,3 +1,4 @@
+using ChipsSharp;
 using Java.Lang;
 
 namespace com.android.ex.chips.recipientchip

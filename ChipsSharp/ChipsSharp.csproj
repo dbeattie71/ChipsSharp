@@ -38,6 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChipEntry.cs" />
+    <Compile Include="BaseChipSpan.cs" />
+    <Compile Include="SimpleChipSpan.cs" />
+    <Compile Include="IBaseChipSpan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

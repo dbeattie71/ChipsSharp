@@ -1,9 +1,9 @@
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Text.Style;
-using Java.Lang;
+using ChipsSharp;
 
-namespace com.android.ex.chips.recipientchip
+namespace com.android.ex.chips
 {
 	public class VisibleChipSpan : DrawableChipSpan
 	{
@@ -27,7 +27,7 @@ namespace com.android.ex.chips.recipientchip
 			return mDelegate.isSelected();
 		}
 
-		public override String getDisplay()
+		public override string getDisplay()
 		{
 			return mDelegate.getDisplay();
 		}
@@ -37,12 +37,12 @@ namespace com.android.ex.chips.recipientchip
 			return mDelegate.getEntry();
 		}
 
-		public override void setOriginalText(String text)
+		public override void setOriginalText(string text)
 		{
 			mDelegate.setOriginalText(text);
 		}
 
-		public override String getOriginalText()
+		public override string getOriginalText()
 		{
 			return mDelegate.getOriginalText();
 		}

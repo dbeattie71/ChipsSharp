@@ -34,7 +34,7 @@ namespace com.dbeattie
 		private int _foo = 0;
 		private void ButtonOnClick(object sender, EventArgs eventArgs)
 		{
-			_phoneRetv.submitItem(new String("SomeUserName" + _foo.ToString()),new String("Number"));
+			_phoneRetv.submitItem("SomeUserName" + _foo,"Number");
 			_foo++;
 		}
 	}
