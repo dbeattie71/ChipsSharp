@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- Application -->
+  <string name="app_name" translatable="false">Chips Sample</string>
+
+  <!-- Main Activity -->
+  <string name="address_field_prefix">To: </string>
+  <string name="recipients_field_hint">Recipients</string>
+  <string name="subject_field_hint">Subject</string>
+  <string name="message_field_hint">Compose message</string>
+
+  <!-- Menu -->
+  <string name="menu_show_list">Show the list</string>
+  <string name="menu_send_sms">Send an SMS</string>
+  <string name="menu_send_email">Send an email</string>
+
+</resources>

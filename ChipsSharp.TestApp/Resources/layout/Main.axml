@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/recipient_tb_padding"
+        android:paddingBottom="@dimen/recipient_tb_padding">
+    <!-- Recipient text field -->
+        <TextView
+            android:id="@+id/address_suffix"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/address_prefix_top_margin"
+            android:layout_marginLeft="@dimen/address_prefix_lr_margin"
+            android:layout_marginStart="@dimen/address_prefix_lr_margin"
+            android:textSize="@dimen/address_prefix_text_size"
+            android:textColor="@android:color/darker_gray" />
+        <com.android.ex.chips.ChipsEditTextView
+            android:id="@+id/phone_retv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/chips_textfield_minHeight"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/address_suffix"
+            android:layout_toEndOf="@id/address_suffix"
+            android:layout_marginLeft="@dimen/chips_textfield_lr_margin"
+            android:layout_marginRight="@dimen/chips_textfield_lr_margin"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="@string/recipients_field_hint" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_width"
+        android:background="@android:color/darker_gray" />
+<!-- Subject text field -->
+    <LinearLayout
+        android:id="@+id/subject_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/subject_field"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/subject_textfield_height"
+            android:layout_marginTop="@dimen/recipient_tb_padding"
+            android:layout_marginBottom="@dimen/recipient_tb_padding"
+            android:layout_marginLeft="@dimen/address_prefix_lr_margin"
+            android:layout_marginStart="@dimen/address_prefix_lr_margin"
+            android:layout_marginRight="@dimen/address_prefix_lr_margin"
+            android:layout_marginEnd="@dimen/address_prefix_lr_margin"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:inputType="text|textCapSentences"
+            android:hint="@string/subject_field_hint" />
+        <TextView
+            android:id="@+id/test_text_view"
+            android:text="Testing..."
+            android:layout_width="match_parent"
+            android:layout_height="32dp" />
+        <Button
+            android:id="@+id/test_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_width"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+<!-- Message text field -->
+    <EditText
+        android:id="@+id/message_field"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/compose_text_top_margin"
+        android:layout_marginLeft="@dimen/address_prefix_lr_margin"
+        android:layout_marginStart="@dimen/address_prefix_lr_margin"
+        android:layout_marginRight="@dimen/address_prefix_lr_margin"
+        android:layout_marginEnd="@dimen/address_prefix_lr_margin"
+        android:background="@android:color/transparent"
+        android:gravity="top"
+        android:inputType="textMultiLine|textCapSentences"
+        android:hint="@string/message_field_hint" />
+</LinearLayout>
