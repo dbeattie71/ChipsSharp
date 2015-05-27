@@ -8,17 +8,17 @@ namespace com.android.ex.chips.Spans
 {
 	public class InvisibleChipSpan : DrawableChipSpan
 	{
-		public InvisibleChipSpan(Drawable drawable, ChipEntry entry)
+		public InvisibleChipSpan(Drawable drawable, IChipEntry entry)
 			: base(drawable, entry)
 		{
 		}
 
-		public InvisibleChipSpan(Drawable drawable, ChipEntry entry, SpanAlign verticalAlignment)
+		public InvisibleChipSpan(Drawable drawable, IChipEntry entry, SpanAlign verticalAlignment)
 			: base(drawable, entry, verticalAlignment)
 		{
 		}
 
-		public InvisibleChipSpan(ChipEntry entry) : this(null, entry)
+		public InvisibleChipSpan(IChipEntry entry) : this(null, entry)
 		{
 		}
 
@@ -37,7 +37,7 @@ namespace com.android.ex.chips.Spans
 			return mDelegate.getDisplay();
 		}
 
-		public override ChipEntry getEntry()
+		public override IChipEntry getEntry()
 		{
 			return mDelegate.getEntry();
 		}

@@ -3,12 +3,12 @@
 	public class SimpleChipSpan : BaseChipSpan
 	{
 		private readonly string mDisplay;
-		private readonly ChipEntry mEntry;
+		private readonly IChipEntry mEntry;
 		private readonly string mValue;
 		private string mOriginalText;
 		private bool mSelected;
 
-		public SimpleChipSpan(ChipEntry entry)
+		public SimpleChipSpan(IChipEntry entry)
 		{
 			mDisplay = entry.getDisplayName();
 			mValue = entry.getDestination().Trim();
@@ -30,7 +30,7 @@
 			return mDisplay;
 		}
 
-		public override ChipEntry getEntry()
+		public override IChipEntry getEntry()
 		{
 			return mEntry;
 		}

@@ -9,12 +9,12 @@ namespace com.android.ex.chips.Spans
 	{
 		protected readonly SimpleChipSpan mDelegate;
 
-		protected DrawableChipSpan(Drawable drawable, ChipEntry entry)
+		protected DrawableChipSpan(Drawable drawable, IChipEntry entry)
 			: this(drawable, entry, SpanAlign.Bottom)
 		{
 		}
 
-		protected DrawableChipSpan(Drawable drawable, ChipEntry entry, SpanAlign verticalAlignment)
+		protected DrawableChipSpan(Drawable drawable, IChipEntry entry, SpanAlign verticalAlignment)
 			: base(drawable, verticalAlignment)
 		{
 			mDelegate = new SimpleChipSpan(entry);
@@ -23,7 +23,7 @@ namespace com.android.ex.chips.Spans
 		public abstract void setSelected(bool selected);
 		public abstract bool isSelected();
 		public abstract string getDisplay();
-		public abstract ChipEntry getEntry();
+		public abstract IChipEntry getEntry();
 		public abstract void setOriginalText(string text);
 		public abstract string getOriginalText();
 		public abstract Rect getBounds();

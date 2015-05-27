@@ -2,7 +2,7 @@
 
 namespace ChipsSharp
 {
-	public interface ChipEntry
+	public interface IChipEntry
 	{
 		string getDisplayName();
 		string getDestination();

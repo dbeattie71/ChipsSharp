@@ -675,7 +675,7 @@ namespace com.android.ex.chips
      * @param contact The recipient entry to pull data from.
      * @param paint The paint to use to draw the bitmap.
      */
-		private Bitmap createSelectedChip(ChipEntry contact, TextPaint paint)
+		private Bitmap createSelectedChip(IChipEntry contact, TextPaint paint)
 		{
 			paint.Color = new Color(sSelectedTextColor);
 			Bitmap photo;
@@ -698,7 +698,7 @@ namespace com.android.ex.chips
      * @param paint The paint to use to draw the bitmap.
      */
 		// TODO: Is leaveBlankIconSpacer obsolete now that we have left and right attributes?
-		private Bitmap createUnselectedChip(ChipEntry contact, TextPaint paint,
+		private Bitmap createUnselectedChip(IChipEntry contact, TextPaint paint,
 											bool leaveBlankIconSpacer)
 		{
 			Drawable background = getChipBackground(contact);
@@ -707,7 +707,7 @@ namespace com.android.ex.chips
 			return createChipBitmap(contact, paint, photo, background);
 		}
 
-		protected Bitmap createChipBitmap(ChipEntry contact, TextPaint paint, Bitmap icon,
+		protected Bitmap createChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
 										  Drawable background)
 		{
 			if (background == null)
@@ -803,7 +803,7 @@ namespace com.android.ex.chips
      * draw an icon for this recipient.
      */
 
-		private Bitmap getAvatarIcon(ChipEntry contact)
+		private Bitmap getAvatarIcon(IChipEntry contact)
 		{
 			// Don't draw photos for recipients that have been typed in OR generated on the fly.
 			//long contactId = contact.getContactId();
@@ -844,7 +844,7 @@ namespace com.android.ex.chips
 		// Visible for testing.
 		/* package */
 
-		private Drawable getChipBackground(ChipEntry contact)
+		private Drawable getChipBackground(IChipEntry contact)
 		{
 			//return contact.isValid() ? mChipBackground : mInvalidChipBackground;
 			return mChipBackground;
@@ -875,7 +875,7 @@ namespace com.android.ex.chips
 		}
 
 		//private DrawableRecipientChip constructChipSpan(RecipientEntry contact, bool pressed,bool leaveIconSpace) throws NullPointerException {
-		private DrawableChipSpan constructChipSpan(ChipEntry contact, bool pressed, bool leaveIconSpace)
+		private DrawableChipSpan constructChipSpan(IChipEntry contact, bool pressed, bool leaveIconSpace)
 		{
 			if (mChipBackground == null)
 			{
@@ -1360,7 +1360,7 @@ namespace com.android.ex.chips
 		//}
 
 		// VisibleForTesting
-		protected ChipEntry createTokenizedEntry(String token)
+		protected IChipEntry createTokenizedEntry(String token)
 		{
 			if (TextUtils.IsEmpty(token))
 			{
@@ -1660,7 +1660,7 @@ namespace com.android.ex.chips
 			ClearComposingText();
 			if (text != null && text.Length > 0)
 			{
-				ChipEntry entry = createTokenizedEntry(text);
+				IChipEntry entry = createTokenizedEntry(text);
 				if (entry != null)
 				{
 					QwertyKeyListener.MarkAsReplaced(editable, start, end, text.ToString());
@@ -2159,7 +2159,7 @@ namespace com.android.ex.chips
 		// Use this method to generate text to add to the list of addresses.
 		/* package */
 
-		private String createAddressText(ChipEntry entry)
+		private String createAddressText(IChipEntry entry)
 		{
 			
 			String display = entry.getDisplayName();
@@ -2207,7 +2207,7 @@ namespace com.android.ex.chips
 		// Use this method to generate text to display in a chip.
 		/*package*/
 
-		private String createChipDisplayText(ChipEntry entry)
+		private String createChipDisplayText(IChipEntry entry)
 		{
 			String display = entry.getDisplayName();
 			String address = entry.getDestination();
@@ -2229,7 +2229,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		private ICharSequence createChip(ChipEntry entry, bool pressed)
+		private ICharSequence createChip(IChipEntry entry, bool pressed)
 		{
 			String displayText = createAddressText(entry);
 
@@ -2305,7 +2305,7 @@ namespace com.android.ex.chips
 		//	submitItem(entry);
 		//}
 
-		protected void submitItem(ChipEntry entry)
+		protected void submitItem(IChipEntry entry)
 		{
 			if (entry == null || getRecipients().Length >= mMaxChipsAllowed)
 			{
@@ -3070,7 +3070,7 @@ namespace com.android.ex.chips
 		// Visible for testing.
 		/*package*/
 
-		private void replaceChip(DrawableChipSpan chipSpan, ChipEntry entry)
+		private void replaceChip(DrawableChipSpan chipSpan, IChipEntry entry)
 		{
 			bool wasSelected = chipSpan == mSelectedChip;
 			if (wasSelected)

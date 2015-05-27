@@ -5,7 +5,7 @@
 		void setSelected(bool selected);
 		bool isSelected();
 		string getDisplay();
-		ChipEntry getEntry();
+		IChipEntry getEntry();
 		void setOriginalText(string text);
 		string getOriginalText();
 	}
