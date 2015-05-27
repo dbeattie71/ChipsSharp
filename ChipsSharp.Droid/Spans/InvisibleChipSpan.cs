@@ -4,7 +4,7 @@ using Android.Text.Style;
 using ChipsSharp;
 using Java.Lang;
 
-namespace com.android.ex.chips
+namespace com.android.ex.chips.Spans
 {
 	public class InvisibleChipSpan : DrawableChipSpan
 	{

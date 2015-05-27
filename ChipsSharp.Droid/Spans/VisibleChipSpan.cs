@@ -3,7 +3,7 @@ using Android.Graphics.Drawables;
 using Android.Text.Style;
 using ChipsSharp;
 
-namespace com.android.ex.chips
+namespace com.android.ex.chips.Spans
 {
 	public class VisibleChipSpan : DrawableChipSpan
 	{

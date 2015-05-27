@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="ChipEntry.cs" />
     <Compile Include="BaseChipSpan.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="SimpleChipSpan.cs" />
     <Compile Include="IBaseChipSpan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

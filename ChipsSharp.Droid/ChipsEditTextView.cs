@@ -1,8 +1,3 @@
-/**
- * RecipientEditTextView is an auto complete text view for use with applications
- * that use the new Chips UI for addressing a message to recipients.
- */
-
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +18,7 @@ using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using com.android.ex.chips.Spans;
 using ChipsSharp;
 using Java.Lang;
 using Java.Util.Regex;
@@ -31,7 +27,6 @@ using Exception = Java.Lang.Exception;
 using LayoutDirection = Android.Views.LayoutDirection;
 using Math = Java.Lang.Math;
 using Object = Java.Lang.Object;
-//using String = Java.Lang.String;
 using String = System.String;
 using Uri = Android.Net.Uri;
 
@@ -82,9 +77,9 @@ namespace com.android.ex.chips
 
 		private float mChipFontSize;
 
-		private String mChipEntryErrorHint;
+		private string mChipEntryErrorHint;
 
-		private String mChipOverLimitErrorHint;
+		private string mChipOverLimitErrorHint;
 
 		private float mLineSpacingExtra;
 
@@ -1660,7 +1655,7 @@ namespace com.android.ex.chips
 			
 			//String text = new String(editable.ToString().Substring(start, tokenEnd).Trim());
 //			String text = new String(editable.ToString().SubString(start, tokenEnd).Trim());
-			String text = editable.ToString().SubString(start, tokenEnd).Trim();
+			String text = editable.ToString().JavaSubstring(start, tokenEnd).Trim();
 
 			ClearComposingText();
 			if (text != null && text.Length > 0)
@@ -1740,7 +1735,7 @@ namespace com.android.ex.chips
 
 		private bool notEnoughCharactersWhenTrimmed(int start, int end)
 		{
-			return Text.SubString(start, end).Trim().Length < Threshold;
+			return Text.JavaSubstring(start, end).Trim().Length < Threshold;
 		}
 
 		private bool alreadyHasChip(int start, int end)
@@ -1906,7 +1901,7 @@ namespace com.android.ex.chips
 			int start = mTokenizer.FindTokenStart(text, end);
 			//String token = new String(text.ToString().Substring(start, end).Trim());
 			//String token = new String(text.ToString().SubString(start, end).Trim());
-			String token = text.ToString().SubString(start, end).Trim();
+			String token = text.ToString().JavaSubstring(start, end).Trim();
 			if (!TextUtils.IsEmpty(token))
 			{
 				//char atEnd = token.CharAt(token.Length() - 1);
@@ -2290,12 +2285,13 @@ namespace com.android.ex.chips
 			//submitItem(new String("SomeUserName"), new String("Number"));
 		}
 
-		public void submitItem(string name, string number)
-		{
-			//RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, true);
-			ChipEntry entry = new ChipEntry(name, number, null);
-			submitItem(entry);
-		}
+		//public void submitItem(string name, string number)
+		//	public void submitItem(ChipEntry entry)
+		//{
+		//	//RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, true);
+		//	//ChipEntry entry = new ChipEntry(name, number, null);
+		//	submitItem(entry);
+		//}
 
 		//public void submitItem(String name, String number, Uri imageUri)
 		//{
@@ -2503,8 +2499,6 @@ namespace com.android.ex.chips
 			//throw new Settings.System.NotImplementedException();
 		}
 
-
-
 		//@Override
 		public void OnDestroyActionMode(ActionMode mode)
 		{
@@ -2540,11 +2534,12 @@ namespace com.android.ex.chips
 
 		private MoreImageSpan createMoreSpan(int count)
 		{
-			String moreText = String.Format(mMoreItem.Text, count);
+			var moreText = Java.Lang.String.Format(mMoreItem.Text, count);
+
 			TextPaint morePaint = new TextPaint(Paint);
 			morePaint.TextSize = mMoreItem.TextSize;
 			morePaint.Color = new Color(mMoreItem.CurrentTextColor);
-			int width = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft
+			int width = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
 						+ mMoreItem.PaddingRight;
 
 			int height;
@@ -2585,7 +2580,6 @@ namespace com.android.ex.chips
 				start = end; // move to the next token and get its end.
 			}
 			// Now, count total addresses.
-			start = 0;
 			int tokenCount = countTokens(text);
 			MoreImageSpan moreSpan = createMoreSpan(tokenCount - CHIP_LIMIT);
 			SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
@@ -2646,7 +2640,6 @@ namespace com.android.ex.chips
 
 			int totalChipLength = 0;
 			int chipLimit = 0;
-			var foo = getShrinkMaxLines();
 			for (int i = 0; i < recipients.Length; i++)
 			{
 				if (totalChipLength + recipients[i].getBounds().Right + blankSpaceWidth < (fieldWidth * getShrinkMaxLines()))
@@ -2674,7 +2667,7 @@ namespace com.android.ex.chips
 			String moreText = String.Format(mMoreItem.Text, overage);
 			TextPaint morePaint = new TextPaint(Paint);
 			morePaint.TextSize = mMoreItem.TextSize;
-			int moreChipWidth = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
+			int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
 
 			MoreImageSpan moreSpan;
 			while (totalChipLength + moreChipWidth >= (fieldWidth * getShrinkMaxLines()))
@@ -2683,7 +2676,7 @@ namespace com.android.ex.chips
 				chipLimit--;
 				overage++;
 				moreText = String.Format(mMoreItem.Text, overage);
-				moreChipWidth = (int)morePaint.MeasureText(moreText.ToString()) + mMoreItem.PaddingLeft
+				moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
 								+ mMoreItem.PaddingRight;
 			}
 			moreSpan = createMoreSpan(overage);
@@ -2762,7 +2755,7 @@ namespace com.android.ex.chips
 					{
 						int chipStart;
 						int chipEnd;
-						String token;
+						string token;
 						// Need to find the location of the chip, again.
 						token = (String)chip.getOriginalText();
 						// As we find the matching recipient for the remove spans,
@@ -2770,7 +2763,7 @@ namespace com.android.ex.chips
 						// That way, if there are duplicates, we always find the correct
 						// recipient.
 						//chipStart = editable.ToString().indexOf(token, end);
-						chipStart = editable.ToString().IndexOf(token.ToString(), end);
+						chipStart = editable.ToString().IndexOf(token, end);
 						end = chipEnd = Math.Min(editable.Length(), chipStart + token.Length);
 						// Only set the span if we found a matching token.
 						if (chipStart != -1)
@@ -3155,7 +3148,6 @@ namespace com.android.ex.chips
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var s = e.Text;
-			//var s = new String(new string(e.Text));
 			var before = e.BeforeCount;
 			var count = e.AfterCount;
 			// The user deleted some text OR some text was replaced; check to
@@ -3287,7 +3279,7 @@ namespace com.android.ex.chips
 					// Check if this is a valid email address. If it is,
 					// commit it.
 					int tokenStart = mTokenizer.FindTokenStart(Text, SelectionEnd);
-					String sub = Text.SubString(tokenStart, mTokenizer.FindTokenEnd(Text, tokenStart));
+					var sub = Text.JavaSubstring(tokenStart, mTokenizer.FindTokenEnd(Text, tokenStart));
 
 					if (!TextUtils.IsEmpty(sub) && mValidator != null && mValidator.IsValid(sub))
 					{

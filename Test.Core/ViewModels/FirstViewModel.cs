@@ -8,6 +8,7 @@ using EnjinMobile.Api.Services;
 
 namespace Test.Core.ViewModels
 {
+	
 	public class FirstViewModel : MvxViewModel
 	{
 		private readonly IMessagesService _messagesService;
@@ -141,9 +142,5 @@ namespace Test.Core.ViewModels
 			SelectedContacts.Add(new Contact { Name = "test" });
 			RaisePropertyChanged(() => SelectedContacts);
 		}
-	}
-
-	public interface IRecipientEntry
-	{
 	}
 }

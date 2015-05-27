@@ -46,13 +46,13 @@
     <Compile Include="ChipsUtil.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ItemSelectedListener.cs" />
-    <Compile Include="MoreImageSpan.cs" />
-    <Compile Include="DrawableChipSpan.cs" />
-    <Compile Include="IDrawableChipSpan.cs">
+    <Compile Include="Spans\MoreImageSpan.cs" />
+    <Compile Include="Spans\DrawableChipSpan.cs" />
+    <Compile Include="Spans\IDrawableChipSpan.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InvisibleChipSpan.cs" />
-    <Compile Include="VisibleChipSpan.cs" />
+    <Compile Include="Spans\InvisibleChipSpan.cs" />
+    <Compile Include="Spans\VisibleChipSpan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChipsEditTextView.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

@@ -2,32 +2,38 @@
 
 namespace ChipsSharp
 {
-	public class ChipEntry
+	public interface ChipEntry
 	{
-		private readonly string mDestination;
-		private readonly string mDisplayName;
-
-		public ChipEntry(
-			string displayName,
-			string destination,
-			Uri photoThumbnailUri)
-		{
-			mDisplayName = displayName;
-			mDestination = destination;
-			//mPhotoThumbnailUri = photoThumbnailUri;
-			//mPhotoBytes = null;
-			//mIsDivider = false;
-		}
-		public string getDisplayName()
-		{
-			return mDisplayName;
-		}
-
-		public string getDestination()
-		{
-			return mDestination;
-		}
+		string getDisplayName();
+		string getDestination();
 	}
+
+	//public class ChipEntry
+	//{
+	//	private readonly string mDestination;
+	//	private readonly string mDisplayName;
+
+	//	public ChipEntry(
+	//		string displayName,
+	//		string destination,
+	//		Uri photoThumbnailUri)
+	//	{
+	//		mDisplayName = displayName;
+	//		mDestination = destination;
+	//		//mPhotoThumbnailUri = photoThumbnailUri;
+	//		//mPhotoBytes = null;
+	//		//mIsDivider = false;
+	//	}
+	//	public string getDisplayName()
+	//	{
+	//		return mDisplayName;
+	//	}
+
+	//	public string getDestination()
+	//	{
+	//		return mDestination;
+	//	}
+	//}
 
 	//public class ChipEntry
 	//{
