@@ -113,7 +113,7 @@ namespace com.android.ex.chips
 
 		private ListPopupWindow mAlternatesPopup;
 
-		private ListPopupWindow mAddressPopup;
+		//private ListPopupWindow mAddressPopup;
 
 		//private List<DrawableRecipientChip> mTemporaryRecipients;
 
@@ -178,7 +178,7 @@ namespace com.android.ex.chips
 			}
 
 			mAlternatesPopup = new ListPopupWindow(context);
-			mAddressPopup = new ListPopupWindow(context);
+			//mAddressPopup = new ListPopupWindow(context);
 			
 			InputType = InputType | InputTypes.TextFlagNoSuggestions;
 			OnItemClickListener = this;
