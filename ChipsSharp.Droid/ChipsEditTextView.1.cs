@@ -113,12 +113,7 @@ namespace com.android.ex.chips
 
 		private TextView mMoreItem;
 
-		// VisibleForTesting
-		//private List<String> mPendingChips = new List<String>();
-
 		private Handler mHandler;
-
-		//private int mPendingChipsCount = 0;
 
 		private bool mNoChips = false;
 
@@ -126,22 +121,18 @@ namespace com.android.ex.chips
 
 		private ListPopupWindow mAddressPopup;
 
-		// VisibleForTesting
 		//private List<DrawableRecipientChip> mTemporaryRecipients;
 
 		private List<DrawableChipSpan> mRemovedSpans;
 
 		private bool mShouldShrink = true;
 
-		// Chip copy fields.
 		private GestureDetector mGestureDetector;
 
 		// Used with {@link #mAlternatesPopup}. Handles clicks to alternate addresses for a selected chip.
 		private AdapterView.IOnItemClickListener mAlternatesListener;
 
 		private int mCheckedItem;
-
-		//private ITextWatcher mTextWatcher;
 
 		// Obtain the enclosing scroll view, if it exists, so that the view can be
 		// scrolled to show the last line of chips content.
@@ -163,8 +154,6 @@ namespace com.android.ex.chips
 
 		private bool mAttachedToWindow;
 
-		//private DropdownChipLayouter mDropdownChipLayouter;
-
 		private bool mDismissPopupOnClick = true;
 
 		private ItemSelectedListener itemSelectedListener;
@@ -180,16 +169,6 @@ namespace com.android.ex.chips
 			TextChanged += OnTextChanged;
 			AfterTextChanged += OnAfterTextChanged;
 
-			////mAddTextWatcher = () =>
-			////{
-			////	if (mTextWatcher == null)
-			////	{
-			////		mTextWatcher = new RecipientTextWatcher();
-			////		AddTextChangedListener(mTextWatcher);
-			////	}
-			////};
-
-			//mHandlePendingChips = handlePendingChips;
 			mDelayedShrink = shrink;
 
 			//// TODO: would be nice to show chips as an example here
@@ -206,52 +185,13 @@ namespace com.android.ex.chips
 
 			mAlternatesPopup = new ListPopupWindow(context);
 			mAddressPopup = new ListPopupWindow(context);
-			//mCopyDialog = new Dialog(context);
-			//mAlternatesListener = new OnItemClickListener() {
-
-			//	public void onItemClick(AdapterView<?> adapterView,View view, int position,
-			//			long rowId) {
-			//		mAlternatesPopup.setOnItemClickListener(null);
-			//		replaceChip(mSelectedChip, ((RecipientAlternatesAdapter) adapterView.getAdapter())
-			//				.getRecipientEntry(position));
-			//		Message delayed = Message.obtain(mHandler, DISMISS);
-			//		delayed.obj = mAlternatesPopup;
-			//		mHandler.sendMessageDelayed(delayed, DISMISS_DELAY);
-			//		clearComposingText();
-			//	}
-			//};
-
+			
 			InputType = InputType | InputTypes.TextFlagNoSuggestions;
-			//setInputType(getInputType() | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
 			OnItemClickListener = this;
-
 			CustomSelectionActionModeCallback = this;
-			//setCustomSelectionActionModeCallback(this);
-
-			//mHandler = new Handler() {
-
-			//	public void handleMessage(Message msg) {
-			//		if (msg.what == DISMISS) {
-			//			((ListPopupWindow) msg.obj).dismiss();
-			//			return;
-			//		}
-			//		super.handleMessage(msg);
-			//	}
-			//};
-
-			//mTextWatcher = new RecipientTextWatcher();
-			//AddTextChangedListener(mTextWatcher);
-
 			mGestureDetector = new GestureDetector(context, this);
 			SetOnEditorActionListener(this);
-
-			//setDropdownChipLayouter(new DropdownChipLayouter(LayoutInflater.from(context), context));
 		}
-
-		//protected void setDropdownChipLayouter(DropdownChipLayouter dropdownChipLayouter)
-		//{
-		//	mDropdownChipLayouter = dropdownChipLayouter;
-		//}
 
 		protected override void OnDetachedFromWindow()
 		{
@@ -312,19 +252,6 @@ namespace com.android.ex.chips
 			return connection;
 		}
 
-		/*package*/
-		//private DrawableChipSpan getLastChip()
-		//{
-		//	DrawableChipSpan last = null;
-		//	//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
-		//	DrawableChipSpan[] chipSpans = getChipSpans();
-		//	if (chipSpans != null && chipSpans.Length > 0)
-		//	{
-		//		last = chipSpans[chipSpans.Length - 1];
-		//	}
-		//	return last;
-		//}
-
 		protected override void OnSelectionChanged(int selStart, int selEnd)
 		{
 			// When selection changes, see if it is inside the chips area.
@@ -369,7 +296,6 @@ namespace com.android.ex.chips
      * not already editable. Commas are excluded as they are added automatically
      * by the view.
      */
-
 		//public override void Append(ICharSequence text, int start, int end)
 		//{
 		//	// We don't care about watching text changes while appending.
@@ -614,269 +540,11 @@ namespace com.android.ex.chips
 		}
 
 		/**
-     * Creates a bitmap of the given contact on a selected chip.
-     *
-     * @param contact The recipient entry to pull data from.
-     * @param paint The paint to use to draw the bitmap.
-     */
-		//private Bitmap createSelectedChip(IChipEntry contact, TextPaint paint)
-		//{
-		//	paint.Color = new Color(sSelectedTextColor);
-		//	Bitmap photo;
-		//	if (mDisableDelete)
-		//	{
-		//		// Show the avatar instead if we don't want to delete
-		//		photo = getAvatarIcon(contact);
-		//	}
-		//	else
-		//	{
-		//		photo = ((BitmapDrawable)mChipDelete).Bitmap;
-		//	}
-		//	return createChipBitmap(contact, paint, photo, mChipBackgroundPressed);
-		//}
-
-		/**
-     * Creates a bitmap of the given contact on a selected chip.
-     *
-     * @param contact The recipient entry to pull data from.
-     * @param paint The paint to use to draw the bitmap.
-     */
-		// TODO: Is leaveBlankIconSpacer obsolete now that we have left and right attributes?
-		//private Bitmap createUnselectedChip(IChipEntry contact, TextPaint paint,
-		//									bool leaveBlankIconSpacer)
-		//{
-		//	Drawable background = getChipBackground(contact);
-		//	Bitmap photo = getAvatarIcon(contact);
-		//	paint.Color = Context.Resources.GetColor(Android.Resource.Color.Black);
-		//	return createChipBitmap(contact, paint, photo, background);
-		//}
-
-		//protected Bitmap createChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
-		//								  Drawable background)
-		//{
-		//	if (background == null)
-		//	{
-		//		//Log.w(TAG, "Unable to draw a background for the chips as it was never set");
-		//		return Bitmap.CreateBitmap(
-		//			(int)mChipHeight * 2, (int)mChipHeight, Bitmap.Config.Argb8888);
-		//	}
-
-		//	Rect backgroundPadding = new Rect();
-		//	background.GetPadding(backgroundPadding);
-
-		//	// Ellipsize the text so that it takes AT MOST the entire width of the
-		//	// autocomplete text entry area. Make sure to leave space for padding
-		//	// on the sides.
-		//	int height = (int)mChipHeight + Resources.GetDimensionPixelSize(Resource.Dimension.extra_chip_height);
-
-		//	// Compute the space needed by the more chip before ellipsizing
-		//	//String moreText = new String(String.Format(mMoreItem.Text, mMaxChipsAllowed));
-		//	String moreText = String.Format(mMoreItem.Text, mMaxChipsAllowed);
-		//	TextPaint morePaint = new TextPaint(Paint);
-		//	morePaint.TextSize = mMoreItem.TextSize;
-		//	int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
-
-		//	// Since the icon is a square, it's width is equal to the maximum height it can be inside
-		//	// the chip.
-		//	int iconWidth = height - backgroundPadding.Top - backgroundPadding.Bottom;
-		//	float[] widths = new float[1];
-		//	paint.GetTextWidths(" ", widths);
-
-		//	var ellipsizedText = EllipsizeText(createChipDisplayText(contact), paint,
-		//									   calculateAvailableWidth() - iconWidth - widths[0] -
-		//									   backgroundPadding.Left - backgroundPadding.Right -
-		//									   moreChipWidth);
-		//	int textWidth = (int)paint.MeasureText(ellipsizedText, 0, ellipsizedText.Length);
-
-		//	// Make sure there is a minimum chip width so the user can ALWAYS
-		//	// tap a chip without difficulty.
-		//	int width = Math.Max(iconWidth * 2, textWidth + (mChipPadding * 2) + iconWidth
-		//									  + backgroundPadding.Left + backgroundPadding.Right);
-
-		//	// Create the background of the chip.
-		//	Bitmap tmpBitmap = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-		//	Canvas canvas = new Canvas(tmpBitmap);
-
-		//	// Draw the background drawable
-		//	background.SetBounds(height / 2, 0, width, height);
-		//	background.Draw(canvas);
-		//	// Draw the text vertically aligned
-		//	var x = shouldPositionAvatarOnRight()
-		//		? mChipPadding + backgroundPadding.Left
-		//		: width - backgroundPadding.Right - mChipPadding - textWidth;
-		//	var y = getTextYOffset(ellipsizedText, paint, height);
-		//	paint.Color = Color.ParseColor("#FF5C5C5C");
-		//	paint.AntiAlias = true;
-		//	canvas.DrawText(ellipsizedText,
-		//					0,
-		//					ellipsizedText.Length,
-		//					x,
-		//				   y,
-		//					paint);
-
-		//	if (icon != null)
-		//	{
-		//		// Draw the icon
-		//		icon = ChipsUtil.getClip(icon);
-		//		//int iconX = shouldPositionAvatarOnRight()
-		//		//	? width - backgroundPadding.Right - iconWidth
-		//		//	: backgroundPadding.Left;
-		//		RectF src = new RectF(0, 0, icon.Width, icon.Height);
-		//		RectF dst = new RectF(0, 0, height, height);
-		//		drawIconOnCanvas(icon, canvas, paint, src, dst);
-		//	}
-		//	return tmpBitmap;
-		//}
-
-		/**
-     * Returns true if the avatar should be positioned at the right edge of the chip.
-     * Takes into account both the set avatar position (start or end) as well as whether
-     * the layout direction is LTR or RTL.
-     */
-
-		//private bool shouldPositionAvatarOnRight()
-		//{
-		//	bool isRtl = Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1 && LayoutDirection == LayoutDirection.Rtl;
-		//	bool assignedPosition = mAvatarPosition == AVATAR_POSITION_END;
-		//	// If in Rtl mode, the position should be flipped.
-		//	return isRtl ? !assignedPosition : assignedPosition;
-		//}
-
-		/**
-     * Returns the avatar icon to use for this recipient entry. Returns null if we don't want to
-     * draw an icon for this recipient.
-     */
-
-		//private Bitmap getAvatarIcon(IChipEntry contact)
-		//{
-		//	// Don't draw photos for recipients that have been typed in OR generated on the fly.
-		//	//long contactId = contact.getContactId();
-		//	//bool drawPhotos = isPhoneQuery()
-		//	//	? contactId != RecipientEntry.INVALID_CONTACT
-		//	//	: (contactId != RecipientEntry.INVALID_CONTACT
-		//	//	   && (contactId != RecipientEntry.GENERATED_CONTACT &&
-		//	//		   !TextUtils.IsEmpty(contact.getDisplayName())));
-
-		//	//if (drawPhotos)
-		//	//{
-		//	//	byte[] photoBytes = contact.getPhotoBytes();
-		//	//	// There may not be a photo yet if anything but the first contact address
-		//	//	// was selected.
-		//	//	if (photoBytes == null && contact.getPhotoThumbnailUri() != null)
-		//	//	{
-		//	//		// TODO: cache this in the recipient entry?
-		//	//		Adapter.FetchPhoto(contact, contact.getPhotoThumbnailUri(), Context.ContentResolver);
-		//	//		photoBytes = contact.getPhotoBytes();
-		//	//	}
-		//	//	if (photoBytes != null)
-		//	//	{
-		//	//		return BitmapFactory.DecodeByteArray(photoBytes, 0, photoBytes.Length);
-		//	//	}
-		//	//	else
-		//	//	{
-		//	//		// TODO: can the scaled down default photo be cached?
-		//	return mDefaultContactPhoto;
-		//	//	}
-		//	//}
-
-		//	return mNoAvatarPicture;
-		//}
-
-		/**
-     * Get the background drawable for a RecipientChip.
-     */
-		// Visible for testing.
-		/* package */
-
-		//private Drawable getChipBackground(IChipEntry contact)
-		//{
-		//	//return contact.isValid() ? mChipBackground : mInvalidChipBackground;
-		//	return mChipBackground;
-		//}
-
-		/**
-     * Given a height, returns a Y offset that will draw the text in the middle of the height.
-     */
-
-		//protected float getTextYOffset(String text, TextPaint paint, int height)
-		//{
-		//	Rect bounds = new Rect();
-		//	paint.GetTextBounds(text, 0, text.Length, bounds);
-		//	int textHeight = bounds.Bottom - bounds.Top;
-		//	return height - ((height - textHeight) / 2) - (int)paint.Descent() / 2;
-		//}
-
-		/**
-     * Draws the icon onto the canvas given the source rectangle of the bitmap and the destination
-     * rectangle of the canvas.
-     */
-
-		//protected void drawIconOnCanvas(Bitmap icon, Canvas canvas, Paint paint, RectF src, RectF dst)
-		//{
-		//	Matrix matrix = new Matrix();
-		//	matrix.SetRectToRect(src, dst, Matrix.ScaleToFit.Fill);
-		//	canvas.DrawBitmap(icon, matrix, paint);
-		//}
-
-		//private DrawableRecipientChip constructChipSpan(RecipientEntry contact, bool pressed,bool leaveIconSpace) throws NullPointerException {
-		//private DrawableChipSpan constructChipSpan(IChipEntry contact, bool pressed, bool leaveIconSpace)
-		//{
-		//	if (mChipBackground == null)
-		//	{
-		//		throw new NullPointerException(
-		//			"Unable to render any chips as setChipDimensions was not called.");
-		//	}
-
-		//	TextPaint paint = Paint;
-		//	float defaultSize = paint.TextSize;
-		//	int defaultColor = paint.Color;
-
-		//	Bitmap tmpBitmap;
-		//	if (pressed)
-		//	{
-		//		tmpBitmap = createSelectedChip(contact, paint);
-		//	}
-		//	else
-		//	{
-		//		tmpBitmap = createUnselectedChip(contact, paint, leaveIconSpace);
-		//	}
-
-		//	// Get the inset of the chip
-		//	int chipInset = (int)(Resources.GetDimension(Resource.Dimension.line_spacing_extra) / 2);
-
-		//	// Pass the full text, un-ellipsized, to the chip.
-		//	Drawable result = new BitmapDrawable(Resources, tmpBitmap);
-		//	result = new InsetDrawable(result, 0, chipInset, 0, chipInset);
-		//	result.SetBounds(0, 0, tmpBitmap.Width, tmpBitmap.Height + 2 * chipInset);
-
-		//	//DrawableRecipientChip recipientChip = new VisibleRecipientChip(result, contact, getImageSpanAlignment());
-		//	DrawableChipSpan chipSpan = new VisibleChipSpan(result, contact, mImageSpanAlignment);
-		//	// Return text to the original size.
-		//	paint.TextSize = defaultSize;
-		//	paint.Color = new Color(defaultColor);
-		//	return chipSpan;
-		//}
-
-		//private SpanAlign getImageSpanAlignment()
-		//{
-		//	switch (mImageSpanAlignment)
-		//	{
-		//		case SpanAlign.Baseline:
-		//			return SpanAlign.Baseline;
-		//		case SpanAlign.Bottom:
-		//			return SpanAlign.Bottom;
-		//		default:
-		//			return SpanAlign.Bottom;
-		//	}
-		//}
-
-		/**
      * Calculate the bottom of the line the chip will be located on using:
      * 1) which line the chip appears on
      * 2) the height of a chip
      * 3) padding built into the edit text view
      */
-
 		private int calculateOffsetFromBottom(int line)
 		{
 			// Line offsets start at zero.
@@ -890,7 +558,6 @@ namespace com.android.ex.chips
      * account the width of the EditTextView, any view padding, and padding
      * that will be added to the chip.
      */
-
 		private float calculateAvailableWidth()
 		{
 			return Width - PaddingLeft - PaddingRight - (mChipPadding * 2);
@@ -973,17 +640,11 @@ namespace com.android.ex.chips
 			a.Recycle();
 		}
 
-		// Visible for testing.
-		/* package */
-
 		private void setMoreItem(TextView moreItem)
 		{
 			mMoreItem = moreItem;
 		}
 
-
-		// Visible for testing.
-		/* package */
 
 		private void setChipBackground(Drawable chipBackground)
 		{
@@ -995,9 +656,6 @@ namespace com.android.ex.chips
 			//return contact.isValid() ? mChipBackground : mInvalidChipBackground;
 			return mChipBackground;
 		}
-
-		// Visible for testing.
-		/* package */
 
 		protected void setChipHeight(int height)
 		{
@@ -1072,244 +730,10 @@ namespace com.android.ex.chips
 			}
 		}
 
-		//private void postHandlePendingChips()
-		//{
-		//	mHandler.RemoveCallbacks(mHandlePendingChips);
-		//	mHandler.Post(mHandlePendingChips);
-		//}
-
-		//private void checkChipWidths()
-		//{
-		//	// Check the widths of the associated chips.
-		//	//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
-		//	DrawableChipSpan[] chipSpans = getChipSpans();
-		//	if (chipSpans != null)
-		//	{
-		//		Rect bounds;
-		//		foreach (var chip in chipSpans)
-		//		{
-		//			bounds = chip.getBounds();
-		//			if (Width > 0 && bounds.Right - bounds.Left > Width - PaddingLeft - PaddingRight)
-		//			{
-		//				// Need to redraw that chip.
-		//				replaceChip(chip, chip.getEntry());
-		//			}
-		//		}
-
-		//	}
-		//}
-
-		// Visible for testing.
-		/*package*/
-
-		//private void handlePendingChips()
-		//{
-		//	if (getViewWidth() <= 0)
-		//	{
-		//		// The widget has not been sized yet.
-		//		// This will be called as a result of onSizeChanged
-		//		// at a later point.
-		//		return;
-		//	}
-		//	//if (mPendingChipsCount <= 0)
-		//	//{
-		//	//	return;
-		//	//}
-
-		//	//synchronized(mPendingChips)
-		//	//{
-		//		IEditable editable = EditableText;
-		//		// Tokenize!
-		//		if (mPendingChipsCount <= MAX_CHIPS_PARSED)
-		//		{
-		//			for (int i = 0; i < mPendingChips.Count; i++)
-		//			{
-		//				//String current = mPendingChips.get(i);
-		//				String current = mPendingChips.ElementAt(i);
-		//				int tokenStart = editable.ToString().IndexOf(current.ToString());
-		//				// Always leave a space at the end between tokens.
-		//				int tokenEnd = tokenStart + current.Length() - 1;
-		//				if (tokenStart >= 0)
-		//				{
-		//					// When we have a valid token, include it with the token
-		//					// to the left.
-		//					if (tokenEnd < editable.Length() - 2
-		//						&& editable.CharAt(tokenEnd) == COMMIT_CHAR_COMMA)
-		//					{
-		//						tokenEnd++;
-		//					}
-		//					createReplacementChip(tokenStart, tokenEnd, editable, i < CHIP_LIMIT
-		//																		  || !mShouldShrink);
-		//				}
-		//				mPendingChipsCount--;
-		//			}
-		//			sanitizeEnd();
-		//		}
-		//		else
-		//		{
-		//			mNoChips = true;
-		//		}
-
-		//		//if (mTemporaryRecipients != null && mTemporaryRecipients.Count > 0 && mTemporaryRecipients.Count <= RecipientAlternatesAdapter.MAX_LOOKUPS)
-		//		if (mTemporaryRecipients != null && mTemporaryRecipients.Count > 0)// && mTemporaryRecipients.Count <= RecipientAlternatesAdapter.MAX_LOOKUPS)
-		//		{
-		//			if (HasFocus || mTemporaryRecipients.Count < CHIP_LIMIT)
-		//			{
-		//				//new RecipientReplacementTask().Execute();
-		//				mTemporaryRecipients = null;
-		//			}
-		//			else
-		//			{
-		//				// Create the "more" chip
-		//				//mIndividualReplacements = new IndividualReplacementTask();
-		//				//mIndividualReplacements.Execute(new List<DrawableRecipientChip>(mTemporaryRecipients.GetRange(0, CHIP_LIMIT)));
-		//				if (mTemporaryRecipients.Count > CHIP_LIMIT)
-		//				{
-		//					mTemporaryRecipients = new List<DrawableRecipientChip>(
-		//						mTemporaryRecipients.GetRange(CHIP_LIMIT, mTemporaryRecipients.Count()));
-		//				}
-		//				else
-		//				{
-		//					mTemporaryRecipients = null;
-		//				}
-		//				createMoreChip();
-		//			}
-		//		}
-		//		else
-		//		{
-		//			// There are too many recipients to look up, so just fall back
-		//			// to showing addresses for all of them.
-		//			mTemporaryRecipients = null;
-		//			createMoreChip();
-		//		}
-		//		mPendingChipsCount = 0;
-		//		mPendingChips.Clear();
-		//	//}
-		//}
-
-		// Visible for testing.
-		/*package*/
-
 		private int getViewWidth()
 		{
 			return Width;
 		}
-
-		/**
-     * Remove any characters after the last valid chip.
-     */
-		// Visible for testing.
-		/*package*/
-
-		//private void sanitizeEnd()
-		//{
-		//	// Don't sanitize while we are waiting for pending chips to complete.
-		//	//if (mPendingChipsCount > 0)
-		//	//{
-		//	//	return;
-		//	//}
-		//	// Find the last chip; eliminate any commit characters after it.
-		//	//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
-		//	DrawableChipSpan[] chipSpans = getChipSpans();
-		//	ISpannable spannable = getSpannable();
-		//	if (chipSpans != null && chipSpans.Length > 0)
-		//	{
-		//		int end;
-		//		mMoreChip = getMoreChip();
-		//		if (mMoreChip != null)
-		//		{
-		//			end = spannable.GetSpanEnd(mMoreChip);
-		//		}
-		//		else
-		//		{
-		//			end = getSpannable().GetSpanEnd((Object)getLastChip());
-		//		}
-		//		IEditable editable = EditableText;
-		//		int length = editable.Length();
-		//		if (length > end)
-		//		{
-		//			// See what characters occur after that and eliminate them.
-		//			//if (Log.isLoggable(TAG, Log.DEBUG))
-		//			//{
-		//			//	Log.d(TAG, "There were extra characters after the last tokenizable entry."
-		//			//			   + editable);
-		//			//}
-		//			editable.Delete(end + 1, length);
-		//		}
-		//	}
-		//}
-
-		/**
-     * Create a chip that represents just the email address of a recipient. At some later
-     * point, this chip will be attached to a real contact entry, if one exists.
-     */
-		//private void createReplacementChip(int tokenStart, int tokenEnd, IEditable editable,
-		//								   bool visible)
-		//{
-		//	if (alreadyHasChip(tokenStart, tokenEnd))
-		//	{
-		//		// There is already a chip present at this location.
-		//		// Don't recreate it.
-		//		return;
-		//	}
-		//	String token = new String(editable.ToString().Substring(tokenStart, tokenEnd));
-		//	String trimmedToken = new String(token.Trim());
-		//	int commitCharIndex = trimmedToken.LastIndexOf(COMMIT_CHAR_COMMA);
-		//	if (commitCharIndex != -1 && commitCharIndex == trimmedToken.Length() - 1)
-		//	{
-		//		token = new String(trimmedToken.Substring(0, trimmedToken.Length() - 1));
-		//	}
-		//	RecipientEntry entry = createTokenizedEntry(token);
-		//	if (entry != null)
-		//	{
-		//		DrawableRecipientChip chip = null;
-		//		try
-		//		{
-		//			if (!mNoChips)
-		//			{
-		//				/*
-		//			 * leave space for the contact icon if this is not just an
-		//			 * email address
-		//			 */
-		//				bool leaveSpace = TextUtils.IsEmpty(entry.getDisplayName())
-		//								  || TextUtils.Equals(entry.getDisplayName(),
-		//													  entry.getDestination());
-		//				chip = visible
-		//					? constructChipSpan(entry, false, leaveSpace)
-		//					: new InvisibleRecipientChip(entry);
-		//			}
-		//		}
-		//		catch (NullPointerException e)
-		//		{
-		//			//Log.e(TAG, e.getMessage(), e);
-		//		}
-		//		editable.SetSpan(chip, tokenStart, tokenEnd, SpanTypes.ExclusiveExclusive);
-		//		// Add this chip to the list of entries "to replace"
-		//		if (chip != null)
-		//		{
-		//			if (mTemporaryRecipients == null)
-		//			{
-		//				mTemporaryRecipients = new List<DrawableRecipientChip>();
-		//			}
-		//			chip.setOriginalText(token);
-		//			mTemporaryRecipients.Add(chip);
-		//		}
-		//	}
-		//}
-
-		//private static bool isPhoneNumber(String number)
-		//{
-		//	// TODO: replace this function with libphonenumber's isPossibleNumber (see
-		//	// PhoneNumberUtil). One complication is that it requires the sender's region which
-		//	// comes from the CurrentCountryIso. For now, let's just do this simple match.
-		//	if (TextUtils.IsEmpty(number))
-		//	{
-		//		return false;
-		//	}
-
-		//	Matcher match = PHONE_PATTERN.Matcher(number);
-		//	return match.Matches();
-		//}
 
 		// VisibleForTesting
 		protected IChipEntry createTokenizedEntry(String token)
@@ -1403,23 +827,12 @@ namespace com.android.ex.chips
 		//	return destination;
 		//}
 
-
-		//public void setTokenizer(Tokenizer tokenizer)
-		//{
-		//	mTokenizer = tokenizer;
-		//	super.setTokenizer(mTokenizer);
-		//}
 		public override void SetTokenizer(ITokenizer t)
 		{
 			mTokenizer = t;
 			base.SetTokenizer(t);
 		}
 
-		//public void setValidator(Validator validator)
-		//{
-		//	mValidator = validator;
-		//	super.setValidator(validator);
-		//}
 		public override IValidator Validator { get; set; }
 
 		/**
@@ -1427,7 +840,6 @@ namespace com.android.ex.chips
      * we override onItemClickListener so we can get all the associated
      * contact information including display text, address, and id.
      */
-
 		protected void replaceText(ICharSequence text)
 		{
 			return;
@@ -1436,16 +848,6 @@ namespace com.android.ex.chips
 		/**
      * Dismiss any selected chips when the back key is pressed.
      */
-
-		//public bool onKeyPreIme(int keyCode, KeyEvent @event)
-		//{
-		//	if (keyCode == KeyEvent.KEYCODE_BACK && mSelectedChip != null)
-		//	{
-		//		clearSelectedChip();
-		//		return true;
-		//	}
-		//	return super.onKeyPreIme(keyCode, @event);
-		//}
 		public override bool OnKeyPreIme(Keycode keyCode, KeyEvent @event)
 		{
 			if (keyCode == Keycode.Back && mSelectedChip != null)
@@ -1736,7 +1138,6 @@ namespace com.android.ex.chips
      * If there is a selected chip, delegate the key events
      * to the selected chip.
      */
-
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent @event)
 		{
 			if (mSelectedChip != null && keyCode == Keycode.Del)
@@ -1775,22 +1176,9 @@ namespace com.android.ex.chips
 			return base.OnKeyDown(keyCode, @event);
 		}
 
-		// Visible for testing.
-		/* package */
-
 		internal ISpannable getSpannable()
 		{
 			return (ISpannable)TextFormatted;
-		}
-
-		private int getChipStart(DrawableChipSpan chipSpan)
-		{
-			return getSpannable().GetSpanStart(chipSpan);
-		}
-
-		private int getChipEnd(DrawableChipSpan chipSpan)
-		{
-			return getSpannable().GetSpanEnd(chipSpan);
 		}
 
 		/**
@@ -1841,8 +1229,6 @@ namespace com.android.ex.chips
 		}
 
 
-		// Visible for testing.
-		/*package*/
 		private bool IsCompletedToken(ICharSequence text)
 		{
 			if (TextUtils.IsEmpty(text))
@@ -1863,16 +1249,6 @@ namespace com.android.ex.chips
 			}
 			return false;
 		}
-
-		//internal void clearSelectedChip()
-		//{
-		//	if (mSelectedChip != null)
-		//	{
-		//		unselectChip(mSelectedChip);
-		//		mSelectedChip = null;
-		//	}
-		//	SetCursorVisible(true);
-		//}
 
 		public bool IgnoreTouchEvents;
 		private IListAdapter _adapter;
@@ -1953,62 +1329,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		//private void showAlternates(DrawableRecipientChip currentChip,
-		//							ListPopupWindow alternatesPopup, int width)
-		//{
-		//	// protected ListAdapter doInBackground(final Void... params) {
-		//	//	return createAlternatesAdapter(currentChip);
-		//	//}
-
-		//	if (!mAttachedToWindow)
-		//	{
-		//		return;
-		//	}
-
-		//	int line = Layout.GetLineForOffset(getChipStart(currentChip));
-
-		//	int bottom;
-		//	if (line == LineCount - 1)
-		//	{
-		//		bottom = 0;
-		//	}
-		//	else
-		//	{
-		//		bottom = -(int) ((mChipHeight + (2*mLineSpacingExtra))*(Math.Abs(LineCount - 1 - line)));
-		//	}
-
-		//	// Align the alternates popup with the left side of the View,
-		//	// regardless of the position of the chip tapped.
-		//	alternatesPopup.Width = width;
-		//	alternatesPopup.AnchorView = this;
-		//	alternatesPopup.VerticalOffset = bottom;
-		//	//alternatesPopup.SetAdapter(result);
-		//	alternatesPopup.SetOnItemClickListener(mAlternatesListener);
-		//	// Clear the checked item.
-
-		//	mCheckedItem = -1;
-		//	alternatesPopup.Show();
-		//	ListView listView = alternatesPopup.ListView;
-		//	listView.ChoiceMode = ChoiceMode.Single;
-		//	// Checked item would be -1 if the adapter has not
-		//	// loaded the view that should be checked yet. The
-		//	// variable will be set correctly when onCheckedItemChanged
-		//	// is called in a separate thread.
-		//	if (mCheckedItem != -1)
-		//	{
-		//		listView.SetItemChecked(mCheckedItem, true);
-		//		mCheckedItem = -1;
-		//	}
-		//}
-
-		private IListAdapter createAlternatesAdapter(DrawableChipSpan chipSpan)
-		{
-			//return new RecipientAlternatesAdapter(getContext(), chip.getContactId(),
-			//									  chip.getDirectoryId(), chip.getLookupKey(), chip.getDataId(),
-			//									  getAdapter().getQueryType(), this, mDropdownChipLayouter);
-			return null;
-		}
-
+		
 		private IListAdapter createSingleAddressAdapter(DrawableChipSpan currentChipSpan)
 		{
 			return new SingleRecipientArrayAdapter(Context, 0);
@@ -2017,17 +1338,7 @@ namespace com.android.ex.chips
 			return null;
 		}
 
-		//@Override
-		//public void onCheckedItemChanged(int position)
-		//{
-		//	ListView listView = mAlternatesPopup.ListView;
-		//	if (listView != null && listView.CheckedItemCount == 0)
-		//	{
-		//		listView.SetItemChecked(position, true);
-		//	}
-		//	mCheckedItem = position;
-		//}
-
+		
 		private int putOffsetInRange(float x, float y)
 		{
 			int offset;
@@ -2090,132 +1401,10 @@ namespace com.android.ex.chips
 			return -1;
 		}
 
-		//private DrawableChipSpan findChip(int offset)
-		//{
-		//	var chips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
-
-		//	// Find the chip that contains this offset.
-		//	for (int i = 0; i < chips.Length; i++)
-		//	{
-		//		DrawableChipSpan chipSpan = chips[i];
-		//		int start = getChipStart(chipSpan);
-		//		int end = getChipEnd(chipSpan);
-		//		if (offset >= start && offset <= end)
-		//		{
-		//			return chipSpan;
-		//		}
-		//	}
-		//	return null;
-		//}
-
-		// Visible for testing.
-		// Use this method to generate text to add to the list of addresses.
-		/* package */
-
-		//private String createAddressText(IChipEntry entry)
-		//{
-
-		//	String display = entry.getDisplayName();
-		//	String address = entry.getDestination();
-		//	if (TextUtils.IsEmpty(display) || TextUtils.Equals(display, address))
-		//	{
-		//		display = null;
-		//	}
-
-		//	String trimmedDisplayText;
-		//	//if (isPhoneQuery() && isPhoneNumber(address))
-		//	//{
-		//	//	trimmedDisplayText = new String(address.Trim());
-		//	//}
-		//	//else
-		//	//{
-		//	if (address != null)
-		//	{
-		//		// Tokenize out the address in case the address already
-		//		// contained the username as well.
-		//		Rfc822Token[] tokenized = Rfc822Tokenizer.Tokenize(address);
-		//		if (tokenized != null && tokenized.Length > 0)
-		//		{
-		//			//address = new String(tokenized[0].Address);
-		//			address = tokenized[0].Address;
-		//		}
-		//	}
-		//	Rfc822Token token = new Rfc822Token(display, address, null);
-		//	//trimmedDisplayText = new String(token.ToString().Trim());
-		//	trimmedDisplayText = token.ToString().Trim();
-		//	//}
-
-		//	int index = trimmedDisplayText.IndexOf(",");
-		//	if (mTokenizer != null && !TextUtils.IsEmpty(trimmedDisplayText) && index < trimmedDisplayText.Length - 1)
-		//	{
-		//		return mTokenizer.TerminateToken(trimmedDisplayText);
-		//	}
-		//	else
-		//	{
-		//		return trimmedDisplayText;
-		//	}
-		//}
-
-		// Visible for testing.
-		// Use this method to generate text to display in a chip.
-		/*package*/
-
-		//private String createChipDisplayText(IChipEntry entry)
-		//{
-		//	String display = entry.getDisplayName();
-		//	String address = entry.getDestination();
-		//	if (TextUtils.IsEmpty(display) || TextUtils.Equals(display, address))
-		//	{
-		//		display = null;
-		//	}
-		//	if (!TextUtils.IsEmpty(display))
-		//	{
-		//		return display;
-		//	}
-		//	else if (!TextUtils.IsEmpty(address))
-		//	{
-		//		return address;
-		//	}
-		//	else
-		//	{
-		//		return new Rfc822Token(display, address, null).ToString();
-		//	}
-		//}
-
-		//private ICharSequence createChip(IChipEntry entry, bool pressed)
-		//{
-		//	String displayText = createAddressText(entry);
-
-		//	if (TextUtils.IsEmpty(displayText))
-		//	{
-		//		return null;
-		//	}
-		//	SpannableString chipText;
-		//	// Always leave a blank space at the end of a chip.
-		//	int textLength = displayText.Length - 1;
-		//	chipText = new SpannableString(displayText);
-		//	if (!mNoChips)
-		//	{
-		//		try
-		//		{
-		//			DrawableChipSpan chipSpan = constructChipSpan(entry, pressed, false /* leave space for contact icon */);
-		//			chipText.SetSpan(chipSpan, 0, textLength, SpanTypes.ExclusiveExclusive);
-		//			chipSpan.setOriginalText(chipText.ToString());
-		//		}
-		//		catch (NullPointerException e)
-		//		{
-		//			//Log.e(TAG, e.getMessage(), e);
-		//			return null;
-		//		}
-		//	}
-		//	return chipText;
-		//}
-
 		/**
      * When an item in the suggestions list has been clicked, create a chip from the
      * contact information of the selected item.
      */
-
 		public virtual void OnItemClick(AdapterView parent, View view, int position, long id)
 		{
 			if (position < 0)
@@ -2237,26 +1426,6 @@ namespace com.android.ex.chips
 			//submitItem(entry);
 			//submitItem(new String("SomeUserName"), new String("Number"));
 		}
-
-		//public void submitItem(string name, string number)
-		//	public void submitItem(ChipEntry entry)
-		//{
-		//	//RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, true);
-		//	//ChipEntry entry = new ChipEntry(name, number, null);
-		//	submitItem(entry);
-		//}
-
-		//public void submitItem(String name, String number, Uri imageUri)
-		//{
-		//	RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, imageUri, true);
-		//	submitItem(entry);
-		//}
-
-		//public void submitItem(String name, String number, Uri imageUri, byte[] photoBytes)
-		//{
-		//	RecipientEntry entry = RecipientEntry.constructGeneratedEntry(name, number, imageUri, photoBytes, true);
-		//	submitItem(entry);
-		//}
 
 		protected void submitItem(IChipEntry entry)
 		{
@@ -2310,155 +1479,6 @@ namespace com.android.ex.chips
 		//	return entry;
 		//}
 
-		/** Returns a collection of contact Id for each chip inside this View. */
-		/* package */
-
-		//private Collection<Long> getContactIds()
-		//{
-		//	var result = new Collection<Long>();
-		//	DrawableRecipientChip[] chips = getSortedVisibleRecipients();
-		//	if (chips != null)
-		//	{
-		//		foreach (var chip in chips)
-		//		{
-		//			result.Add(new Long(chip.getContactId()));
-		//		}
-
-		//	}
-		//	return result;
-		//}
-
-
-		/** Returns a collection of data Id for each chip inside this View. May be null. */
-		/* package */
-
-		//private Collection<Long> getDataIds()
-		//{
-		//	//var result = new HashSet<Long>();
-		//	var result = new Collection<Long>();
-		//	DrawableRecipientChip[] chips = getSortedVisibleRecipients();
-		//	if (chips != null)
-		//	{
-		//		foreach (var chip in chips)
-		//		{
-		//			result.Add(new Long(chip.getDataId()));
-		//		}
-
-
-		//	}
-		//	return result;
-		//}
-
-		//public DrawableChipSpan[] getChipSpans()
-		//{
-		//	var recipients = getSpannable()
-		//		.GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
-		//		.Cast<DrawableChipSpan>()
-		//		.ToArray();
-
-		//	var recipientsList = new List<DrawableChipSpan>(recipients.ToList());
-
-		//	if (mRemovedSpans != null)
-		//		recipientsList.AddRange(mRemovedSpans);
-
-		//	return recipientsList.ToArray();
-		//}
-
-		//public List<IChipEntry> GetChipEntries()
-		//{
-		//	var chipEntries = new List<IChipEntry>();
-		//	var chipSpans = getChipSpans();
-		//	foreach (var drawableChipSpan in chipSpans)
-		//	{
-		//		IChipEntry chipEntry = drawableChipSpan.getEntry();
-		//		chipEntries.Add(chipEntry);
-		//	}
-		//	return chipEntries;
-		//}
-
-		/**
-     * Returns a list containing the sorted visible recipients.
-     * @return Array of DrawableRecipientChip containing the sorted visible recipients
-     */
-
-		//public DrawableChipSpan[] getSortedVisibleRecipients()
-		//{
-		//	var recips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
-		//		.Cast<DrawableChipSpan>();
-		//	List<DrawableChipSpan> recipientsList = recips.ToList();
-		//	//ISpannable spannable = getSpannable();
-		//	//	Collections.Sort(recipientsList, new Comparator<DrawableRecipientChip>()
-		//	//	{
-
-
-		//	//	public int compare(DrawableRecipientChip first,
-		//	//		DrawableRecipientChip second) {
-		//	//										 int firstStart = spannable.getSpanStart(first);
-		//	//										 int secondStart = spannable.getSpanStart(second);
-		//	//										 if (firstStart < secondStart) {
-		//	//										 return -1;
-		//	//	}
-		//	//else
-		//	//	if (firstStart > secondStart)
-		//	//	{
-		//	//		return 1;
-		//	//	}
-		//	//	else
-		//	//	{
-		//	//		return 0;
-		//	//	}
-		//	//}
-		//	//}
-		//	//)
-		//	//	;
-		//	//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
-		//	return recipientsList.ToArray();
-		//}
-
-		/**
-     * Returns a list containing all sorted recipients, even the hidden ones when the field
-     * is shrinked.
-     * @return Array of DrawableRecipientChip containing all sorted recipients
-     */
-		// TODO: check if everything is working properly
-		//public DrawableChipSpan[] getSortedRecipients()
-		//{
-		//	//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
-		//	DrawableChipSpan[] chipSpans = getChipSpans();
-		//	//List<DrawableRecipientChip> recipientsList = new List<>(Arrays.asList(recipients));
-		//	List<DrawableChipSpan> recipientsList = chipSpans.ToList();
-
-		//	// Recreate each removed span.
-		//	if (mRemovedSpans != null && mRemovedSpans.Count > 0)
-		//	{
-		//		// Start the search for tokens after the last currently visible
-		//		// chip.
-		//		int end = getSpannable().GetSpanEnd(chipSpans[chipSpans.Length - 1]);
-		//		IEditable editable = EditableText;
-
-		//		foreach (var chip in mRemovedSpans)
-		//		{
-		//			int chipStart;
-		//			String token;
-		//			// Need to find the location of the chip, again.
-		//			token = chip.getOriginalText();
-		//			// As we find the matching recipient for the remove spans,
-		//			// reduce the size of the string we need to search.
-		//			// That way, if there are duplicates, we always find the correct
-		//			// recipient.
-		//			chipStart = editable.ToString().IndexOf(token, end);
-		//			end = Math.Min(editable.Length(), chipStart + token.Length);
-		//			// Only set the span if we found a matching token.
-		//			if (chipStart != -1)
-		//			{
-		//				recipientsList.Add(chip);
-		//			}
-		//		}
-		//	}
-		//	//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
-		//	return recipientsList.ToArray();
-		//}
-
 		//@Override
 		public bool OnActionItemClicked(ActionMode mode, IMenuItem item)
 		{
@@ -2477,86 +1497,11 @@ namespace com.android.ex.chips
 			return false;
 		}
 
-		/**
-     * No chips are selectable.
-     */
-		//@Override
-		//public bool onCreateActionMode(ActionMode mode, Menu menu)
-		//{
-		//	return false;
-		//}
 		public bool OnCreateActionMode(ActionMode mode, IMenu menu)
 		{
 			return false;
 		}
 
-		// Visible for testing.
-		/* package */
-
-		//private ImageSpan getMoreChip()
-		//{
-		//	MoreImageSpan[] moreSpans = (MoreImageSpan[])getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>();
-		//	return moreSpans != null && moreSpans.Length > 0 ? moreSpans[0] : null;
-		//}
-
-		//private MoreImageSpan createMoreSpan(int count)
-		//{
-		//	var moreText = Java.Lang.String.Format(mMoreItem.Text, count);
-
-		//	TextPaint morePaint = new TextPaint(Paint);
-		//	morePaint.TextSize = mMoreItem.TextSize;
-		//	morePaint.Color = new Color(mMoreItem.CurrentTextColor);
-		//	int width = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
-		//				+ mMoreItem.PaddingRight;
-
-		//	int height;
-		//	int adjustedHeight;
-		//	Layout layout = Layout;
-		//	if (layout != null)
-		//	{
-		//		height = -layout.GetLineAscent(0);
-		//		// The +1 takes into account the rounded int, that can make the text being cropped
-		//		adjustedHeight = height - layout.GetLineDescent(0) + 1;
-		//	}
-		//	else
-		//	{
-		//		height = LineHeight;
-		//		adjustedHeight = height;
-		//	}
-
-		//	Bitmap drawable = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-		//	Canvas canvas = new Canvas(drawable);
-		//	canvas.DrawText(moreText, 0, moreText.Length, 0, adjustedHeight, morePaint);
-
-		//	Drawable result = new BitmapDrawable(Resources, drawable);
-		//	result.SetBounds(0, 0, width, height);
-		//	return new MoreImageSpan(result);
-		//}
-
-		// Visible for testing.
-		/*package*/
-		//private void createMoreChipPlainText()
-		//{
-		//	// Take the first <= CHIP_LIMIT addresses and get to the end of the second one.
-		//	IEditable text = EditableText;
-		//	int start = 0;
-		//	int end = start;
-		//	for (int i = 0; i < CHIP_LIMIT; i++)
-		//	{
-		//		end = movePastTerminators(mTokenizer.FindTokenEnd(text, start));
-		//		start = end; // move to the next token and get its end.
-		//	}
-		//	// Now, count total addresses.
-		//	int tokenCount = countTokens(text);
-		//	MoreImageSpan moreSpan = createMoreSpan(tokenCount - CHIP_LIMIT);
-		//	SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
-		//	chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
-		//	text.Replace(end, text.Length(), chipText);
-		//	mMoreChip = moreSpan;
-		//}
-
-		// Visible for testing.
-		/* package */
 		private int countTokens(IEditable text)
 		{
 			int tokenCount = 0;
@@ -2573,323 +1518,7 @@ namespace com.android.ex.chips
 			return tokenCount;
 		}
 
-		/**
-     * Create the more chip. The more chip is text that replaces any chips that
-     * do not fit in the pre-defined available space when the
-     * RecipientEditTextView loses focus.
-     */
-		// Visible for testing.
-		/* package */
-		//private void createMoreChip()
-		//{
-		//	if (mNoChips)
-		//	{
-		//		createMoreChipPlainText();
-		//		return;
-		//	}
-
-		//	if (!mShouldShrink)
-		//	{
-		//		return;
-		//	}
-		//	var tempMore = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<ImageSpan>().ToArray();
-		//	if (tempMore.Length > 0)
-		//	{
-		//		getSpannable().RemoveSpan(tempMore[0]);
-		//	}
-		//	//var recipients = getSortedVisibleRecipients();
-		//	var chipSpans = getChipSpans();
-
-		//	int fieldWidth = Width - PaddingLeft - PaddingRight;
-		//	// Compute the width of a blank space because there should be one between each chip
-		//	TextPaint fieldPaint = new TextPaint(Paint);
-		//	fieldPaint.TextSize = TextSize;
-		//	int blankSpaceWidth = (int)fieldPaint.MeasureText(" ");
-
-		//	int totalChipLength = 0;
-		//	int chipLimit = 0;
-		//	for (int i = 0; i < chipSpans.Length; i++)
-		//	{
-		//		if (totalChipLength + chipSpans[i].getBounds().Right + blankSpaceWidth < (fieldWidth * getShrinkMaxLines()))
-		//		{
-		//			totalChipLength += chipSpans[i].getBounds().Right + blankSpaceWidth;
-		//			chipLimit = i + 1;
-		//		}
-		//		else
-		//		{
-		//			break;
-		//		}
-		//	}
-
-		//	if (chipSpans == null || chipSpans.Length <= chipLimit)
-		//	{
-		//		mMoreChip = null;
-		//		return;
-		//	}
-
-		//	ISpannable spannable = getSpannable();
-		//	int numRecipients = chipSpans.Length;
-		//	int overage = numRecipients - chipLimit;
-
-		//	// Now checks if the moreSpan is not too big for the available space
-		//	String moreText = String.Format(mMoreItem.Text, overage);
-		//	TextPaint morePaint = new TextPaint(Paint);
-		//	morePaint.TextSize = mMoreItem.TextSize;
-		//	int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
-
-		//	MoreImageSpan moreSpan;
-		//	while (totalChipLength + moreChipWidth >= (fieldWidth * getShrinkMaxLines()))
-		//	{
-		//		totalChipLength -= chipSpans[chipLimit - 1].getBounds().Right;
-		//		chipLimit--;
-		//		overage++;
-		//		moreText = String.Format(mMoreItem.Text, overage);
-		//		moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
-		//						+ mMoreItem.PaddingRight;
-		//	}
-		//	moreSpan = createMoreSpan(overage);
-
-		//	mRemovedSpans = new List<DrawableChipSpan>();
-		//	int totalReplaceStart = 0;
-		//	int totalReplaceEnd = 0;
-		//	IEditable text = EditableText;
-
-		//	for (int i = numRecipients - overage; i < numRecipients; i++)
-		//	{
-		//		mRemovedSpans.Add(chipSpans[i]);
-		//		if (i == numRecipients - overage)
-		//		{
-		//			totalReplaceStart = spannable.GetSpanStart(chipSpans[i]);
-		//		}
-		//		if (i == chipSpans.Length - 1)
-		//		{
-		//			totalReplaceEnd = spannable.GetSpanEnd(chipSpans[i]);
-		//		}
-		//		//if (mTemporaryRecipients == null || !mTemporaryRecipients.Contains(recipients[i]))
-		//		//{
-		//		//	var r1 = recipients[i].getDisplay();
-		//		//	int spanStart = spannable.GetSpanStart(recipients[i]);
-		//		//	int spanEnd = spannable.GetSpanEnd(recipients[i]);
-		//		//	var bar = new String(text.ToString().Substring(spanStart, spanEnd));
-		//		//	recipients[i].setOriginalText(bar);
-		//		//}
-		//		spannable.RemoveSpan(chipSpans[i]);
-		//	}
-		//	if (totalReplaceEnd < text.Length())
-		//	{
-		//		totalReplaceEnd = text.Length();
-		//	}
-		//	int end = Math.Max(totalReplaceStart, totalReplaceEnd);
-		//	int start = Math.Min(totalReplaceStart, totalReplaceEnd);
-		//	SpannableString chipText = new SpannableString(text.SubSequence(start, end));
-		//	chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
-		//	text.Replace(start, end, chipText);
-		//	mMoreChip = moreSpan;
-		//	// If adding the +more chip goes over the limit, resize accordingly.
-
-
-		//	//if (!isPhoneQuery() && LineCount > mMaxLines)
-		//	//{
-		//	//	setMaxLines(getLineCount());
-		//	//}
-		//}
-
-		/**
-     * Replace the more chip, if it exists, with all of the recipient chips it had
-     * replaced when the RecipientEditTextView gains focus.
-     */
-		//public void removeMoreChip()
-		//{
-		//	if (mMoreChip != null)
-		//	{
-		//		ISpannable span = getSpannable();
-		//		span.RemoveSpan(mMoreChip);
-		//		mMoreChip = null;
-		//		// Re-add the spans that were removed.
-		//		if (mRemovedSpans != null && mRemovedSpans.Count > 0)
-		//		{
-		//			// Recreate each removed span.
-		//			//DrawableChipSpan[] recipients = getSortedVisibleRecipients();
-		//			DrawableChipSpan[] chipSpans = getChipSpans();
-
-		//			// Start the search for tokens after the last currently visible
-		//			// chip.
-		//			if (chipSpans == null || chipSpans.Length == 0)
-		//			{
-		//				return;
-		//			}
-		//			int end = span.GetSpanEnd((Object)chipSpans[chipSpans.Length - 1]);
-		//			IEditable editable = EditableText;
-
-		//			foreach (var chip in mRemovedSpans)
-		//			{
-		//				int chipStart;
-		//				int chipEnd;
-		//				string token;
-		//				// Need to find the location of the chip, again.
-		//				token = chip.getOriginalText();
-		//				// As we find the matching recipient for the remove spans,
-		//				// reduce the size of the string we need to search.
-		//				// That way, if there are duplicates, we always find the correct
-		//				// recipient.
-		//				//chipStart = editable.ToString().indexOf(token, end);
-		//				chipStart = editable.ToString().IndexOf(token, end);
-		//				end = chipEnd = Math.Min(editable.Length(), chipStart + token.Length);
-		//				// Only set the span if we found a matching token.
-		//				if (chipStart != -1)
-		//				{
-		//					editable.SetSpan(chip, chipStart, chipEnd, SpanTypes.ExclusiveExclusive);
-		//				}
-		//			}
-
-		//			mRemovedSpans.Clear();
-		//		}
-		//	}
-		//}
-
-		/**
-     * Show specified chip as selected. If the RecipientChip is just an email address,
-     * selecting the chip will take the contents of the chip and place it at
-     * the end of the RecipientEditTextView for inline editing. If the
-     * RecipientChip is a complete contact, then selecting the chip
-     * will change the background color of the chip, show the delete icon,
-     * and a popup window with the address in use highlighted and any other
-     * alternate addresses for the contact.
-     * @param currentChip Chip to select.
-     * @return A RecipientChip in the selected state or null if the chip
-     * just contained an email address.
-     */
-
-		//private DrawableChipSpan selectChip(DrawableChipSpan currentChipSpan)
-		//{
-		//	IEditable editable = EditableText;
-		//	//if (shouldShowEditableText(currentChip))
-		//	//{
-		//	//	ICharSequence text = currentChip.getValue();
-		//	//	//IEditable editable = EditableText;
-		//	//	ISpannable spannable = getSpannable();
-		//	//	int spanStart = spannable.GetSpanStart(currentChip);
-		//	//	int spanEnd = spannable.GetSpanEnd(currentChip);
-		//	//	spannable.RemoveSpan(currentChip);
-		//	//	editable.Delete(spanStart, spanEnd);
-		//	//	SetCursorVisible(true);
-		//	//	SetSelection(editable.Length());
-		//	//	editable.Append(text);
-		//	//	return constructChipSpan(RecipientEntry.constructFakeEntry((String) text, IsValid(new String(text.ToString()))),
-		//	//		true, false);
-		//	//}
-
-		//	int start = getChipStart(currentChipSpan);
-		//	int end = getChipEnd(currentChipSpan);
-		//	getSpannable().RemoveSpan(currentChipSpan);
-		//	DrawableChipSpan newChipSpan;
-		//	try
-		//	{
-		//		if (mNoChips)
-		//		{
-		//			return null;
-		//		}
-		//		newChipSpan = constructChipSpan(currentChipSpan.getEntry(), true, false);
-		//	}
-		//	catch (NullPointerException e)
-		//	{
-		//		//Log.e(TAG, e.getMessage(), e);
-		//		return null;
-		//	}
-		//	//IEditable editable = EditableText;
-		//	QwertyKeyListener.MarkAsReplaced(editable, start, end, "");
-		//	if (start == -1 || end == -1)
-		//	{
-		//		//Log.d(TAG, "The chip being selected no longer exists but should.");
-		//	}
-		//	else
-		//	{
-		//		editable.SetSpan(newChipSpan, start, end, SpanTypes.ExclusiveExclusive);
-		//	}
-		//	newChipSpan.setSelected(true);
-		//	if (shouldShowEditableText(newChipSpan))
-		//	{
-		//		scrollLineIntoView(Layout.GetLineForOffset(getChipStart(newChipSpan)));
-		//	}
-		//	showAddress(newChipSpan, mAddressPopup, Width);
-		//	SetCursorVisible(false);
-		//	return newChipSpan;
-
-		//	//else if (currentChip.getContactId() == RecipientEntry.GENERATED_CONTACT)
-		//	//{
-		//	//	int start = getChipStart(currentChip);
-		//	//	int end = getChipEnd(currentChip);
-		//	//	getSpannable().RemoveSpan(currentChip);
-		//	//	DrawableRecipientChip newChip;
-		//	//	try
-		//	//	{
-		//	//		if (mNoChips)
-		//	//		{
-		//	//			return null;
-		//	//		}
-		//	//		newChip = constructChipSpan(currentChip.getEntry(), true, false);
-		//	//	}
-		//	//	catch (NullPointerException e)
-		//	//	{
-		//	//		//Log.e(TAG, e.getMessage(), e);
-		//	//		return null;
-		//	//	}
-		//	//	IEditable editable = EditableText;
-		//	//	QwertyKeyListener.MarkAsReplaced(editable, start, end, "");
-		//	//	if (start == -1 || end == -1)
-		//	//	{
-		//	//		//Log.d(TAG, "The chip being selected no longer exists but should.");
-		//	//	}
-		//	//	else
-		//	//	{
-		//	//		editable.SetSpan(newChip, start, end, SpanTypes.ExclusiveExclusive);
-		//	//	}
-		//	//	newChip.setSelected(true);
-		//	//	if (shouldShowEditableText(newChip))
-		//	//	{
-		//	//		scrollLineIntoView(Layout.GetLineForOffset(getChipStart(newChip)));
-		//	//	}
-		//	//	showAddress(newChip, mAddressPopup, Width);
-		//	//	SetCursorVisible(false);
-		//	//	return newChip;
-		//	//}
-		//	//else
-		//	//{
-		//	//	int start = getChipStart(currentChip);
-		//	//	int end = getChipEnd(currentChip);
-		//	//	getSpannable().RemoveSpan(currentChip);
-		//	//	DrawableRecipientChip newChip;
-		//	//	try
-		//	//	{
-		//	//		newChip = constructChipSpan(currentChip.getEntry(), true, false);
-		//	//	}
-		//	//	catch (NullPointerException e)
-		//	//	{
-		//	//		//Log.e(TAG, e.getMessage(), e);
-		//	//		return null;
-		//	//	}
-		//	//	IEditable editable = EditableText;
-		//	//	QwertyKeyListener.MarkAsReplaced(editable, start, end, "");
-		//	//	if (start == -1 || end == -1)
-		//	//	{
-		//	//		//Log.d(TAG, "The chip being selected no longer exists but should.");
-		//	//	}
-		//	//	else
-		//	//	{
-		//	//		editable.SetSpan(newChip, start, end, SpanTypes.ExclusiveExclusive);
-		//	//	}
-		//	//	newChip.setSelected(true);
-		//	//	if (shouldShowEditableText(newChip))
-		//	//	{
-		//	//		scrollLineIntoView(Layout.GetLineForOffset(getChipStart(newChip)));
-		//	//	}
-		//	//	showAlternates(newChip, mAlternatesPopup, Width);
-		//	//	SetCursorVisible(false);
-		//	//	return newChip;
-		//	//}
-		//}
-
-		protected bool shouldShowEditableText(DrawableChipSpan currentChipSpan)
+	protected bool shouldShowEditableText(DrawableChipSpan currentChipSpan)
 		{
 			return false;
 			//long contactId = currentChip.getContactId();
@@ -2930,48 +1559,7 @@ namespace com.android.ex.chips
 			listView.SetItemChecked(0, true);
 		}
 
-		/**
-     * Remove selection from this chip. Unselecting a RecipientChip will render
-     * the chip without a delete icon and with an unfocused background. This is
-     * called when the RecipientChip no longer has focus.
-     */
-
-		//private void unselectChip(DrawableChipSpan chipSpan)
-		//{
-		//	int start = getChipStart(chipSpan);
-		//	int end = getChipEnd(chipSpan);
-		//	IEditable editable = EditableText;
-		//	mSelectedChip = null;
-		//	if (start == -1 || end == -1)
-		//	{
-		//		//Log.w(TAG, "The chip doesn't exist or may be a chip a user was editing");
-		//		SetSelection(editable.Length());
-		//		//commitDefault();
-		//	}
-		//	else
-		//	{
-		//		getSpannable().RemoveSpan(chipSpan);
-		//		QwertyKeyListener.MarkAsReplaced(editable, start, end, "");
-		//		editable.RemoveSpan(chipSpan);
-		//		try
-		//		{
-		//			if (!mNoChips)
-		//			{
-		//				editable.SetSpan(constructChipSpan(chipSpan.getEntry(), false, false), start, end, SpanTypes.ExclusiveExclusive);
-		//			}
-		//		}
-		//		catch (NullPointerException e)
-		//		{
-		//			//Log.e(TAG, e.getMessage(), e);
-		//		}
-		//	}
-		//	SetCursorVisible(true);
-		//	SetSelection(editable.Length());
-		//	if (mAlternatesPopup != null && mAlternatesPopup.IsShowing)
-		//	{
-		//		mAlternatesPopup.Dismiss();
-		//	}
-		//}
+		
 
 		/**
      * Return whether a touch event was inside the delete target of
@@ -2998,90 +1586,8 @@ namespace com.android.ex.chips
 					(mAvatarPosition != AVATAR_POSITION_END && offset == getChipStart(chipSpan)));
 		}
 
-		/**
-     * Remove the chip and any text associated with it from the RecipientEditTextView.
-     */
-		// Visible for testing.
-		/* package */
-
-		//protected void removeChip(DrawableChipSpan chipSpan)
-		//{
-		//	ISpannable spannable = getSpannable();
-		//	int spanStart = spannable.GetSpanStart((Object)chipSpan);
-		//	int spanEnd = spannable.GetSpanEnd((Object)chipSpan);
-		//	IEditable text = EditableText;
-		//	int toDelete = spanEnd;
-		//	bool wasSelected = chipSpan == mSelectedChip;
-		//	// Clear that there is a selected chip before updating any text.
-		//	if (wasSelected)
-		//	{
-		//		mSelectedChip = null;
-		//	}
-		//	// Always remove trailing spaces when removing a chip.
-		//	while (toDelete >= 0 && toDelete < text.Length() && text.CharAt(toDelete) == ' ')
-		//	{
-		//		toDelete++;
-		//	}
-		//	spannable.RemoveSpan(chipSpan);
-		//	if (spanStart >= 0 && toDelete > 0)
-		//	{
-		//		text.Delete(spanStart, toDelete);
-		//	}
-		//	if (wasSelected)
-		//	{
-		//		clearSelectedChip();
-		//	}
-		//}
-
-		/**
-     * Replace this currently selected chip with a new chip
-     * that uses the contact data provided.
-     */
-		// Visible for testing.
-		/*package*/
-
-		//private void replaceChip(DrawableChipSpan chipSpan, IChipEntry entry)
-		//{
-		//	bool wasSelected = chipSpan == mSelectedChip;
-		//	if (wasSelected)
-		//	{
-		//		mSelectedChip = null;
-		//	}
-		//	int start = getChipStart(chipSpan);
-		//	int end = getChipEnd(chipSpan);
-		//	getSpannable().RemoveSpan(chipSpan);
-		//	IEditable editable = EditableText;
-		//	ICharSequence chipText = createChip(entry, false);
-		//	if (chipText != null)
-		//	{
-		//		if (start == -1 || end == -1)
-		//		{
-		//			//Log.e(TAG, "The chip to replace does not exist but should.");
-		//			editable.Insert(0, chipText);
-		//		}
-		//		else
-		//		{
-		//			if (!TextUtils.IsEmpty(chipText))
-		//			{
-		//				// There may be a space to replace with this chip's new
-		//				// associated space. Check for it
-		//				int toReplace = end;
-		//				while (toReplace >= 0 && toReplace < editable.Length()
-		//					   && editable.CharAt(toReplace) == ' ')
-		//				{
-		//					toReplace++;
-		//				}
-		//				editable.Replace(start, toReplace, chipText);
-		//			}
-		//		}
-		//	}
-		//	SetCursorVisible(true);
-		//	if (wasSelected)
-		//	{
-		//		clearSelectedChip();
-		//	}
-		//}
-
+	
+		
 		/**
      * Handle click events for a chip. When a selected chip receives a click
      * event, see if that event was in the delete icon. If so, delete it.
@@ -3103,18 +1609,6 @@ namespace com.android.ex.chips
 			}
 		}
 
-		//internal bool chipsPending()
-		//{
-		//	return mPendingChipsCount > 0 || (mRemovedSpans != null && mRemovedSpans.Count > 0);
-		//}
-
-		//public override void RemoveTextChangedListener(ITextWatcher watcher)
-		//{
-		//	mTextWatcher = null;
-		//	base.RemoveTextChangedListener(watcher);
-		//}
-
-		//RecipientTextWatcher
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
 		{
 			var s = e.Text;

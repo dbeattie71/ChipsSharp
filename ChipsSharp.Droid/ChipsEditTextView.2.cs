@@ -23,6 +23,17 @@ namespace com.android.ex.chips
 {
 	public partial class ChipsEditTextView
 	{
+		private int getChipStart(DrawableChipSpan chipSpan)
+		{
+			return getSpannable().GetSpanStart(chipSpan);
+		}
+
+		private int getChipEnd(DrawableChipSpan chipSpan)
+		{
+			return getSpannable().GetSpanEnd(chipSpan);
+		}
+
+
 		private DrawableChipSpan findChip(int offset)
 		{
 			var chips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
@@ -41,7 +52,18 @@ namespace com.android.ex.chips
 			return null;
 		}
 
-
+		/**
+ * Show specified chip as selected. If the RecipientChip is just an email address,
+ * selecting the chip will take the contents of the chip and place it at
+ * the end of the RecipientEditTextView for inline editing. If the
+ * RecipientChip is a complete contact, then selecting the chip
+ * will change the background color of the chip, show the delete icon,
+ * and a popup window with the address in use highlighted and any other
+ * alternate addresses for the contact.
+ * @param currentChip Chip to select.
+ * @return A RecipientChip in the selected state or null if the chip
+ * just contained an email address.
+ */
 		private DrawableChipSpan selectChip(DrawableChipSpan currentChipSpan)
 		{
 			IEditable editable = EditableText;
@@ -681,4 +703,87 @@ namespace com.android.ex.chips
 			}
 		}
 	}
+
+	/**
+     * Returns a list containing the sorted visible recipients.
+     * @return Array of DrawableRecipientChip containing the sorted visible recipients
+     */
+	//public DrawableChipSpan[] getSortedVisibleRecipients()
+	//{
+	//	var recips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
+	//		.Cast<DrawableChipSpan>();
+	//	List<DrawableChipSpan> recipientsList = recips.ToList();
+	//	//ISpannable spannable = getSpannable();
+	//	//	Collections.Sort(recipientsList, new Comparator<DrawableRecipientChip>()
+	//	//	{
+
+
+	//	//	public int compare(DrawableRecipientChip first,
+	//	//		DrawableRecipientChip second) {
+	//	//										 int firstStart = spannable.getSpanStart(first);
+	//	//										 int secondStart = spannable.getSpanStart(second);
+	//	//										 if (firstStart < secondStart) {
+	//	//										 return -1;
+	//	//	}
+	//	//else
+	//	//	if (firstStart > secondStart)
+	//	//	{
+	//	//		return 1;
+	//	//	}
+	//	//	else
+	//	//	{
+	//	//		return 0;
+	//	//	}
+	//	//}
+	//	//}
+	//	//)
+	//	//	;
+	//	//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
+	//	return recipientsList.ToArray();
+	//}
+
+	/**
+ * Returns a list containing all sorted recipients, even the hidden ones when the field
+ * is shrinked.
+ * @return Array of DrawableRecipientChip containing all sorted recipients
+ */
+	// TODO: check if everything is working properly
+	//public DrawableChipSpan[] getSortedRecipients()
+	//{
+	//	//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+	//	DrawableChipSpan[] chipSpans = getChipSpans();
+	//	//List<DrawableRecipientChip> recipientsList = new List<>(Arrays.asList(recipients));
+	//	List<DrawableChipSpan> recipientsList = chipSpans.ToList();
+
+	//	// Recreate each removed span.
+	//	if (mRemovedSpans != null && mRemovedSpans.Count > 0)
+	//	{
+	//		// Start the search for tokens after the last currently visible
+	//		// chip.
+	//		int end = getSpannable().GetSpanEnd(chipSpans[chipSpans.Length - 1]);
+	//		IEditable editable = EditableText;
+
+	//		foreach (var chip in mRemovedSpans)
+	//		{
+	//			int chipStart;
+	//			String token;
+	//			// Need to find the location of the chip, again.
+	//			token = chip.getOriginalText();
+	//			// As we find the matching recipient for the remove spans,
+	//			// reduce the size of the string we need to search.
+	//			// That way, if there are duplicates, we always find the correct
+	//			// recipient.
+	//			chipStart = editable.ToString().IndexOf(token, end);
+	//			end = Math.Min(editable.Length(), chipStart + token.Length);
+	//			// Only set the span if we found a matching token.
+	//			if (chipStart != -1)
+	//			{
+	//				recipientsList.Add(chip);
+	//			}
+	//		}
+	//	}
+	//	//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
+	//	return recipientsList.ToArray();
+	//}
+
 }
