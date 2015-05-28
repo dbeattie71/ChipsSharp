@@ -42,11 +42,9 @@ namespace com.android.ex.chips
 		View.IOnClickListener,
 		TextView.IOnEditorActionListener
 	{
-		private static readonly char COMMIT_CHAR_COMMA = ',';
-
-		private static readonly char COMMIT_CHAR_SEMICOLON = ';';
-
-		private static readonly char COMMIT_CHAR_SPACE = ' ';
+		private const char CommitCharComma = ',';
+		private const char CommitCharSemicolon = ';';
+		private const char CommitCharSpace = ' ';
 
 		//private static String SEPARATOR = new String(String.ValueOf(COMMIT_CHAR_COMMA) + String.ValueOf(COMMIT_CHAR_SPACE));
 
@@ -997,7 +995,7 @@ namespace com.android.ex.chips
 				if (editable.Length() > tokenEnd + 1)
 				{
 					char charAt = editable.CharAt(tokenEnd + 1);
-					if (charAt == COMMIT_CHAR_COMMA || charAt == COMMIT_CHAR_SEMICOLON)
+					if (charAt == CommitCharComma || charAt == CommitCharSemicolon)
 					{
 						tokenEnd++;
 					}
@@ -1243,7 +1241,7 @@ namespace com.android.ex.chips
 			{
 				//char atEnd = token.CharAt(token.Length() - 1);
 				char atEnd = token.ElementAt(token.Length - 1);
-				return atEnd == COMMIT_CHAR_COMMA || atEnd == COMMIT_CHAR_SEMICOLON;
+				return atEnd == CommitCharComma || atEnd == CommitCharSemicolon;
 			}
 			return false;
 		}
@@ -1734,7 +1732,7 @@ namespace com.android.ex.chips
 				{
 					last = s.CharAt(len);
 				}
-				if (last == COMMIT_CHAR_SPACE)
+				if (last == CommitCharSpace)
 				{
 					//if (!isPhoneQuery())
 					//{
@@ -1762,7 +1760,7 @@ namespace com.android.ex.chips
 			char last;
 			int end = SelectionEnd == 0 ? 0 : SelectionEnd - 1;
 			last = s.CharAt(end);
-			return last == COMMIT_CHAR_COMMA || last == COMMIT_CHAR_SEMICOLON;
+			return last == CommitCharComma || last == CommitCharSemicolon;
 		}
 
 		/**
@@ -1780,7 +1778,7 @@ namespace com.android.ex.chips
 			char last;
 			int end = SelectionEnd == 0 ? 0 : SelectionEnd - 1;
 			last = s.CharAt(end);
-			if (last == COMMIT_CHAR_COMMA || last == COMMIT_CHAR_SEMICOLON)
+			if (last == CommitCharComma || last == CommitCharSemicolon)
 			{
 				s.Delete(end, end + 1);
 			}
@@ -1797,7 +1795,7 @@ namespace com.android.ex.chips
 				return tokenEnd;
 			}
 			char atEnd = Text.ElementAt(tokenEnd);
-			if (atEnd == COMMIT_CHAR_COMMA || atEnd == COMMIT_CHAR_SEMICOLON)
+			if (atEnd == CommitCharComma || atEnd == CommitCharSemicolon)
 			{
 				tokenEnd++;
 			}
