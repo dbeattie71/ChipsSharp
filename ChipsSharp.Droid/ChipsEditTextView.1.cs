@@ -1283,7 +1283,7 @@ namespace com.android.ex.chips
 				float x = @event.GetX();
 				float y = @event.GetY();
 				int offset = putOffsetInRange(x, y);
-				DrawableChipSpan currentChipSpan = findChip(offset);
+				DrawableChipSpan currentChipSpan = FindChip(offset);
 				if (currentChipSpan != null)
 				{
 					if (action == MotionEventActions.Up)
@@ -1382,7 +1382,7 @@ namespace com.android.ex.chips
 				return offset;
 			}
 			IEditable editable = EditableText;
-			while (offset >= 0 && findText(editable, offset) == -1 && findChip(offset) == null)
+			while (offset >= 0 && findText(editable, offset) == -1 && FindChip(offset) == null)
 			{
 				// Keep walking backward!
 				offset--;
@@ -1530,7 +1530,7 @@ namespace com.android.ex.chips
 			{
 				return;
 			}
-			int line = Layout.GetLineForOffset(getChipStart(currentChipSpan));
+			int line = Layout.GetLineForOffset(GetChipStart(currentChipSpan));
 			int bottom = calculateOffsetFromBottom(line);
 			// Align the alternates popup with the left side of the View,
 			// regardless of the position of the chip tapped.
@@ -1580,8 +1580,8 @@ namespace com.android.ex.chips
 			}
 
 			return chipSpan.isSelected() &&
-				   ((mAvatarPosition == AVATAR_POSITION_END && offset == getChipEnd(chipSpan)) ||
-					(mAvatarPosition != AVATAR_POSITION_END && offset == getChipStart(chipSpan)));
+				   ((mAvatarPosition == AVATAR_POSITION_END && offset == GetChipEnd(chipSpan)) ||
+					(mAvatarPosition != AVATAR_POSITION_END && offset == GetChipStart(chipSpan)));
 		}
 
 	
