@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ChipsSharp;
 using Cirrious.CrossCore.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using EnjinMobile.Api;
@@ -8,16 +9,29 @@ using EnjinMobile.Api.Services;
 
 namespace Test.Core.ViewModels
 {
-	
+	public class ContactEx : Contact, IChipEntry
+	{
+		public string getDisplayName()
+		{
+			return Name;
+		}
+
+		public string getDestination()
+		{
+			return Name2;
+		}
+	}
+
 	public class FirstViewModel : MvxViewModel
 	{
 		private readonly IMessagesService _messagesService;
-		private string _articles;
-		private List<Contact> _contacts;
 		private string _currentTextHint;
-		private List<Contact> _recipientEntries;
-		private List<Contact> _selectedContacts;
-		private object _selectedObject;
+		private List<IChipEntry> _selectedContacts;
+		//private string _articles;
+		private List<ContactEx> _suggestedContacts;
+		//private List<Contact> _recipientEntries;
+		//private List<Contact> _selectedContacts;
+		//private object _selectedObject;
 
 		public FirstViewModel(IEnjinApiFacade enjinApiFacade)
 		{
@@ -25,58 +39,33 @@ namespace Test.Core.ViewModels
 
 			Commands = new MvxCommandCollectionBuilder().BuildCollectionFor(this);
 
-			SelectedContacts = new List<Contact>();
-
-		}
-
-		public override void Start()
-		{
+			//SelectedContacts = new List<Contact>();
 
 		}
 
 		public IMvxCommandCollection Commands { get; private set; }
 
-		public string Articles
+		//public string Articles
+		//{
+		//	get { return _articles; }
+		//	set
+		//	{
+		//		_articles = value;
+		//		RaisePropertyChanged();
+		//	}
+		//}
+
+		public List<ContactEx> SuggestedContacts
 		{
-			get { return _articles; }
+			get { return _suggestedContacts; }
 			set
 			{
-				_articles = value;
+				_suggestedContacts = value;
 				RaisePropertyChanged();
 			}
 		}
 
-		public List<Contact> Contacts
-		{
-			get { return _contacts; }
-			set
-			{
-				_contacts = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public List<Contact> RecipientEntries
-		{
-			get { return _recipientEntries; }
-			set
-			{
-				_recipientEntries = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public object SelectedObject
-		{
-			get { return _selectedObject; }
-			private set
-			{
-				_selectedObject = value;
-				RaisePropertyChanged();
-			}
-		}
-
-		public List<Contact> SelectedContacts
+		public List<IChipEntry> SelectedContacts
 		{
 			get { return _selectedContacts; }
 			set
@@ -85,6 +74,36 @@ namespace Test.Core.ViewModels
 				RaisePropertyChanged();
 			}
 		}
+
+		//public List<Contact> RecipientEntries
+		//{
+		//	get { return _recipientEntries; }
+		//	set
+		//	{
+		//		_recipientEntries = value;
+		//		RaisePropertyChanged();
+		//	}
+		//}
+
+		//public object SelectedObject
+		//{
+		//	get { return _selectedObject; }
+		//	private set
+		//	{
+		//		_selectedObject = value;
+		//		RaisePropertyChanged();
+		//	}
+		//}
+
+		//public List<Contact> SelectedContacts
+		//{
+		//	get { return _selectedContacts; }
+		//	set
+		//	{
+		//		_selectedContacts = value;
+		//		RaisePropertyChanged();
+		//	}
+		//}
 
 		public string CurrentTextHint
 		{
@@ -112,10 +131,14 @@ namespace Test.Core.ViewModels
 			}
 		}
 
+		public override void Start()
+		{
+		}
+
 		public void TestCommand()
 		{
-			SelectedContacts.Add(new Contact { Name = "test" });
-			RaisePropertyChanged(() => SelectedContacts);
+			//SelectedContacts.Add(new Contact { Name = "test" });
+			//RaisePropertyChanged(() => SelectedContacts);
 		}
 
 		private async void Foo(string currentTextHint)
@@ -123,7 +146,14 @@ namespace Test.Core.ViewModels
 			var contacts = await _messagesService.SearchContacts(currentTextHint);
 			if (contacts.Any())
 			{
-				Contacts = contacts;
+				SuggestedContacts = contacts.Select(c => new ContactEx
+				{
+					Id = c.Id,
+					Image = c.Image,
+					Name = c.Name,
+					Name2 = c.Name2,
+					Type = c.Type
+				}).ToList();
 			}
 			else
 			{
@@ -133,14 +163,14 @@ namespace Test.Core.ViewModels
 
 		private void SetSuggestionsEmpty()
 		{
-			var contacts = new List<Contact>();
-			Contacts = contacts;
+			var contacts = new List<ContactEx>();
+			SuggestedContacts = contacts;
 		}
 
 		public void Start2()
 		{
-			SelectedContacts.Add(new Contact { Name = "test" });
-			RaisePropertyChanged(() => SelectedContacts);
+			//SelectedContacts.Add(new Contact { Name = "test" });
+			//RaisePropertyChanged(() => SelectedContacts);
 		}
 	}
 }

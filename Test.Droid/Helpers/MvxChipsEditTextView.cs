@@ -7,6 +7,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using com.android.ex.chips;
+using com.android.ex.chips.Spans;
+using ChipsSharp;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 
@@ -17,7 +19,7 @@ namespace Test.Droid.Helpers
 		: ChipsEditTextView
 	{
 		//private object _selectedObject;
-		//private List<ChipEntry> _selectedChipEntries;
+		private List<IChipEntry> _selectedChipEntries;
 
 		public MvxChipsEditTextView(Context context, IAttributeSet attrs)
 			: this(context, attrs, new MvxFilteringAdapterEx(context))
@@ -105,26 +107,42 @@ namespace Test.Droid.Helpers
 		//	}
 		//}
 
-		//[MvxSetToNullAfterBinding]
-		//public List<ChipEntry> SelectedChipEntries
-		//{
-		//	get { return _selectedChipEntries; }
-		//	set
-		//	{
-		//		_selectedChipEntries = value;
+		[MvxSetToNullAfterBinding]
+		public List<IChipEntry> SelectedChipEntries
+		{
+			get { return _selectedChipEntries; }
+			set
+			{
+				_selectedChipEntries = value;
 
-		//		//var r =RecipientEntry.ConstructFakeEntry("test", true);
-		//		//SubmitItem(r);
-		//		foreach (var selectedContact in _selectedChipEntries)
-		//		{
-		//			//SubmitItem(selectedContact);
-		//			//SubmitItem("test1", "test1");
-		//			//SubmitItem("test2", "test2");
+				//var r =RecipientEntry.ConstructFakeEntry("test", true);
+				//SubmitItem(r);
+				//foreach (var selectedContact in _selectedChipEntries)
+				//{
+				//	//SubmitItem(selectedContact);
+				//	//SubmitItem("test1", "test1");
+				//	//SubmitItem("test2", "test2");
 
-		//		}
+				//}
 
-		//	}
-		//}
+			}
+		}
+
+
+		public override void OnItemClick(AdapterView parent, View view, int position, long id)
+		{
+			OnItemClick(position);
+		}
+
+		protected virtual void OnItemClick(int position)
+		{
+			var selectedObject = Adapter.GetRawItem(position);
+			//SelectedObject = selectedObject;
+
+			submitItem((IChipEntry) selectedObject);
+
+			SelectedChipEntries = GetChipEntries();
+		}
 
 		//private void OnItemClick(object sender, AdapterView.ItemClickEventArgs itemClickEventArgs)
 		//{
@@ -161,7 +179,7 @@ namespace Test.Droid.Helpers
 			FireChanged(PartialTextChanged);
 		}
 
-		//public event EventHandler SelectedObjectChanged;
+		public event EventHandler SelectedObjectChanged;
 
 		public event EventHandler PartialTextChanged;
 

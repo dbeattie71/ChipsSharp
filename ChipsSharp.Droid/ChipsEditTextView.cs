@@ -214,18 +214,6 @@ namespace com.android.ex.chips
 
 		private ItemSelectedListener itemSelectedListener;
 
-
-		//public RecipientEditTextView(Context context, IAttributeSet attrs) : this(context, attrs, new MvxFilteringAdapter(context))
-		//{
-
-		//}
-
-		//public RecipientEditTextView(Context context, IAttributeSet attrs, MvxFilteringAdapter adapter)
-		//	: base(context, attrs)
-		//{
-
-		//}
-
 		protected ChipsEditTextView(IntPtr javaReference, JniHandleOwnership transfer)
 			: base(javaReference, transfer)
 		{
@@ -373,7 +361,8 @@ namespace com.android.ex.chips
 		private DrawableChipSpan getLastChip()
 		{
 			DrawableChipSpan last = null;
-			DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			DrawableChipSpan[] chipSpans = getChipSpans();
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
 				last = chipSpans[chipSpans.Length - 1];
@@ -611,7 +600,7 @@ namespace com.android.ex.chips
 
 				// In the middle of chip; treat this as an edit
 				// and commit the whole token if it is not only spaces
-				bool isOverMaxNumberOfChips = getRecipients().Length >= mMaxChipsAllowed;
+				bool isOverMaxNumberOfChips = getChipSpans().Length >= mMaxChipsAllowed;
 				//if (!isOverMaxNumberOfChips && !editable.SubSequence(start, end).Trim().isEmpty())
 				//if (!isOverMaxNumberOfChips && !string.IsNullOrEmpty(editable.SubSequence(start, end).Trim()))
 				//{
@@ -1131,7 +1120,8 @@ namespace com.android.ex.chips
 		private void checkChipWidths()
 		{
 			// Check the widths of the associated chips.
-			DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			DrawableChipSpan[] chipSpans = getChipSpans();
 			if (chipSpans != null)
 			{
 				Rect bounds;
@@ -1258,7 +1248,8 @@ namespace com.android.ex.chips
 			//	return;
 			//}
 			// Find the last chip; eliminate any commit characters after it.
-			DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			DrawableChipSpan[] chipSpans = getChipSpans();
 			ISpannable spannable = getSpannable();
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
@@ -1618,7 +1609,7 @@ namespace com.android.ex.chips
 		protected bool commitChip(int start, int end, IEditable editable)
 		{
 			// Check if there is not already too many chips
-			if (getRecipients().Length >= mMaxChipsAllowed)
+			if (getChipSpans().Length >= mMaxChipsAllowed)
 			{
 				return false;
 			}
@@ -1663,7 +1654,7 @@ namespace com.android.ex.chips
 				IChipEntry entry = createTokenizedEntry(text);
 				if (entry != null)
 				{
-					QwertyKeyListener.MarkAsReplaced(editable, start, end, text.ToString());
+					QwertyKeyListener.MarkAsReplaced(editable, start, end, text);
 					ICharSequence chipText = createChip(entry, false);
 					if (chipText != null && start > -1 && end > -1)
 					{
@@ -1696,14 +1687,15 @@ namespace com.android.ex.chips
 			//	return;
 			//}
 			// Find the last chip.
-			DrawableChipSpan[] recips = getSortedVisibleRecipients();
-			if (recips != null && recips.Length > 0)
+			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			DrawableChipSpan[] chipSpans = getChipSpans();
+			if (chipSpans != null && chipSpans.Length > 0)
 			{
-				DrawableChipSpan last = recips[recips.Length - 1];
+				DrawableChipSpan last = chipSpans[chipSpans.Length - 1];
 				DrawableChipSpan beforeLast = null;
-				if (recips.Length > 1)
+				if (chipSpans.Length > 1)
 				{
-					beforeLast = recips[recips.Length - 2];
+					beforeLast = chipSpans[chipSpans.Length - 2];
 				}
 				int startLooking = 0;
 				int end = getSpannable().GetSpanStart((Object)last);
@@ -1851,7 +1843,7 @@ namespace com.android.ex.chips
 		protected override void PerformFiltering(ICharSequence text, int keyCode)
 		{
 			//	// Do not filter if the user cannot add additional chips
-			if (getRecipients().Length >= mMaxChipsAllowed)
+			if (getChipSpans().Length >= mMaxChipsAllowed)
 			{
 				return;
 			}
@@ -2307,7 +2299,7 @@ namespace com.android.ex.chips
 
 		protected void submitItem(IChipEntry entry)
 		{
-			if (entry == null || getRecipients().Length >= mMaxChipsAllowed)
+			if (entry == null || getChipSpans().Length >= mMaxChipsAllowed)
 			{
 				//SetError(mChipOverLimitErrorHint);
 				return;
@@ -2396,7 +2388,7 @@ namespace com.android.ex.chips
 		//	return result;
 		//}
 
-		public DrawableChipSpan[] getRecipients()
+		public DrawableChipSpan[] getChipSpans()
 		{
 			var recipients = getSpannable()
 				.GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
@@ -2411,43 +2403,56 @@ namespace com.android.ex.chips
 			return recipientsList.ToArray();
 		}
 
+		public List<IChipEntry> GetChipEntries()
+		{
+			var chipEntries = new List<IChipEntry>();
+			var chipSpans = getChipSpans();
+			foreach (var drawableChipSpan in chipSpans)
+			{
+				IChipEntry chipEntry = drawableChipSpan.getEntry();
+				chipEntries.Add(chipEntry);
+			}
+			return chipEntries;
+		}
+
 		/**
      * Returns a list containing the sorted visible recipients.
      * @return Array of DrawableRecipientChip containing the sorted visible recipients
      */
 
-		public DrawableChipSpan[] getSortedVisibleRecipients()
-		{
-			var recips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>();
-			List<DrawableChipSpan> recipientsList = recips.ToList();
-			//ISpannable spannable = getSpannable();
-			//	Collections.Sort(recipientsList, new Comparator<DrawableRecipientChip>()
-			//	{
+		//public DrawableChipSpan[] getSortedVisibleRecipients()
+		//{
+		//	var recips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
+		//		.Cast<DrawableChipSpan>();
+		//	List<DrawableChipSpan> recipientsList = recips.ToList();
+		//	//ISpannable spannable = getSpannable();
+		//	//	Collections.Sort(recipientsList, new Comparator<DrawableRecipientChip>()
+		//	//	{
 
 
-			//	public int compare(DrawableRecipientChip first,
-			//		DrawableRecipientChip second) {
-			//										 int firstStart = spannable.getSpanStart(first);
-			//										 int secondStart = spannable.getSpanStart(second);
-			//										 if (firstStart < secondStart) {
-			//										 return -1;
-			//	}
-			//else
-			//	if (firstStart > secondStart)
-			//	{
-			//		return 1;
-			//	}
-			//	else
-			//	{
-			//		return 0;
-			//	}
-			//}
-			//}
-			//)
-			//	;
-			//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
-			return recipientsList.ToArray();
-		}
+		//	//	public int compare(DrawableRecipientChip first,
+		//	//		DrawableRecipientChip second) {
+		//	//										 int firstStart = spannable.getSpanStart(first);
+		//	//										 int secondStart = spannable.getSpanStart(second);
+		//	//										 if (firstStart < secondStart) {
+		//	//										 return -1;
+		//	//	}
+		//	//else
+		//	//	if (firstStart > secondStart)
+		//	//	{
+		//	//		return 1;
+		//	//	}
+		//	//	else
+		//	//	{
+		//	//		return 0;
+		//	//	}
+		//	//}
+		//	//}
+		//	//)
+		//	//	;
+		//	//return recipientsList.toArray(new DrawableRecipientChip[recipientsList.size()]);
+		//	return recipientsList.ToArray();
+		//}
 
 		/**
      * Returns a list containing all sorted recipients, even the hidden ones when the field
@@ -2457,16 +2462,17 @@ namespace com.android.ex.chips
 		// TODO: check if everything is working properly
 		public DrawableChipSpan[] getSortedRecipients()
 		{
-			DrawableChipSpan[] recipients = getSortedVisibleRecipients();
+			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
+			DrawableChipSpan[] chipSpans = getChipSpans();
 			//List<DrawableRecipientChip> recipientsList = new List<>(Arrays.asList(recipients));
-			List<DrawableChipSpan> recipientsList = recipients.ToList();
+			List<DrawableChipSpan> recipientsList = chipSpans.ToList();
 
 			// Recreate each removed span.
 			if (mRemovedSpans != null && mRemovedSpans.Count > 0)
 			{
 				// Start the search for tokens after the last currently visible
 				// chip.
-				int end = getSpannable().GetSpanEnd(recipients[recipients.Length - 1]);
+				int end = getSpannable().GetSpanEnd(chipSpans[chipSpans.Length - 1]);
 				IEditable editable = EditableText;
 
 				foreach (var chip in mRemovedSpans)
@@ -2479,7 +2485,7 @@ namespace com.android.ex.chips
 					// reduce the size of the string we need to search.
 					// That way, if there are duplicates, we always find the correct
 					// recipient.
-					chipStart = editable.ToString().IndexOf(token.ToString(), end);
+					chipStart = editable.ToString().IndexOf(token, end);
 					end = Math.Min(editable.Length(), chipStart + token.Length);
 					// Only set the span if we found a matching token.
 					if (chipStart != -1)
@@ -2630,7 +2636,8 @@ namespace com.android.ex.chips
 			{
 				getSpannable().RemoveSpan(tempMore[0]);
 			}
-			var recipients = getSortedVisibleRecipients();
+			//var recipients = getSortedVisibleRecipients();
+			var chipSpans = getChipSpans();
 
 			int fieldWidth = Width - PaddingLeft - PaddingRight;
 			// Compute the width of a blank space because there should be one between each chip
@@ -2640,11 +2647,11 @@ namespace com.android.ex.chips
 
 			int totalChipLength = 0;
 			int chipLimit = 0;
-			for (int i = 0; i < recipients.Length; i++)
+			for (int i = 0; i < chipSpans.Length; i++)
 			{
-				if (totalChipLength + recipients[i].getBounds().Right + blankSpaceWidth < (fieldWidth * getShrinkMaxLines()))
+				if (totalChipLength + chipSpans[i].getBounds().Right + blankSpaceWidth < (fieldWidth * getShrinkMaxLines()))
 				{
-					totalChipLength += recipients[i].getBounds().Right + blankSpaceWidth;
+					totalChipLength += chipSpans[i].getBounds().Right + blankSpaceWidth;
 					chipLimit = i + 1;
 				}
 				else
@@ -2653,14 +2660,14 @@ namespace com.android.ex.chips
 				}
 			}
 
-			if (recipients == null || recipients.Length <= chipLimit)
+			if (chipSpans == null || chipSpans.Length <= chipLimit)
 			{
 				mMoreChip = null;
 				return;
 			}
 
 			ISpannable spannable = getSpannable();
-			int numRecipients = recipients.Length;
+			int numRecipients = chipSpans.Length;
 			int overage = numRecipients - chipLimit;
 
 			// Now checks if the moreSpan is not too big for the available space
@@ -2672,7 +2679,7 @@ namespace com.android.ex.chips
 			MoreImageSpan moreSpan;
 			while (totalChipLength + moreChipWidth >= (fieldWidth * getShrinkMaxLines()))
 			{
-				totalChipLength -= recipients[chipLimit - 1].getBounds().Right;
+				totalChipLength -= chipSpans[chipLimit - 1].getBounds().Right;
 				chipLimit--;
 				overage++;
 				moreText = String.Format(mMoreItem.Text, overage);
@@ -2688,14 +2695,14 @@ namespace com.android.ex.chips
 
 			for (int i = numRecipients - overage; i < numRecipients; i++)
 			{
-				mRemovedSpans.Add(recipients[i]);
+				mRemovedSpans.Add(chipSpans[i]);
 				if (i == numRecipients - overage)
 				{
-					totalReplaceStart = spannable.GetSpanStart(recipients[i]);
+					totalReplaceStart = spannable.GetSpanStart(chipSpans[i]);
 				}
-				if (i == recipients.Length - 1)
+				if (i == chipSpans.Length - 1)
 				{
-					totalReplaceEnd = spannable.GetSpanEnd(recipients[i]);
+					totalReplaceEnd = spannable.GetSpanEnd(chipSpans[i]);
 				}
 				//if (mTemporaryRecipients == null || !mTemporaryRecipients.Contains(recipients[i]))
 				//{
@@ -2705,7 +2712,7 @@ namespace com.android.ex.chips
 				//	var bar = new String(text.ToString().Substring(spanStart, spanEnd));
 				//	recipients[i].setOriginalText(bar);
 				//}
-				spannable.RemoveSpan(recipients[i]);
+				spannable.RemoveSpan(chipSpans[i]);
 			}
 			if (totalReplaceEnd < text.Length())
 			{
@@ -2741,14 +2748,16 @@ namespace com.android.ex.chips
 				if (mRemovedSpans != null && mRemovedSpans.Count > 0)
 				{
 					// Recreate each removed span.
-					DrawableChipSpan[] recipients = getSortedVisibleRecipients();
+					//DrawableChipSpan[] recipients = getSortedVisibleRecipients();
+					DrawableChipSpan[] chipSpans = getChipSpans();
+
 					// Start the search for tokens after the last currently visible
 					// chip.
-					if (recipients == null || recipients.Length == 0)
+					if (chipSpans == null || chipSpans.Length == 0)
 					{
 						return;
 					}
-					int end = span.GetSpanEnd((Object)recipients[recipients.Length - 1]);
+					int end = span.GetSpanEnd((Object)chipSpans[chipSpans.Length - 1]);
 					IEditable editable = EditableText;
 
 					foreach (var chip in mRemovedSpans)
@@ -2757,7 +2766,7 @@ namespace com.android.ex.chips
 						int chipEnd;
 						string token;
 						// Need to find the location of the chip, again.
-						token = (String)chip.getOriginalText();
+						token = chip.getOriginalText();
 						// As we find the matching recipient for the remove spans,
 						// reduce the size of the string we need to search.
 						// That way, if there are duplicates, we always find the correct
@@ -3292,7 +3301,7 @@ namespace com.android.ex.chips
 
 		public bool enoughRoomForAdditionalChip()
 		{
-			return getRecipients().Count() < mMaxChipsAllowed;
+			return getChipSpans().Count() < mMaxChipsAllowed;
 		}
 
 		public bool lastCharacterIsCommitCharacter(ICharSequence s)

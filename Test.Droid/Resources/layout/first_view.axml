@@ -39,7 +39,7 @@
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:hint="@string/recipients_field_hint"
-            app:MvxBind="ItemsSource Contacts; PartialText CurrentTextHint; SelectedObject SelectedObject"
+            app:MvxBind="ItemsSource SuggestedContacts; PartialText CurrentTextHint; SelectedChipEntries SelectedContacts"
             app:MvxItemTemplate="@layout/chips_recipient_dropdown_item2" />
     </RelativeLayout>
     <View
