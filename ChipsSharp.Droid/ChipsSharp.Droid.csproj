@@ -43,7 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChipsEditTextView.2.cs" />
     <Compile Include="ChipsUtil.cs" />
+    <Compile Include="ChipsEditTextView.3.cs" />
+    <Compile Include="ChipsEditTextView.1.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ItemSelectedListener.cs" />
     <Compile Include="Spans\MoreImageSpan.cs" />
@@ -54,7 +57,7 @@
     <Compile Include="Spans\InvisibleChipSpan.cs" />
     <Compile Include="Spans\VisibleChipSpan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ChipsEditTextView.cs" />
+    <Compile Include="ChipsEditTextView.0.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="SingleRecipientArrayAdapter.cs" />
   </ItemGroup>

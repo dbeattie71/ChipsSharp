@@ -38,7 +38,7 @@ namespace com.android.ex.chips
 		ActionMode.ICallback,
 		//RecipientAlternatesAdapter.OnCheckedItemChangedListener,
 		GestureDetector.IOnGestureListener,
-		AutoCompleteTextView.IOnDismissListener,
+		//AutoCompleteTextView.IOnDismissListener,
 		View.IOnClickListener,
 		TextView.IOnEditorActionListener
 	{
@@ -136,10 +136,6 @@ namespace com.android.ex.chips
 		// Chip copy fields.
 		private GestureDetector mGestureDetector;
 
-		//private Dialog mCopyDialog;
-
-		//private String mCopyAddress;
-
 		// Used with {@link #mAlternatesPopup}. Handles clicks to alternate addresses for a selected chip.
 		private AdapterView.IOnItemClickListener mAlternatesListener;
 
@@ -153,48 +149,7 @@ namespace com.android.ex.chips
 
 		private bool mTriedGettingScrollView;
 
-		//private bool mDragEnabled = false;
-
-		// This pattern comes from android.util.Patterns. It has been tweaked to handle a "1" before
-		// parens, so numbers such as "1 (425) 222-2342" match.
-		//private static Java.Util.Regex.Pattern PHONE_PATTERN
-		//	= Java.Util.Regex.Pattern.Compile( // sdd = space, dot, or dash
-		//		"(\\+[0-9]+[\\- \\.]*)?" // +<digits><sdd>*
-		//		+ "(1?[ ]*\\([0-9]+\\)[\\- \\.]*)?" // 1(<digits>)<sdd>*
-		//		+ "([0-9][0-9\\- \\.][0-9\\- \\.]+[0-9])"); // <digit><digit|sdd>+<digit>
-
-		//private System.Action mAddTextWatcher;
-		//private  Runnable mAddTextWatcher = new Runnable() {
-
-		//	public void run() {
-		//		if (mTextWatcher == null) {
-		//			mTextWatcher = new RecipientTextWatcher();
-		//			addTextChangedListener(mTextWatcher);
-		//		}
-		//	}
-		//};
-
-		//private IndividualReplacementTask mIndividualReplacements;
-
-		//private System.Action mHandlePendingChips;
-		//private Runnable mHandlePendingChips = new Runnable() {
-
-
-		//	public void run() {
-		//		handlePendingChips();
-		//	}
-
-		//};
-
 		private System.Action mDelayedShrink;
-		//private Runnable mDelayedShrink = new Runnable() {
-
-
-		//	public void run() {
-		//		shrink();
-		//	}
-
-		//};
 
 		private int mMaxLines;
 
@@ -3343,143 +3298,6 @@ namespace com.android.ex.chips
 			//mHandler.Post(mAddTextWatcher);
 		}
 
-		//public bool isGeneratedContact(DrawableRecipientChip chip)
-		//{
-		//	long contactId = chip.getContactId();
-		//	return contactId == RecipientEntry.INVALID_CONTACT || (!isPhoneQuery() && contactId == RecipientEntry.GENERATED_CONTACT);
-		//}
-
-		/**
-     * Handles pasting a {@link ClipData} to this {@link RecipientEditTextView}.
-     */
-
-		//private void handlePasteClip(ClipData clip)
-		//{
-		//	removeTextChangedListener(mTextWatcher);
-
-		//	if (clip != null && clip.getDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
-		//	{
-		//		for (int i = 0; i < clip.getItemCount(); i++)
-		//		{
-		//			CharSequence paste = clip.getItemAt(i).getText();
-		//			if (paste != null)
-		//			{
-		//				int start = getSelectionStart();
-		//				int end = getSelectionEnd();
-		//				Editable editable = getText();
-		//				if (start >= 0 && end >= 0 && start != end)
-		//				{
-		//					editable.append(paste, start, end);
-		//				}
-		//				else
-		//				{
-		//					editable.insert(end, paste);
-		//				}
-		//				handlePasteAndReplace();
-		//			}
-		//		}
-		//	}
-
-		//	mHandler.Post(mAddTextWatcher);
-		//}
-
-		//@Override
-		//public bool onTextContextMenuItem(int id)
-		//{
-		//	if (id == android.R.id.paste)
-		//	{
-		//		ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(
-		//			Context.CLIPBOARD_SERVICE);
-		//		handlePasteClip(clipboard.getPrimaryClip());
-		//		return true;
-		//	}
-		//	return super.onTextContextMenuItem(id);
-		//}
-		public override bool OnTextContextMenuItem(int id)
-		{
-			//if (id == Android.Resource.Id.Paste)
-			//{
-			//	ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-			//	handlePasteClip(clipboard.getPrimaryClip());
-			//	return true;
-			//}
-			return base.OnTextContextMenuItem(id);
-		}
-
-		//private void handlePasteAndReplace()
-		//{
-		//	List<DrawableRecipientChip> created = handlePaste();
-		//	if (created != null && created.size() > 0)
-		//	{
-		//		// Perform reverse lookups on the pasted contacts.
-		//		IndividualReplacementTask replace = new IndividualReplacementTask();
-		//		replace.execute(created);
-		//	}
-		//}
-
-		// Visible for testing.
-		/* package */
-		//private List<DrawableRecipientChip> handlePaste()
-		//{
-		//	String text = getText().toString();
-		//	int originalTokenStart = mTokenizer.findTokenStart(text, getSelectionEnd());
-		//	String lastAddress = text.substring(originalTokenStart);
-		//	int tokenStart = originalTokenStart;
-		//	int prevTokenStart = 0;
-		//	DrawableRecipientChip findChip = null;
-		//	List<DrawableRecipientChip> created = new List<DrawableRecipientChip>();
-		//	if (tokenStart != 0)
-		//	{
-		//		// There are things before this!
-		//		while (tokenStart != 0 && findChip == null && tokenStart != prevTokenStart)
-		//		{
-		//			prevTokenStart = tokenStart;
-		//			tokenStart = mTokenizer.findTokenStart(text, tokenStart);
-		//			findChip = findChip(tokenStart);
-		//			if (tokenStart == originalTokenStart && findChip == null)
-		//			{
-		//				break;
-		//			}
-		//		}
-		//		if (tokenStart != originalTokenStart)
-		//		{
-		//			if (findChip != null)
-		//			{
-		//				tokenStart = prevTokenStart;
-		//			}
-		//			int tokenEnd;
-		//			DrawableRecipientChip createdChip;
-		//			while (tokenStart < originalTokenStart)
-		//			{
-		//				tokenEnd = movePastTerminators(mTokenizer.findTokenEnd(getText().toString(),
-		//																	   tokenStart));
-		//				commitChip(tokenStart, tokenEnd, getText());
-		//				createdChip = findChip(tokenStart);
-		//				if (createdChip == null)
-		//				{
-		//					break;
-		//				}
-		//				// +1 for the space at the end.
-		//				tokenStart = getSpannable().getSpanEnd(createdChip) + 1;
-		//				created.add(createdChip);
-		//			}
-		//		}
-		//	}
-		//	// Take a look at the last token. If the token has been completed with a
-		//	// commit character, create a chip.
-		//	if (isCompletedToken(lastAddress))
-		//	{
-		//		Editable editable = getText();
-		//		tokenStart = editable.toString().indexOf(lastAddress, originalTokenStart);
-		//		commitChip(tokenStart, editable.length(), editable);
-		//		created.add(findChip(tokenStart));
-		//	}
-		//	return created;
-		//}
-
-		// Visible for testing.
-		/* package */
-
 		private int movePastTerminators(int tokenEnd)
 		{
 			if (tokenEnd >= Length())
@@ -3500,47 +3318,32 @@ namespace com.android.ex.chips
 			return tokenEnd;
 		}
 
-		//private class RecipientReplacementTask extends AsyncTask<Void, Void, Void> {
-
-		//private class IndividualReplacementTask
-
-		//@Override
 		public bool OnDown(MotionEvent e)
 		{
 			return false;
 		}
 
-		//@Override
 		public bool OnFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
 		{
-			// Do nothing.
 			return false;
 		}
 
-		//@Override
 		public void OnLongPress(MotionEvent @event)
 		{
-			//if (mSelectedChip != null)
-			//{
-			//	return;
-			//}
-			//float x = @event.getX();
-			//float y = @event.getY();
-			//int offset = putOffsetInRange(x, y);
-			//DrawableRecipientChip currentChip = findChip(offset);
-			//if (currentChip != null)
-			//{
-			//	if (mDragEnabled)
-			//	{
-			//		// Start drag-and-drop for the selected chip.
-			//		startDrag(currentChip);
-			//	}
-			//	else
-			//	{
-			//		// Copy the selected chip email address.
-			//		showCopyDialog(currentChip.getEntry().getDestination());
-			//	}
-			//}
+		}
+
+		public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
+		{
+			return false;
+		}
+
+		public void OnShowPress(MotionEvent e)
+		{
+		}
+
+		public bool OnSingleTapUp(MotionEvent e)
+		{
+			return false;
 		}
 
 		// The following methods are used to provide some functionality on older versions of Android
@@ -3582,118 +3385,6 @@ namespace com.android.ex.chips
 			return Layout.GetOffsetForHorizontal(line, x);
 		}
 
-		/////////////////////////////////////////////////
-
-		/**
-     * Enables drag-and-drop for chips.
-     */
-
-		//public void enableDrag()
-		//{
-		//	mDragEnabled = true;
-		//}
-
-		/**
-     * Starts drag-and-drop for the selected chip.
-     */
-
-		//private void startDrag(DrawableRecipientChip currentChip)
-		//{
-		//	String address = currentChip.getEntry().getDestination();
-		//	ClipData data = ClipData.newPlainText(address, address + COMMIT_CHAR_COMMA);
-
-		//	// Start drag mode.
-		//	startDrag(data, new RecipientChipShadow(currentChip), null, 0);
-
-		//	// Remove the current chip, so drag-and-drop will result in a move.
-		//	// TODO (phamm): consider readd this chip if it's dropped outside a target.
-		//	removeChip(currentChip);
-		//}
-
-		/**
-     * Handles drag event.
-     */
-		//public bool onDragEvent(DragEvent @event)
-		//{
-		//	switch (@event.getAction())
-		//	{
-		//		case DragEvent.ACTION_DRAG_STARTED:
-		//			// Only handle plain text drag and drop.
-		//			return @event.getClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN);
-		//		case DragEvent.ACTION_DRAG_ENTERED:
-		//			requestFocus();
-		//			return true;
-		//		case DragEvent.ACTION_DROP:
-		//			handlePasteClip(@event.getClipData());
-		//			return true;
-		//	}
-		//	return false;
-		//}
-
-		//private final class RecipientChipShadow extends DragShadowBuilder {
-
-		//private void showCopyDialog(String address)
-		//{
-		//	if (!mAttachedToWindow)
-		//	{
-		//		return;
-		//	}
-		//	mCopyAddress = address;
-		//	mCopyDialog.setTitle(address);
-		//	mCopyDialog.setContentView(R.layout.copy_chip_dialog_layout);
-		//	mCopyDialog.setCancelable(true);
-		//	mCopyDialog.setCanceledOnTouchOutside(true);
-		//	Button button = (Button) mCopyDialog.findViewById(android.R.id.button1);
-		//	button.setOnClickListener(this);
-		//	int btnTitleId;
-		//	if (isPhoneQuery())
-		//	{
-		//		btnTitleId = R.
-		//		string.copy_number;
-		//	}
-		//	else
-		//	{
-		//		btnTitleId = R.
-		//		string.copy_email;
-		//	}
-		//	String buttonTitle = getContext().getResources().getString(btnTitleId);
-		//	button.setText(buttonTitle);
-		//	mCopyDialog.setOnDismissListener(this);
-		//	mCopyDialog.show();
-		//}
-
-		//@Override
-		public bool OnScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)
-		{
-			// Do nothing.
-			return false;
-		}
-
-		//@Override
-		public void OnShowPress(MotionEvent e)
-		{
-			// Do nothing.
-		}
-
-		//@Override
-		public bool OnSingleTapUp(MotionEvent e)
-		{
-			// Do nothing.
-			return false;
-		}
-
-		//@Override
-		//public void OnDismiss(DialogInterface dialog)
-		//{
-
-		//}
-		public void OnDismiss()
-		{
-			//mCopyAddress = null;
-		}
-
-
-		//@Override
 		public void OnClick(View v)
 		{
 			// Copy this to the clipboard.
@@ -3701,18 +3392,6 @@ namespace com.android.ex.chips
 			//clipboard.setPrimaryClip(ClipData.newPlainText("", mCopyAddress));
 			//mCopyDialog.dismiss();
 		}
-
-		//protected bool isPhoneQuery()
-		//{
-		//	return false;
-		//	//return Adapter != null && Adapter.getQueryType() == BaseRecipientAdapter.QUERY_TYPE_PHONE;
-		//}
-
-
-		//public BaseRecipientAdapter getAdapter()
-		//{
-		//	return (BaseRecipientAdapter) super.getAdapter();
-		//}
 
 		public void clearRecipients()
 		{
@@ -3726,7 +3405,6 @@ namespace com.android.ex.chips
 			}
 			//mTemporaryRecipients = null;
 			mSelectedChip = null;
-
 		}
 
 		public override void DismissDropDown()
@@ -3746,7 +3424,5 @@ namespace com.android.ex.chips
 		{
 			itemSelectedListener = listener;
 		}
-
-
 	}
 }
