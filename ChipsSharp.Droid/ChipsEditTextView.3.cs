@@ -1,22 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
 using Android.Text.Style;
-using Android.Views;
-using Android.Widget;
 using com.android.ex.chips.Spans;
 using Java.Lang;
 using Math = Java.Lang.Math;
-using Object = Java.Lang.Object;
 using String = System.String;
 
 namespace com.android.ex.chips
@@ -242,7 +232,7 @@ namespace com.android.ex.chips
 
 		private ImageSpan GetMoreChip()
 		{
-			MoreImageSpan[] moreSpans = (MoreImageSpan[])Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>();
+			var moreSpans = Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>().ToArray();
 			return moreSpans.Length > 0 ? moreSpans[0] : null;
 		}
 	}

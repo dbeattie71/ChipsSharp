@@ -501,7 +501,7 @@ namespace com.android.ex.chips
 			//mHandler.Post(mAddTextWatcher);
 
 			//}
-			createMoreChip();
+			CreateMoreChip();
 		}
 
 		private void expand()
@@ -510,7 +510,7 @@ namespace com.android.ex.chips
 			{
 				SetMaxLines(Integer.MaxValue);
 			}
-			removeMoreChip();
+			RemoveMoreChip();
 			SetCursorVisible(true);
 			IEditable text = EditableText;
 			SetSelection(text != null && text.Length() > 0 ? text.Length() : 0);

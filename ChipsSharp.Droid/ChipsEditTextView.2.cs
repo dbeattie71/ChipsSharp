@@ -23,7 +23,7 @@ namespace com.android.ex.chips
 			get { return (ISpannable) TextFormatted; }
 		}
 
-		public DrawableChipSpan[] ChipSpans
+		public DrawableChipSpan[] VisibleChipSpans
 		{
 			get
 			{
@@ -37,7 +37,7 @@ namespace com.android.ex.chips
 		{
 			get
 			{
-				var chipSpans = ChipSpans;
+				var chipSpans = VisibleChipSpans;
 
 				var recipientsList = new List<DrawableChipSpan>(chipSpans.ToList());
 
@@ -75,7 +75,7 @@ namespace com.android.ex.chips
 
 		private DrawableChipSpan FindChip(int offset)
 		{
-			var chipSpans = ChipSpans;
+			var chipSpans = VisibleChipSpans;
 			
 			for (var i = 0; i < chipSpans.Length; i++)
 			{
@@ -658,7 +658,7 @@ namespace com.android.ex.chips
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
 				int end;
-				mMoreChip = getMoreChip();
+				mMoreChip = GetMoreChip();
 				if (mMoreChip != null)
 				{
 					end = spannable.GetSpanEnd(mMoreChip);
