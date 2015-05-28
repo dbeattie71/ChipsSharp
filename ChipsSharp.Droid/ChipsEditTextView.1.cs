@@ -50,10 +50,6 @@ namespace com.android.ex.chips
 
 		//private static String SEPARATOR = new String(String.ValueOf(COMMIT_CHAR_COMMA) + String.ValueOf(COMMIT_CHAR_SPACE));
 
-		//private static String TAG = new String("RecipientEditTextView");
-
-		//private static int DISMISS = "dismiss".GetHashCode();
-
 		private static long DISMISS_DELAY = 300;
 
 		// TODO: get correct number/ algorithm from with UX.
