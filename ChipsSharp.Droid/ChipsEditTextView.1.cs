@@ -253,10 +253,10 @@ namespace com.android.ex.chips
 			// When selection changes, see if it is inside the chips area.
 			// If so, move the cursor back after the chips again.
 			DrawableChipSpan last = getLastChip();
-			if (last != null && selStart < getSpannable().GetSpanEnd((Object)last))
+			if (last != null && selStart < Spannable.GetSpanEnd(last))
 			{
 				// Grab the last chip and set the cursor to after it.
-				SetSelection(Math.Min(getSpannable().GetSpanEnd((Object)last) + 1, Text.Length));
+				SetSelection(Math.Min(Spannable.GetSpanEnd(last) + 1, Text.Length));
 			}
 			base.OnSelectionChanged(selStart, selEnd);
 		}
@@ -464,7 +464,7 @@ namespace com.android.ex.chips
 			IEditable editable = EditableText;
 			int end = SelectionEnd;
 			int start = mTokenizer.FindTokenStart(editable, end);
-			var chips = getSpannable().GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
+			var chips = Spannable.GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 			if ((chips.Length == 0))
 			{
 				IEditable text = EditableText;
@@ -1057,10 +1057,10 @@ namespace com.android.ex.chips
 					beforeLast = chipSpans[chipSpans.Length - 2];
 				}
 				int startLooking = 0;
-				int end = getSpannable().GetSpanStart((Object)last);
+				int end = Spannable.GetSpanStart((Object)last);
 				if (beforeLast != null)
 				{
-					startLooking = getSpannable().GetSpanEnd((Object)beforeLast);
+					startLooking = Spannable.GetSpanEnd((Object)beforeLast);
 					IEditable text = EditableText;
 					if (startLooking == -1 || startLooking > text.Length() - 1)
 					{
@@ -1095,7 +1095,7 @@ namespace com.android.ex.chips
 			{
 				return true;
 			}
-			var chips = getSpannable().GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
+			var chips = Spannable.GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 			if ((chips.Length == 0))
 			{
 				return false;
@@ -1172,10 +1172,12 @@ namespace com.android.ex.chips
 			return base.OnKeyDown(keyCode, @event);
 		}
 
-		internal ISpannable getSpannable()
-		{
-			return (ISpannable)TextFormatted;
-		}
+		//internal ISpannable Spannable()
+		//{
+		//	return (ISpannable)TextFormatted;
+		//}
+
+		
 
 		/**
      * Instead of filtering on the entire contents of the edit box,
@@ -1207,7 +1209,7 @@ namespace com.android.ex.chips
 
 				// If this is a RecipientChip, don't filter
 				// on its contents.
-				ISpannable span = getSpannable();
+				ISpannable span = Spannable;
 				var chips = span.GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 				if (chips.Length > 0)
 				{
@@ -1618,7 +1620,7 @@ namespace com.android.ex.chips
 				// If the item deleted is a space, and the thing before the
 				// space is a chip, delete the entire span.
 				int selStart = SelectionStart;
-				var repl = getSpannable().GetSpans(selStart, selStart, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
+				var repl = Spannable.GetSpans(selStart, selStart, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 
 				if (repl.Length > 0)
 				{
@@ -1651,7 +1653,7 @@ namespace com.android.ex.chips
 						tokenEnd = editable.Length();
 					}
 					editable.Delete(tokenStart, tokenEnd);
-					getSpannable().RemoveSpan(repl[0]);
+					Spannable.RemoveSpan(repl[0]);
 				}
 			}
 			else if (count > before)
@@ -1676,7 +1678,7 @@ namespace com.android.ex.chips
 			if (TextUtils.IsEmpty(s))
 			{
 				// Remove all the chips spans.
-				ISpannable spannable = getSpannable();
+				ISpannable spannable = Spannable;
 				var chips = spannable.GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 
 				foreach (var chip in chips)

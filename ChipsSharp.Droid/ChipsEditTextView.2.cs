@@ -23,20 +23,25 @@ namespace com.android.ex.chips
 {
 	public partial class ChipsEditTextView
 	{
+		public ISpannable Spannable
+		{
+			get { return (ISpannable) TextFormatted; }
+		}
+
 		private int getChipStart(DrawableChipSpan chipSpan)
 		{
-			return getSpannable().GetSpanStart(chipSpan);
+			return Spannable.GetSpanStart(chipSpan);
 		}
 
 		private int getChipEnd(DrawableChipSpan chipSpan)
 		{
-			return getSpannable().GetSpanEnd(chipSpan);
+			return Spannable.GetSpanEnd(chipSpan);
 		}
 
 
 		private DrawableChipSpan findChip(int offset)
 		{
-			var chips = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
+			var chips = Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 
 			// Find the chip that contains this offset.
 			for (int i = 0; i < chips.Length; i++)
@@ -85,7 +90,7 @@ namespace com.android.ex.chips
 
 			int start = getChipStart(currentChipSpan);
 			int end = getChipEnd(currentChipSpan);
-			getSpannable().RemoveSpan(currentChipSpan);
+			Spannable.RemoveSpan(currentChipSpan);
 			DrawableChipSpan newChipSpan;
 			try
 			{
@@ -207,7 +212,7 @@ namespace com.android.ex.chips
 			}
 			else
 			{
-				getSpannable().RemoveSpan(chipSpan);
+				Spannable.RemoveSpan(chipSpan);
 				QwertyKeyListener.MarkAsReplaced(editable, start, end, "");
 				editable.RemoveSpan(chipSpan);
 				try
@@ -232,7 +237,7 @@ namespace com.android.ex.chips
 
 		protected void removeChip(DrawableChipSpan chipSpan)
 		{
-			ISpannable spannable = getSpannable();
+			ISpannable spannable = Spannable;
 			int spanStart = spannable.GetSpanStart((Object)chipSpan);
 			int spanEnd = spannable.GetSpanEnd((Object)chipSpan);
 			IEditable text = EditableText;
@@ -268,7 +273,7 @@ namespace com.android.ex.chips
 			}
 			int start = getChipStart(chipSpan);
 			int end = getChipEnd(chipSpan);
-			getSpannable().RemoveSpan(chipSpan);
+			Spannable.RemoveSpan(chipSpan);
 			IEditable editable = EditableText;
 			ICharSequence chipText = createChip(entry, false);
 			if (chipText != null)
@@ -406,7 +411,7 @@ namespace com.android.ex.chips
 
 		public DrawableChipSpan[] getChipSpans()
 		{
-			var recipients = getSpannable()
+			var recipients = Spannable
 				.GetSpans(0, Text.Length, Class.FromType(typeof(DrawableChipSpan)))
 				.Cast<DrawableChipSpan>()
 				.ToArray();
@@ -451,7 +456,7 @@ namespace com.android.ex.chips
 			// Find the last chip; eliminate any commit characters after it.
 			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
 			DrawableChipSpan[] chipSpans = getChipSpans();
-			ISpannable spannable = getSpannable();
+			ISpannable spannable = Spannable;
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
 				int end;
@@ -462,7 +467,7 @@ namespace com.android.ex.chips
 				}
 				else
 				{
-					end = getSpannable().GetSpanEnd((Object)getLastChip());
+					end = Spannable.GetSpanEnd((Object)getLastChip());
 				}
 				IEditable editable = EditableText;
 				int length = editable.Length();
@@ -634,8 +639,6 @@ namespace com.android.ex.chips
 			// If in Rtl mode, the position should be flipped.
 			return isRtl ? !assignedPosition : assignedPosition;
 		}
-
-
 
 		private String createAddressText(IChipEntry entry)
 		{

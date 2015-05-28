@@ -35,10 +35,10 @@ namespace com.android.ex.chips
 			{
 				return;
 			}
-			var tempMore = getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<ImageSpan>().ToArray();
+			var tempMore = Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<ImageSpan>().ToArray();
 			if (tempMore.Length > 0)
 			{
-				getSpannable().RemoveSpan(tempMore[0]);
+				Spannable.RemoveSpan(tempMore[0]);
 			}
 			//var recipients = getSortedVisibleRecipients();
 			var chipSpans = getChipSpans();
@@ -70,7 +70,7 @@ namespace com.android.ex.chips
 				return;
 			}
 
-			ISpannable spannable = getSpannable();
+			ISpannable spannable = Spannable;
 			int numRecipients = chipSpans.Length;
 			int overage = numRecipients - chipLimit;
 
@@ -141,7 +141,7 @@ namespace com.android.ex.chips
 		{
 			if (mMoreChip != null)
 			{
-				ISpannable span = getSpannable();
+				ISpannable span = Spannable;
 				span.RemoveSpan(mMoreChip);
 				mMoreChip = null;
 				// Re-add the spans that were removed.
@@ -188,7 +188,7 @@ namespace com.android.ex.chips
 
 		private ImageSpan getMoreChip()
 		{
-			MoreImageSpan[] moreSpans = (MoreImageSpan[])getSpannable().GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>();
+			MoreImageSpan[] moreSpans = (MoreImageSpan[])Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>();
 			return moreSpans != null && moreSpans.Length > 0 ? moreSpans[0] : null;
 		}
 
