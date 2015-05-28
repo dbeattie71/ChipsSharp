@@ -41,8 +41,8 @@ namespace com.android.ex.chips
 
 				var recipientsList = new List<DrawableChipSpan>(chipSpans.ToList());
 
-				if (mRemovedSpans != null)
-					recipientsList.AddRange(mRemovedSpans);
+				if (_removedSpans != null)
+					recipientsList.AddRange(_removedSpans);
 
 				return recipientsList.ToArray();
 			}
@@ -127,7 +127,7 @@ namespace com.android.ex.chips
 			DrawableChipSpan newChipSpan;
 			try
 			{
-				if (mNoChips)
+				if (_noChips)
 				{
 					return null;
 				}
@@ -153,7 +153,7 @@ namespace com.android.ex.chips
 			{
 				scrollLineIntoView(Layout.GetLineForOffset(GetChipStart(newChipSpan)));
 			}
-			showAddress(newChipSpan, mAddressPopup, Width);
+			showAddress(newChipSpan, _addressPopup, Width);
 			SetCursorVisible(false);
 			return newChipSpan;
 
@@ -236,7 +236,7 @@ namespace com.android.ex.chips
 			int start = GetChipStart(chipSpan);
 			int end = GetChipEnd(chipSpan);
 			IEditable editable = EditableText;
-			mSelectedChip = null;
+			_selectedChip = null;
 			if (start == -1 || end == -1)
 			{
 				//Log.w(TAG, "The chip doesn't exist or may be a chip a user was editing");
@@ -250,7 +250,7 @@ namespace com.android.ex.chips
 				editable.RemoveSpan(chipSpan);
 				try
 				{
-					if (!mNoChips)
+					if (!_noChips)
 					{
 						editable.SetSpan(ConstructChipSpan(chipSpan.getEntry(), false, false), start, end, SpanTypes.ExclusiveExclusive);
 					}
@@ -262,18 +262,18 @@ namespace com.android.ex.chips
 			}
 			SetCursorVisible(true);
 			SetSelection(editable.Length());
-			if (mAlternatesPopup != null && mAlternatesPopup.IsShowing)
+			if (_alternatesPopup != null && _alternatesPopup.IsShowing)
 			{
-				mAlternatesPopup.Dismiss();
+				_alternatesPopup.Dismiss();
 			}
 		}
 
 		private void ReplaceChip(DrawableChipSpan chipSpan, IChipEntry entry)
 		{
-			bool wasSelected = chipSpan == mSelectedChip;
+			bool wasSelected = chipSpan == _selectedChip;
 			if (wasSelected)
 			{
-				mSelectedChip = null;
+				_selectedChip = null;
 			}
 			int start = GetChipStart(chipSpan);
 			int end = GetChipEnd(chipSpan);
@@ -317,11 +317,11 @@ namespace com.android.ex.chips
 			int spanEnd = spannable.GetSpanEnd((Object)chipSpan);
 			IEditable text = EditableText;
 			int toDelete = spanEnd;
-			bool wasSelected = chipSpan == mSelectedChip;
+			bool wasSelected = chipSpan == _selectedChip;
 			// Clear that there is a selected chip before updating any text.
 			if (wasSelected)
 			{
-				mSelectedChip = null;
+				_selectedChip = null;
 			}
 			// Always remove trailing spaces when removing a chip.
 			while (toDelete >= 0 && toDelete < text.Length() && text.CharAt(toDelete) == ' ')
@@ -341,10 +341,10 @@ namespace com.android.ex.chips
 
 		internal void ClearSelectedChip()
 		{
-			if (mSelectedChip != null)
+			if (_selectedChip != null)
 			{
-				UnselectChip(mSelectedChip);
-				mSelectedChip = null;
+				UnselectChip(_selectedChip);
+				_selectedChip = null;
 			}
 			SetCursorVisible(true);
 		}
@@ -362,7 +362,7 @@ namespace com.android.ex.chips
 			// Always leave a blank space at the end of a chip.
 			int textLength = displayText.Length - 1;
 			chipText = new SpannableString(displayText);
-			if (!mNoChips)
+			if (!_noChips)
 			{
 				try
 				{
@@ -410,7 +410,7 @@ namespace com.android.ex.chips
 			result.SetBounds(0, 0, tmpBitmap.Width, tmpBitmap.Height + 2 * chipInset);
 
 			//DrawableRecipientChip recipientChip = new VisibleRecipientChip(result, contact, getImageSpanAlignment());
-			DrawableChipSpan chipSpan = new VisibleChipSpan(result, contact, mImageSpanAlignment);
+			DrawableChipSpan chipSpan = new VisibleChipSpan(result, contact, _imageSpanAlignment);
 			// Return text to the original size.
 			paint.TextSize = defaultSize;
 			paint.Color = new Color(defaultColor);
@@ -421,16 +421,16 @@ namespace com.android.ex.chips
 		{
 			paint.Color = new Color(sSelectedTextColor);
 			Bitmap photo;
-			if (mDisableDelete)
+			if (_disableDelete)
 			{
 				// Show the avatar instead if we don't want to delete
 				photo = GetAvatarIcon(contact);
 			}
 			else
 			{
-				photo = ((BitmapDrawable)mChipDelete).Bitmap;
+				photo = ((BitmapDrawable)_chipDelete).Bitmap;
 			}
-			return CreateChipBitmap(contact, paint, photo, mChipBackgroundPressed);
+			return CreateChipBitmap(contact, paint, photo, _chipBackgroundPressed);
 		}
 
 		private Bitmap CreateUnselectedChip(IChipEntry contact, TextPaint paint,
@@ -470,11 +470,11 @@ namespace com.android.ex.chips
 			//	else
 			//	{
 			//		// TODO: can the scaled down default photo be cached?
-			return mDefaultContactPhoto;
+			return _defaultContactPhoto;
 			//	}
 			//}
 
-			return mNoAvatarPicture;
+			return _noAvatarPicture;
 		}
 
 		protected Bitmap CreateChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
@@ -484,7 +484,7 @@ namespace com.android.ex.chips
 			{
 				//Log.w(TAG, "Unable to draw a background for the chips as it was never set");
 				return Bitmap.CreateBitmap(
-					(int)mChipHeight * 2, (int)mChipHeight, Bitmap.Config.Argb8888);
+					(int)_chipHeight * 2, (int)_chipHeight, Bitmap.Config.Argb8888);
 			}
 
 			Rect backgroundPadding = new Rect();
@@ -493,14 +493,14 @@ namespace com.android.ex.chips
 			// Ellipsize the text so that it takes AT MOST the entire width of the
 			// autocomplete text entry area. Make sure to leave space for padding
 			// on the sides.
-			int height = (int)mChipHeight + Resources.GetDimensionPixelSize(Resource.Dimension.extra_chip_height);
+			int height = (int)_chipHeight + Resources.GetDimensionPixelSize(Resource.Dimension.extra_chip_height);
 
 			// Compute the space needed by the more chip before ellipsizing
 			//String moreText = new String(String.Format(mMoreItem.Text, mMaxChipsAllowed));
-			String moreText = String.Format(mMoreItem.Text, mMaxChipsAllowed);
+			String moreText = String.Format(_moreItem.Text, _maxChipsAllowed);
 			TextPaint morePaint = new TextPaint(Paint);
-			morePaint.TextSize = mMoreItem.TextSize;
-			int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
+			morePaint.TextSize = _moreItem.TextSize;
+			int moreChipWidth = (int)morePaint.MeasureText(moreText) + _moreItem.PaddingLeft + _moreItem.PaddingRight;
 
 			// Since the icon is a square, it's width is equal to the maximum height it can be inside
 			// the chip.
@@ -516,7 +516,7 @@ namespace com.android.ex.chips
 
 			// Make sure there is a minimum chip width so the user can ALWAYS
 			// tap a chip without difficulty.
-			int width = Math.Max(iconWidth * 2, textWidth + (mChipPadding * 2) + iconWidth
+			int width = Math.Max(iconWidth * 2, textWidth + (_chipPadding * 2) + iconWidth
 											  + backgroundPadding.Left + backgroundPadding.Right);
 
 			// Create the background of the chip.
@@ -528,8 +528,8 @@ namespace com.android.ex.chips
 			background.Draw(canvas);
 			// Draw the text vertically aligned
 			var x = ShouldPositionAvatarOnRight()
-				? mChipPadding + backgroundPadding.Left
-				: width - backgroundPadding.Right - mChipPadding - textWidth;
+				? _chipPadding + backgroundPadding.Left
+				: width - backgroundPadding.Right - _chipPadding - textWidth;
 			var y = GetTextYOffset(ellipsizedText, paint, height);
 			paint.Color = Color.ParseColor("#FF5C5C5C");
 			paint.AntiAlias = true;
@@ -572,7 +572,7 @@ namespace com.android.ex.chips
 		private bool ShouldPositionAvatarOnRight()
 		{
 			bool isRtl = Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1 && LayoutDirection == LayoutDirection.Rtl;
-			bool assignedPosition = mAvatarPosition == AVATAR_POSITION_END;
+			bool assignedPosition = _avatarPosition == AvatarPositionEnd;
 			// If in Rtl mode, the position should be flipped.
 			return isRtl ? !assignedPosition : assignedPosition;
 		}
@@ -611,9 +611,9 @@ namespace com.android.ex.chips
 			//}
 
 			int index = trimmedDisplayText.IndexOf(",");
-			if (mTokenizer != null && !TextUtils.IsEmpty(trimmedDisplayText) && index < trimmedDisplayText.Length - 1)
+			if (_tokenizer != null && !TextUtils.IsEmpty(trimmedDisplayText) && index < trimmedDisplayText.Length - 1)
 			{
-				return mTokenizer.TerminateToken(trimmedDisplayText);
+				return _tokenizer.TerminateToken(trimmedDisplayText);
 			}
 			else
 			{
@@ -658,10 +658,10 @@ namespace com.android.ex.chips
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
 				int end;
-				mMoreChip = GetMoreChip();
-				if (mMoreChip != null)
+				_moreChip = GetMoreChip();
+				if (_moreChip != null)
 				{
-					end = spannable.GetSpanEnd(mMoreChip);
+					end = spannable.GetSpanEnd(_moreChip);
 				}
 				else
 				{

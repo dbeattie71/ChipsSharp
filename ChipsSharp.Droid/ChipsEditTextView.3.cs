@@ -15,13 +15,13 @@ namespace com.android.ex.chips
 	{
 		private void CreateMoreChip()
 		{
-			if (mNoChips)
+			if (_noChips)
 			{
 				CreateMoreChipPlainText();
 				return;
 			}
 
-			if (!mShouldShrink)
+			if (!_shouldShrink)
 			{
 				return;
 			}
@@ -43,7 +43,7 @@ namespace com.android.ex.chips
 			int chipLimit = 0;
 			for (int i = 0; i < chipSpans.Length; i++)
 			{
-				if (totalChipLength + chipSpans[i].getBounds().Right + blankSpaceWidth < (fieldWidth * getShrinkMaxLines()))
+				if (totalChipLength + chipSpans[i].getBounds().Right + blankSpaceWidth < (fieldWidth * _shrinkMaxLines))
 				{
 					totalChipLength += chipSpans[i].getBounds().Right + blankSpaceWidth;
 					chipLimit = i + 1;
@@ -56,7 +56,7 @@ namespace com.android.ex.chips
 
 			if (chipSpans == null || chipSpans.Length <= chipLimit)
 			{
-				mMoreChip = null;
+				_moreChip = null;
 				return;
 			}
 
@@ -65,31 +65,31 @@ namespace com.android.ex.chips
 			int overage = numRecipients - chipLimit;
 
 			// Now checks if the moreSpan is not too big for the available space
-			String moreText = String.Format(mMoreItem.Text, overage);
+			String moreText = String.Format(_moreItem.Text, overage);
 			TextPaint morePaint = new TextPaint(Paint);
-			morePaint.TextSize = mMoreItem.TextSize;
-			int moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft + mMoreItem.PaddingRight;
+			morePaint.TextSize = _moreItem.TextSize;
+			int moreChipWidth = (int)morePaint.MeasureText(moreText) + _moreItem.PaddingLeft + _moreItem.PaddingRight;
 
 			MoreImageSpan moreSpan;
-			while (totalChipLength + moreChipWidth >= (fieldWidth * getShrinkMaxLines()))
+			while (totalChipLength + moreChipWidth >= (fieldWidth * _shrinkMaxLines))
 			{
 				totalChipLength -= chipSpans[chipLimit - 1].getBounds().Right;
 				chipLimit--;
 				overage++;
-				moreText = String.Format(mMoreItem.Text, overage);
-				moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
-								+ mMoreItem.PaddingRight;
+				moreText = String.Format(_moreItem.Text, overage);
+				moreChipWidth = (int)morePaint.MeasureText(moreText) + _moreItem.PaddingLeft
+								+ _moreItem.PaddingRight;
 			}
 			moreSpan = CreateMoreSpan(overage);
 
-			mRemovedSpans = new List<DrawableChipSpan>();
+			_removedSpans = new List<DrawableChipSpan>();
 			int totalReplaceStart = 0;
 			int totalReplaceEnd = 0;
 			IEditable text = EditableText;
 
 			for (int i = numRecipients - overage; i < numRecipients; i++)
 			{
-				mRemovedSpans.Add(chipSpans[i]);
+				_removedSpans.Add(chipSpans[i]);
 				if (i == numRecipients - overage)
 				{
 					totalReplaceStart = spannable.GetSpanStart(chipSpans[i]);
@@ -117,7 +117,7 @@ namespace com.android.ex.chips
 			SpannableString chipText = new SpannableString(text.SubSequence(start, end));
 			chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
 			text.Replace(start, end, chipText);
-			mMoreChip = moreSpan;
+			_moreChip = moreSpan;
 			// If adding the +more chip goes over the limit, resize accordingly.
 
 
@@ -135,7 +135,7 @@ namespace com.android.ex.chips
 			int end = start;
 			for (int i = 0; i < CHIP_LIMIT; i++)
 			{
-				end = movePastTerminators(mTokenizer.FindTokenEnd(text, start));
+				end = movePastTerminators(_tokenizer.FindTokenEnd(text, start));
 				start = end; // move to the next token and get its end.
 			}
 			// Now, count total addresses.
@@ -144,18 +144,18 @@ namespace com.android.ex.chips
 			SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
 			chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
 			text.Replace(end, text.Length(), chipText);
-			mMoreChip = moreSpan;
+			_moreChip = moreSpan;
 		}
 
 		private MoreImageSpan CreateMoreSpan(int count)
 		{
-			var moreText = Java.Lang.String.Format(mMoreItem.Text, count);
+			var moreText = Java.Lang.String.Format(_moreItem.Text, count);
 
 			TextPaint morePaint = new TextPaint(Paint);
-			morePaint.TextSize = mMoreItem.TextSize;
-			morePaint.Color = new Color(mMoreItem.CurrentTextColor);
-			int width = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
-						+ mMoreItem.PaddingRight;
+			morePaint.TextSize = _moreItem.TextSize;
+			morePaint.Color = new Color(_moreItem.CurrentTextColor);
+			int width = (int)morePaint.MeasureText(moreText) + _moreItem.PaddingLeft
+						+ _moreItem.PaddingRight;
 
 			int height;
 			int adjustedHeight;
@@ -183,13 +183,13 @@ namespace com.android.ex.chips
 
 		public void RemoveMoreChip()
 		{
-			if (mMoreChip != null)
+			if (_moreChip != null)
 			{
 				ISpannable span = Spannable;
-				span.RemoveSpan(mMoreChip);
-				mMoreChip = null;
+				span.RemoveSpan(_moreChip);
+				_moreChip = null;
 				// Re-add the spans that were removed.
-				if (mRemovedSpans != null && mRemovedSpans.Count > 0)
+				if (_removedSpans != null && _removedSpans.Count > 0)
 				{
 					// Recreate each removed span.
 					//DrawableChipSpan[] recipients = getSortedVisibleRecipients();
@@ -204,7 +204,7 @@ namespace com.android.ex.chips
 					int end = span.GetSpanEnd(chipSpans[chipSpans.Length - 1]);
 					IEditable editable = EditableText;
 
-					foreach (var chip in mRemovedSpans)
+					foreach (var chip in _removedSpans)
 					{
 						int chipStart;
 						int chipEnd;
@@ -225,7 +225,7 @@ namespace com.android.ex.chips
 						}
 					}
 
-					mRemovedSpans.Clear();
+					_removedSpans.Clear();
 				}
 			}
 		}

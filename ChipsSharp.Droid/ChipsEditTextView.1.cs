@@ -61,96 +61,96 @@ namespace com.android.ex.chips
 		// Resources for displaying chips.
 		private Drawable _chipBackground;
 
-		private Drawable mChipDelete = null;
+		private Drawable _chipDelete;
 
-		private Drawable mInvalidChipBackground;
+		private Drawable _invalidChipBackground;
 
-		protected Drawable mChipBackgroundPressed;
+		protected Drawable _chipBackgroundPressed;
 
-		private float mChipHeight;
+		private float _chipHeight;
 
-		private float mChipFontSize;
+		private float _chipFontSize;
 
-		private string mChipEntryErrorHint;
+		//private string _chipEntryErrorHint;
 
-		private string mChipOverLimitErrorHint;
+		//private string _chipOverLimitErrorHint;
 
-		private float mLineSpacingExtra;
+		private float _lineSpacingExtra;
 
-		private int mChipPadding;
+		private int _chipPadding;
 
 		// Enumerator for avatar position. See attr.xml for more details. 0 for end, 1 for start.
-		private int mAvatarPosition;
+		private int _avatarPosition;
 
-		private static int AVATAR_POSITION_END = 0;
+		private const int AvatarPositionEnd = 0;
 
-		private static int AVATAR_POSITION_START = 1;
+		private const int AvatarPositionStart = 1;
 
 		// Enumerator for image span alignment. See attr.xml for more details. 0 for bottom, 1 for baseline.
-		private SpanAlign mImageSpanAlignment;
+		private SpanAlign _imageSpanAlignment;
 
-		private static int IMAGE_SPAN_ALIGNMENT_BOTTOM = 0;
+		//private const int IMAGE_SPAN_ALIGNMENT_BOTTOM = 0;
 
-		private static int IMAGE_SPAN_ALIGNMENT_BASELINE = 1;
+		//private const int IMAGE_SPAN_ALIGNMENT_BASELINE = 1;
 
-		private bool mDisableDelete;
+		private bool _disableDelete;
 
-		private ITokenizer mTokenizer;
+		private ITokenizer _tokenizer;
 
-		private IValidator mValidator;
+		private IValidator _validator;
 
-		internal DrawableChipSpan mSelectedChip;
+		internal DrawableChipSpan _selectedChip;
 
-		private Bitmap mDefaultContactPhoto, mNoAvatarPicture;
+		private Bitmap _defaultContactPhoto, _noAvatarPicture;
 
-		internal ImageSpan mMoreChip;
+		internal ImageSpan _moreChip;
 
-		private TextView mMoreItem;
+		private TextView _moreItem;
 
-		private Handler mHandler;
+		private Handler _handler;
 
-		private bool mNoChips = false;
+		private bool _noChips = false;
 
-		private ListPopupWindow mAlternatesPopup;
+		private ListPopupWindow _alternatesPopup;
 
-		private ListPopupWindow mAddressPopup;
+		private ListPopupWindow _addressPopup;
 
 		//private List<DrawableRecipientChip> mTemporaryRecipients;
 
-		private List<DrawableChipSpan> mRemovedSpans;
+		private List<DrawableChipSpan> _removedSpans;
 
-		private bool mShouldShrink = true;
+		private bool _shouldShrink = true;
 
-		private GestureDetector mGestureDetector;
+		private GestureDetector _gestureDetector;
 
 		// Used with {@link #mAlternatesPopup}. Handles clicks to alternate addresses for a selected chip.
-		private AdapterView.IOnItemClickListener mAlternatesListener;
+		private AdapterView.IOnItemClickListener _alternatesListener;
 
-		private int mCheckedItem;
+		private int _checkedItem;
 
 		// Obtain the enclosing scroll view, if it exists, so that the view can be
 		// scrolled to show the last line of chips content.
-		private ScrollView mScrollView;
+		private ScrollView _scrollView;
 
 		private bool mTriedGettingScrollView;
 
-		private System.Action mDelayedShrink;
+		private System.Action _delayedShrink;
 
-		private int mMaxLines;
+		private int _maxLines;
 
-		private int mShrinkMaxLines = 1;
+		private int _shrinkMaxLines = 1;
 
-		private int mMaxChipsAllowed = 99;
+		private int _maxChipsAllowed = 99;
 
-		private static int sExcessTopPadding = -1;
+		private static int _excessTopPadding = -1;
 
-		private int mActionBarHeight;
+		private int _actionBarHeight;
 
-		private bool mAttachedToWindow;
+		private bool _attachedToWindow;
 
-		private bool mDismissPopupOnClick = true;
+		private bool _dismissPopupOnClick = true;
 
-		private ItemSelectedListener itemSelectedListener;
+		private ItemSelectedListener _itemSelectedListener;
 
 		protected ChipsEditTextView(IntPtr javaReference, JniHandleOwnership transfer)
 			: base(javaReference, transfer)
@@ -163,7 +163,7 @@ namespace com.android.ex.chips
 			TextChanged += OnTextChanged;
 			AfterTextChanged += OnAfterTextChanged;
 
-			mDelayedShrink = shrink;
+			_delayedShrink = shrink;
 
 			//// TODO: would be nice to show chips as an example here
 			//if (IsInEditMode)
@@ -177,27 +177,27 @@ namespace com.android.ex.chips
 				sSelectedTextColor = context.Resources.GetColor(Android.Resource.Color.White);
 			}
 
-			mAlternatesPopup = new ListPopupWindow(context);
-			mAddressPopup = new ListPopupWindow(context);
+			_alternatesPopup = new ListPopupWindow(context);
+			_addressPopup = new ListPopupWindow(context);
 			
 			InputType = InputType | InputTypes.TextFlagNoSuggestions;
 			OnItemClickListener = this;
 			CustomSelectionActionModeCallback = this;
-			mGestureDetector = new GestureDetector(context, this);
+			_gestureDetector = new GestureDetector(context, this);
 			SetOnEditorActionListener(this);
 		}
 
 		protected override void OnDetachedFromWindow()
 		{
 			base.OnDetachedFromWindow();
-			mAttachedToWindow = false;
+			_attachedToWindow = false;
 		}
 
 
 		protected override void OnAttachedToWindow()
 		{
 			base.OnAttachedToWindow();
-			mAttachedToWindow = true;
+			_attachedToWindow = true;
 		}
 
 		public bool OnEditorAction(TextView v, ImeAction action, KeyEvent e)
@@ -208,7 +208,7 @@ namespace com.android.ex.chips
 				//{
 				//	return true;
 				//}
-				if (mSelectedChip != null)
+				if (_selectedChip != null)
 				{
 					ClearSelectedChip();
 					return true;
@@ -347,11 +347,11 @@ namespace com.android.ex.chips
 
 		private int getExcessTopPadding()
 		{
-			if (sExcessTopPadding == -1)
+			if (_excessTopPadding == -1)
 			{
-				sExcessTopPadding = (int)(mChipHeight + mLineSpacingExtra);
+				_excessTopPadding = (int)(_chipHeight + _lineSpacingExtra);
 			}
-			return sExcessTopPadding;
+			return _excessTopPadding;
 		}
 
 		//public <T extends ListAdapter & Filterable> void setAdapter(T adapter) {
@@ -387,7 +387,7 @@ namespace com.android.ex.chips
 
 		protected void scrollBottomIntoView()
 		{
-			if (mScrollView != null && mShouldShrink)
+			if (_scrollView != null && _shouldShrink)
 			{
 				int[] location = new int[2];
 				GetLocationOnScreen(location);
@@ -396,17 +396,17 @@ namespace com.android.ex.chips
 				// Desired position shows at least 1 line of chips below the action
 				// bar. We add excess padding to make sure this is always below other
 				// content.
-				int desiredPos = (int)mChipHeight + mActionBarHeight + getExcessTopPadding();
+				int desiredPos = (int)_chipHeight + _actionBarHeight + getExcessTopPadding();
 				if (currentPos > desiredPos)
 				{
-					mScrollView.ScrollBy(0, currentPos - desiredPos);
+					_scrollView.ScrollBy(0, currentPos - desiredPos);
 				}
 			}
 		}
 
 		protected ScrollView getScrollView()
 		{
-			return mScrollView;
+			return _scrollView;
 		}
 
 
@@ -417,7 +417,7 @@ namespace com.android.ex.chips
 
 		private void shrink()
 		{
-			if (mTokenizer == null)
+			if (_tokenizer == null)
 			{
 				return;
 			}
@@ -447,8 +447,8 @@ namespace com.android.ex.chips
 				// This focus lost must be the result of an orientation change
 				// or an initial rendering.
 				// Re-post the shrink for later.
-				mHandler.RemoveCallbacks(mDelayedShrink);
-				mHandler.Post(mDelayedShrink);
+				_handler.RemoveCallbacks(_delayedShrink);
+				_handler.Post(_delayedShrink);
 				return;
 			}
 			// Reset any pending chips as they would have been handled
@@ -461,12 +461,12 @@ namespace com.android.ex.chips
 			//{
 			IEditable editable = EditableText;
 			int end = SelectionEnd;
-			int start = mTokenizer.FindTokenStart(editable, end);
+			int start = _tokenizer.FindTokenStart(editable, end);
 			var chips = Spannable.GetSpans(start, end, Class.FromType(typeof(DrawableChipSpan))).Cast<DrawableChipSpan>().ToArray();
 			if ((chips.Length == 0))
 			{
 				IEditable text = EditableText;
-				int whatEnd = mTokenizer.FindTokenEnd(text, start);
+				int whatEnd = _tokenizer.FindTokenEnd(text, start);
 				// This token was already tokenized, so skip past the ending token.
 				if (whatEnd < text.Length() && text.CharAt(whatEnd) == ',')
 				{
@@ -475,7 +475,7 @@ namespace com.android.ex.chips
 
 				// In the middle of chip; treat this as an edit
 				// and commit the whole token if it is not only spaces
-				bool isOverMaxNumberOfChips = AllChipSpans.Length >= mMaxChipsAllowed;
+				bool isOverMaxNumberOfChips = AllChipSpans.Length >= _maxChipsAllowed;
 				//if (!isOverMaxNumberOfChips && !editable.SubSequence(start, end).Trim().isEmpty())
 				//if (!isOverMaxNumberOfChips && !string.IsNullOrEmpty(editable.SubSequence(start, end).Trim()))
 				//{
@@ -504,7 +504,7 @@ namespace com.android.ex.chips
 
 		private void expand()
 		{
-			if (mShouldShrink)
+			if (_shouldShrink)
 			{
 				SetMaxLines(Integer.MaxValue);
 			}
@@ -524,7 +524,7 @@ namespace com.android.ex.chips
 		//private ICharSequence EllipsizeText(ICharSequence text, TextPaint paint, float maxWidth)
 		private string EllipsizeText(string text, TextPaint paint, float maxWidth)
 		{
-			paint.TextSize = mChipFontSize;
+			paint.TextSize = _chipFontSize;
 			//if (maxWidth <= 0 && Log.isLoggable(TAG, Log.DEBUG))
 			//{
 			//	Log.d(TAG, "Max width is negative: " + maxWidth);
@@ -543,7 +543,7 @@ namespace com.android.ex.chips
 		{
 			// Line offsets start at zero.
 			int actualLine = LineCount - (line + 1);
-			return -((actualLine * ((int)mChipHeight) + PaddingBottom) + PaddingTop)
+			return -((actualLine * ((int)_chipHeight) + PaddingBottom) + PaddingTop)
 				   + DropDownVerticalOffset;
 		}
 
@@ -554,7 +554,7 @@ namespace com.android.ex.chips
      */
 		private float calculateAvailableWidth()
 		{
-			return Width - PaddingLeft - PaddingRight - (mChipPadding * 2);
+			return Width - PaddingLeft - PaddingRight - (_chipPadding * 2);
 		}
 
 		private void setChipDimensions(Context context, IAttributeSet attrs)
@@ -567,37 +567,37 @@ namespace com.android.ex.chips
 			{
 				_chipBackground = r.GetDrawable(Resource.Drawable.chip_background);
 			}
-			mChipBackgroundPressed = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipBackgroundPressed);
-			if (mChipBackgroundPressed == null)
+			_chipBackgroundPressed = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipBackgroundPressed);
+			if (_chipBackgroundPressed == null)
 			{
-				mChipBackgroundPressed = r.GetDrawable(Resource.Drawable.chip_background_selected);
+				_chipBackgroundPressed = r.GetDrawable(Resource.Drawable.chip_background_selected);
 			}
-			mChipDelete = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipDelete);
-			if (mChipDelete == null)
+			_chipDelete = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipDelete);
+			if (_chipDelete == null)
 			{
-				mChipDelete = r.GetDrawable(Resource.Drawable.chip_delete);
+				_chipDelete = r.GetDrawable(Resource.Drawable.chip_delete);
 			}
-			mChipPadding = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipPadding, -1);
-			if (mChipPadding == -1)
+			_chipPadding = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipPadding, -1);
+			if (_chipPadding == -1)
 			{
-				mChipPadding = (int)r.GetDimension(Resource.Dimension.chip_padding);
+				_chipPadding = (int)r.GetDimension(Resource.Dimension.chip_padding);
 			}
 
-			mDefaultContactPhoto = BitmapFactory.DecodeResource(r, Resource.Drawable.ic_contact_picture);
+			_defaultContactPhoto = BitmapFactory.DecodeResource(r, Resource.Drawable.ic_contact_picture);
 
-			mNoAvatarPicture = BitmapFactory.DecodeResource(r, Resource.Drawable.no_avatar_picture);
+			_noAvatarPicture = BitmapFactory.DecodeResource(r, Resource.Drawable.no_avatar_picture);
 
-			mMoreItem = (TextView)LayoutInflater.From(Context).Inflate(Resource.Layout.more_item, null);
+			_moreItem = (TextView)LayoutInflater.From(Context).Inflate(Resource.Layout.more_item, null);
 
-			mChipHeight = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipHeight, -1);
-			if (mChipHeight == -1)
+			_chipHeight = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipHeight, -1);
+			if (_chipHeight == -1)
 			{
-				mChipHeight = r.GetDimension(Resource.Dimension.chip_height);
+				_chipHeight = r.GetDimension(Resource.Dimension.chip_height);
 			}
-			mChipFontSize = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipFontSize, -1);
-			if (mChipFontSize == -1)
+			_chipFontSize = a.GetDimensionPixelSize(Resource.Styleable.RecipientEditTextView_chipFontSize, -1);
+			if (_chipFontSize == -1)
 			{
-				mChipFontSize = r.GetDimension(Resource.Dimension.chip_text_size);
+				_chipFontSize = r.GetDimension(Resource.Dimension.chip_text_size);
 			}
 
 			//mChipEntryErrorHint = new String(a.GetString(Resource.Styleable.RecipientEditTextView_chipEntryErrorHint));
@@ -613,22 +613,22 @@ namespace com.android.ex.chips
 			//	mChipOverLimitErrorHint = new String(context.GetString(Resource.String.error_over_chips_limit));
 			//}
 
-			mInvalidChipBackground = a.GetDrawable(Resource.Styleable.RecipientEditTextView_invalidChipBackground);
-			if (mInvalidChipBackground == null)
+			_invalidChipBackground = a.GetDrawable(Resource.Styleable.RecipientEditTextView_invalidChipBackground);
+			if (_invalidChipBackground == null)
 			{
-				mInvalidChipBackground = r.GetDrawable(Resource.Drawable.chip_background_invalid);
+				_invalidChipBackground = r.GetDrawable(Resource.Drawable.chip_background_invalid);
 			}
 
-			mAvatarPosition = a.GetInt(Resource.Styleable.RecipientEditTextView_avatarPosition, 1);
-			mImageSpanAlignment = (SpanAlign)a.GetInt(Resource.Styleable.RecipientEditTextView_imageSpanAlignment, 0);
-			mDisableDelete = a.GetBoolean(Resource.Styleable.RecipientEditTextView_disableDelete, false);
+			_avatarPosition = a.GetInt(Resource.Styleable.RecipientEditTextView_avatarPosition, 1);
+			_imageSpanAlignment = (SpanAlign)a.GetInt(Resource.Styleable.RecipientEditTextView_imageSpanAlignment, 0);
+			_disableDelete = a.GetBoolean(Resource.Styleable.RecipientEditTextView_disableDelete, false);
 
-			mLineSpacingExtra = r.GetDimension(Resource.Dimension.line_spacing_extra);
-			mMaxLines = r.GetInteger(Resource.Integer.chips_max_lines);
+			_lineSpacingExtra = r.GetDimension(Resource.Dimension.line_spacing_extra);
+			_maxLines = r.GetInteger(Resource.Integer.chips_max_lines);
 			TypedValue tv = new TypedValue();
 			if (context.Theme.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, tv, true))
 			{
-				mActionBarHeight = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
+				_actionBarHeight = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
 			}
 
 			a.Recycle();
@@ -636,7 +636,7 @@ namespace com.android.ex.chips
 
 		private void setMoreItem(TextView moreItem)
 		{
-			mMoreItem = moreItem;
+			_moreItem = moreItem;
 		}
 
 
@@ -651,35 +651,35 @@ namespace com.android.ex.chips
 		//	return ChipBackground;
 		//}
 
-		protected void setChipHeight(int height)
-		{
-			mChipHeight = height;
-		}
+		//protected void setChipHeight(int height)
+		//{
+		//	_chipHeight = height;
+		//}
 
-		public float getChipHeight()
-		{
-			return mChipHeight;
-		}
+		//public float getChipHeight()
+		//{
+		//	return _chipHeight;
+		//}
 
-		public void setMaxNumberOfChipsAllowed(int numberOfChipsAllowed)
-		{
-			mMaxChipsAllowed = numberOfChipsAllowed;
-		}
+		//public void setMaxNumberOfChipsAllowed(int numberOfChipsAllowed)
+		//{
+		//	mMaxChipsAllowed = numberOfChipsAllowed;
+		//}
 
-		public int getMaxNumberOfChipsAllowed()
-		{
-			return mMaxChipsAllowed;
-		}
+		//public int getMaxNumberOfChipsAllowed()
+		//{
+		//	return mMaxChipsAllowed;
+		//}
 
-		public int getShrinkMaxLines()
-		{
-			return mShrinkMaxLines;
-		}
+		//public int getShrinkMaxLines()
+		//{
+		//	return mShrinkMaxLines;
+		//}
 
-		public void setShrinkMaxLines(int shrinkMaxLines)
-		{
-			mShrinkMaxLines = shrinkMaxLines;
-		}
+		//public void setShrinkMaxLines(int shrinkMaxLines)
+		//{
+		//	mShrinkMaxLines = shrinkMaxLines;
+		//}
 
 		/**
      * Set whether to shrink the recipients field such that at most
@@ -690,7 +690,7 @@ namespace com.android.ex.chips
      */
 		public void setOnFocusListShrinkRecipients(bool shrink)
 		{
-			mShouldShrink = shrink;
+			_shouldShrink = shrink;
 		}
 
 		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
@@ -709,7 +709,7 @@ namespace com.android.ex.chips
 				//}
 			}
 			// Try to find the scroll view parent, if it exists.
-			if (mScrollView == null && !mTriedGettingScrollView)
+			if (_scrollView == null && !mTriedGettingScrollView)
 			{
 				IViewParent parent = Parent;
 				while (parent != null && !(parent is ScrollView))
@@ -718,7 +718,7 @@ namespace com.android.ex.chips
 				}
 				if (parent != null)
 				{
-					mScrollView = (ScrollView)parent;
+					_scrollView = (ScrollView)parent;
 				}
 				mTriedGettingScrollView = true;
 			}
@@ -768,12 +768,12 @@ namespace com.android.ex.chips
 			// Unable to validate the token or to create a valid token from it.
 			// Just create a chip the user can edit.
 			String validatedToken = null;
-			if (mValidator != null && !isValid)
+			if (_validator != null && !isValid)
 			{
 				// Try fixing up the entry using the validator.
 				var foo = new Java.Lang.String(token);
 				//validatedToken = new String(mValidator.FixTextFormatted(token).ToString());
-				validatedToken = mValidator.FixTextFormatted(new Java.Lang.String(token)).ToString();
+				validatedToken = _validator.FixTextFormatted(new Java.Lang.String(token)).ToString();
 				if (!TextUtils.IsEmpty(validatedToken))
 				{
 					if (validatedToken.Contains(token))
@@ -808,7 +808,7 @@ namespace com.android.ex.chips
 
 		private bool IsValid(String text)
 		{
-			return mValidator == null || mValidator.IsValid(text);
+			return _validator == null || _validator.IsValid(text);
 		}
 
 		//private static String tokenizeAddress(String destination)
@@ -823,7 +823,7 @@ namespace com.android.ex.chips
 
 		public override void SetTokenizer(ITokenizer t)
 		{
-			mTokenizer = t;
+			_tokenizer = t;
 			base.SetTokenizer(t);
 		}
 
@@ -844,7 +844,7 @@ namespace com.android.ex.chips
      */
 		public override bool OnKeyPreIme(Keycode keyCode, KeyEvent @event)
 		{
-			if (keyCode == Keycode.Back && mSelectedChip != null)
+			if (keyCode == Keycode.Back && _selectedChip != null)
 			{
 				ClearSelectedChip();
 				return true;
@@ -869,7 +869,7 @@ namespace com.android.ex.chips
 				case Keycode.Tab:
 					if (@event.HasNoModifiers)
 					{
-						if (mSelectedChip != null)
+						if (_selectedChip != null)
 						{
 							ClearSelectedChip();
 						}
@@ -932,7 +932,7 @@ namespace com.android.ex.chips
 		private void commitByCharacter()
 		{
 			// We can't possibly commit by character if we can't tokenize.
-			if (mTokenizer == null)
+			if (_tokenizer == null)
 			{
 				return;
 			}
@@ -941,7 +941,7 @@ namespace com.android.ex.chips
 
 			IEditable editable = EditableText;
 			int end = SelectionEnd;
-			int start = mTokenizer.FindTokenStart(editable, end);
+			int start = _tokenizer.FindTokenStart(editable, end);
 
 			if (shouldCreateChip(start, end))
 			{
@@ -966,7 +966,7 @@ namespace com.android.ex.chips
 		protected bool commitChip(int start, int end, IEditable editable)
 		{
 			// Check if there is not already too many chips
-			if (AllChipSpans.Length >= mMaxChipsAllowed)
+			if (AllChipSpans.Length >= _maxChipsAllowed)
 			{
 				return false;
 			}
@@ -1079,7 +1079,7 @@ namespace com.android.ex.chips
 
 		private bool shouldCreateChip(int start, int end)
 		{
-			return !mNoChips && HasFocus && EnoughToFilter() && !alreadyHasChip(start, end) && !notEnoughCharactersWhenTrimmed(start, end);
+			return !_noChips && HasFocus && EnoughToFilter() && !alreadyHasChip(start, end) && !notEnoughCharactersWhenTrimmed(start, end);
 		}
 
 		private bool notEnoughCharactersWhenTrimmed(int start, int end)
@@ -1089,7 +1089,7 @@ namespace com.android.ex.chips
 
 		private bool alreadyHasChip(int start, int end)
 		{
-			if (mNoChips)
+			if (_noChips)
 			{
 				return true;
 			}
@@ -1134,13 +1134,13 @@ namespace com.android.ex.chips
      */
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent @event)
 		{
-			if (mSelectedChip != null && keyCode == Keycode.Del)
+			if (_selectedChip != null && keyCode == Keycode.Del)
 			{
-				if (mAlternatesPopup != null && mAlternatesPopup.IsShowing)
+				if (_alternatesPopup != null && _alternatesPopup.IsShowing)
 				{
-					mAlternatesPopup.Dismiss();
+					_alternatesPopup.Dismiss();
 				}
-				RemoveChip(mSelectedChip);
+				RemoveChip(_selectedChip);
 				return true;
 			}
 
@@ -1154,7 +1154,7 @@ namespace com.android.ex.chips
 						//{
 						//	return true;
 						//}
-						if (mSelectedChip != null)
+						if (_selectedChip != null)
 						{
 							ClearSelectedChip();
 							return true;
@@ -1188,7 +1188,7 @@ namespace com.android.ex.chips
 		protected override void PerformFiltering(ICharSequence text, int keyCode)
 		{
 			//	// Do not filter if the user cannot add additional chips
-			if (AllChipSpans.Length >= mMaxChipsAllowed)
+			if (AllChipSpans.Length >= _maxChipsAllowed)
 			{
 				return;
 			}
@@ -1197,7 +1197,7 @@ namespace com.android.ex.chips
 			if (EnoughToFilter() && !isCompletedToken)
 			{
 				int end = SelectionEnd;
-				int start = mTokenizer.FindTokenStart(text, end);
+				int start = _tokenizer.FindTokenStart(text, end);
 
 				// If it does not contain at least two non-blank chars, does not filter
 				if (notEnoughCharactersWhenTrimmed(start, end))
@@ -1233,7 +1233,7 @@ namespace com.android.ex.chips
 			}
 			// Check to see if this is a completed token before filtering.
 			int end = text.Length();
-			int start = mTokenizer.FindTokenStart(text, end);
+			int start = _tokenizer.FindTokenStart(text, end);
 			//String token = new String(text.ToString().Substring(start, end).Trim());
 			//String token = new String(text.ToString().SubString(start, end).Trim());
 			String token = text.ToString().JavaSubstring(start, end).Trim();
@@ -1271,9 +1271,9 @@ namespace com.android.ex.chips
 			bool handled = base.OnTouchEvent(@event);
 			MotionEventActions action = @event.Action;
 			bool chipWasSelected = false;
-			if (mSelectedChip == null)
+			if (_selectedChip == null)
 			{
-				mGestureDetector.OnTouchEvent(@event);
+				_gestureDetector.OnTouchEvent(@event);
 			}
 			//if (mCopyAddress == null && action ==   MotionEventActions.Up) {
 			if (action == MotionEventActions.Up)
@@ -1286,26 +1286,26 @@ namespace com.android.ex.chips
 				{
 					if (action == MotionEventActions.Up)
 					{
-						if (mSelectedChip != null && mSelectedChip != currentChipSpan)
+						if (_selectedChip != null && _selectedChip != currentChipSpan)
 						{
 							ClearSelectedChip();
-							mSelectedChip = SelectChip(currentChipSpan);
+							_selectedChip = SelectChip(currentChipSpan);
 						}
-						else if (mSelectedChip == null)
+						else if (_selectedChip == null)
 						{
 							SetSelection(Text.Length);
 							//commitDefault();
-							mSelectedChip = SelectChip(currentChipSpan);
+							_selectedChip = SelectChip(currentChipSpan);
 						}
 						else
 						{
-							onClick(mSelectedChip, offset, x, y);
+							onClick(_selectedChip, offset, x, y);
 						}
 					}
 					chipWasSelected = true;
 					handled = true;
 				}
-				else if (mSelectedChip != null && shouldShowEditableText(mSelectedChip))
+				else if (_selectedChip != null && shouldShowEditableText(_selectedChip))
 				{
 					chipWasSelected = true;
 				}
@@ -1319,9 +1319,9 @@ namespace com.android.ex.chips
 
 		private void scrollLineIntoView(int line)
 		{
-			if (mScrollView != null)
+			if (_scrollView != null)
 			{
-				mScrollView.SmoothScrollBy(0, calculateOffsetFromBottom(line));
+				_scrollView.SmoothScrollBy(0, calculateOffsetFromBottom(line));
 			}
 		}
 
@@ -1409,9 +1409,9 @@ namespace com.android.ex.chips
 			}
 			submitItemAtPosition(position);
 
-			if (itemSelectedListener != null)
+			if (_itemSelectedListener != null)
 			{
-				itemSelectedListener.onItemSelected();
+				_itemSelectedListener.onItemSelected();
 			}
 		}
 
@@ -1425,7 +1425,7 @@ namespace com.android.ex.chips
 
 		protected void submitItem(IChipEntry entry)
 		{
-			if (entry == null || AllChipSpans.Length >= mMaxChipsAllowed)
+			if (entry == null || AllChipSpans.Length >= _maxChipsAllowed)
 			{
 				//SetError(mChipOverLimitErrorHint);
 				return;
@@ -1433,7 +1433,7 @@ namespace com.android.ex.chips
 			ClearComposingText();
 
 			int end = SelectionEnd;
-			int start = mTokenizer.FindTokenStart(Text, end);
+			int start = _tokenizer.FindTokenStart(Text, end);
 
 			IEditable editable = EditableText;
 			QwertyKeyListener.MarkAsReplaced(editable, start, end, editable.SubSequence(start, end));
@@ -1504,7 +1504,7 @@ namespace com.android.ex.chips
 			int start = 0;
 			while (start < text.Length())
 			{
-				start = movePastTerminators(mTokenizer.FindTokenEnd(text, start));
+				start = movePastTerminators(_tokenizer.FindTokenEnd(text, start));
 				tokenCount++;
 				if (start >= text.Length())
 				{
@@ -1524,7 +1524,7 @@ namespace com.android.ex.chips
 		private void showAddress(DrawableChipSpan currentChipSpan, ListPopupWindow popup,
 								 int width)
 		{
-			if (!mAttachedToWindow)
+			if (!_attachedToWindow)
 			{
 				return;
 			}
@@ -1572,14 +1572,14 @@ namespace com.android.ex.chips
 			// Figure out the bounds of this chip and whether or not
 			// the user clicked in the X portion.
 			// TODO: Should x and y be used, or removed?
-			if (mDisableDelete)
+			if (_disableDelete)
 			{
 				return false;
 			}
 
 			return chipSpan.isSelected() &&
-				   ((mAvatarPosition == AVATAR_POSITION_END && offset == GetChipEnd(chipSpan)) ||
-					(mAvatarPosition != AVATAR_POSITION_END && offset == GetChipStart(chipSpan)));
+				   ((_avatarPosition == AvatarPositionEnd && offset == GetChipEnd(chipSpan)) ||
+					(_avatarPosition != AvatarPositionEnd && offset == GetChipStart(chipSpan)));
 		}
 
 	
@@ -1629,19 +1629,19 @@ namespace com.android.ex.chips
 					int tokenStart = 0;
 					if (selStart == editable.Length())
 					{
-						tokenStart = mTokenizer.FindTokenStart(editable, selStart);
+						tokenStart = _tokenizer.FindTokenStart(editable, selStart);
 					}
 					else if (selStart != 0)
 					{
-						tokenStart = mTokenizer.FindTokenStart(editable, selStart - 1);
+						tokenStart = _tokenizer.FindTokenStart(editable, selStart - 1);
 					}
-					int tokenEnd = mTokenizer.FindTokenEnd(editable, tokenStart);
+					int tokenEnd = _tokenizer.FindTokenEnd(editable, tokenStart);
 
 					// If start and end are set on the token instead of the recipient,
 					// look for another starting point
 					if (tokenEnd != 0 && tokenStart == tokenEnd)
 					{
-						tokenStart = mTokenizer.FindTokenStart(editable, tokenEnd - 1);
+						tokenStart = _tokenizer.FindTokenStart(editable, tokenEnd - 1);
 					}
 
 					// Increments the tokenEnd to include the commit character.
@@ -1684,9 +1684,9 @@ namespace com.android.ex.chips
 					spannable.RemoveSpan(chip);
 				}
 
-				if (mMoreChip != null)
+				if (_moreChip != null)
 				{
-					spannable.RemoveSpan(mMoreChip);
+					spannable.RemoveSpan(_moreChip);
 				}
 				ClearSelectedChip();
 				return;
@@ -1738,10 +1738,10 @@ namespace com.android.ex.chips
 					//{
 					// Check if this is a valid email address. If it is,
 					// commit it.
-					int tokenStart = mTokenizer.FindTokenStart(Text, SelectionEnd);
-					var sub = Text.JavaSubstring(tokenStart, mTokenizer.FindTokenEnd(Text, tokenStart));
+					int tokenStart = _tokenizer.FindTokenStart(Text, SelectionEnd);
+					var sub = Text.JavaSubstring(tokenStart, _tokenizer.FindTokenEnd(Text, tokenStart));
 
-					if (!TextUtils.IsEmpty(sub) && mValidator != null && mValidator.IsValid(sub))
+					if (!TextUtils.IsEmpty(sub) && _validator != null && _validator.IsValid(sub))
 					{
 						commitByCharacter();
 					}
@@ -1752,7 +1752,7 @@ namespace com.android.ex.chips
 
 		public bool enoughRoomForAdditionalChip()
 		{
-			return AllChipSpans.Count() < mMaxChipsAllowed;
+			return AllChipSpans.Count() < _maxChipsAllowed;
 		}
 
 		public bool lastCharacterIsCommitCharacter(ICharSequence s)
@@ -1889,17 +1889,17 @@ namespace com.android.ex.chips
 			Text = "";
 
 			// Clear chips that might have been stored
-			if (mRemovedSpans != null)
+			if (_removedSpans != null)
 			{
-				mRemovedSpans.Clear();
+				_removedSpans.Clear();
 			}
 			//mTemporaryRecipients = null;
-			mSelectedChip = null;
+			_selectedChip = null;
 		}
 
 		public override void DismissDropDown()
 		{
-			if (mDismissPopupOnClick)
+			if (_dismissPopupOnClick)
 			{
 				base.DismissDropDown();
 			}
@@ -1907,12 +1907,12 @@ namespace com.android.ex.chips
 
 		public void dismissDropDownOnItemSelected(bool dismiss)
 		{
-			mDismissPopupOnClick = dismiss;
+			_dismissPopupOnClick = dismiss;
 		}
 
 		public void setPostSelectedAction(ItemSelectedListener listener)
 		{
-			itemSelectedListener = listener;
+			_itemSelectedListener = listener;
 		}
 	}
 }
