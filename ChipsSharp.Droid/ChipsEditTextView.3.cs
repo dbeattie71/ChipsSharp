@@ -41,7 +41,7 @@ namespace com.android.ex.chips
 				Spannable.RemoveSpan(tempMore[0]);
 			}
 			//var recipients = getSortedVisibleRecipients();
-			var chipSpans = getChipSpans();
+			var chipSpans = AllChipSpans;
 
 			int fieldWidth = Width - PaddingLeft - PaddingRight;
 			// Compute the width of a blank space because there should be one between each chip
@@ -149,7 +149,7 @@ namespace com.android.ex.chips
 				{
 					// Recreate each removed span.
 					//DrawableChipSpan[] recipients = getSortedVisibleRecipients();
-					DrawableChipSpan[] chipSpans = getChipSpans();
+					DrawableChipSpan[] chipSpans = AllChipSpans;
 
 					// Start the search for tokens after the last currently visible
 					// chip.

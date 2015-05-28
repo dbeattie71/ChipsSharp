@@ -212,7 +212,7 @@ namespace com.android.ex.chips
 				//}
 				if (mSelectedChip != null)
 				{
-					clearSelectedChip();
+					ClearSelectedChip();
 					return true;
 				}
 				else if (focusNext())
@@ -252,7 +252,7 @@ namespace com.android.ex.chips
 		{
 			// When selection changes, see if it is inside the chips area.
 			// If so, move the cursor back after the chips again.
-			DrawableChipSpan last = getLastChip();
+			DrawableChipSpan last = LastChip;
 			if (last != null && selStart < Spannable.GetSpanEnd(last))
 			{
 				// Grab the last chip and set the cursor to after it.
@@ -276,7 +276,7 @@ namespace com.android.ex.chips
 		public override IParcelable OnSaveInstanceState()
 		{
 			// If the user changes orientation while they are editing, just roll back the selection.
-			clearSelectedChip();
+			ClearSelectedChip();
 
 			if (!HasFocus)
 			{
@@ -477,7 +477,7 @@ namespace com.android.ex.chips
 
 				// In the middle of chip; treat this as an edit
 				// and commit the whole token if it is not only spaces
-				bool isOverMaxNumberOfChips = getChipSpans().Length >= mMaxChipsAllowed;
+				bool isOverMaxNumberOfChips = AllChipSpans.Length >= mMaxChipsAllowed;
 				//if (!isOverMaxNumberOfChips && !editable.SubSequence(start, end).Trim().isEmpty())
 				//if (!isOverMaxNumberOfChips && !string.IsNullOrEmpty(editable.SubSequence(start, end).Trim()))
 				//{
@@ -707,7 +707,7 @@ namespace com.android.ex.chips
 				//}
 				//else
 				//{
-				checkChipWidths();
+				CheckChipWidths();
 				//}
 			}
 			// Try to find the scroll view parent, if it exists.
@@ -848,7 +848,7 @@ namespace com.android.ex.chips
 		{
 			if (keyCode == Keycode.Back && mSelectedChip != null)
 			{
-				clearSelectedChip();
+				ClearSelectedChip();
 				return true;
 			}
 			return base.OnKeyPreIme(keyCode, @event);
@@ -873,7 +873,7 @@ namespace com.android.ex.chips
 					{
 						if (mSelectedChip != null)
 						{
-							clearSelectedChip();
+							ClearSelectedChip();
 						}
 						//else
 						//{
@@ -968,7 +968,7 @@ namespace com.android.ex.chips
 		protected bool commitChip(int start, int end, IEditable editable)
 		{
 			// Check if there is not already too many chips
-			if (getChipSpans().Length >= mMaxChipsAllowed)
+			if (AllChipSpans.Length >= mMaxChipsAllowed)
 			{
 				return false;
 			}
@@ -1014,7 +1014,7 @@ namespace com.android.ex.chips
 					if (entry != null)
 					{
 						QwertyKeyListener.MarkAsReplaced(editable, start, end, text);
-						ICharSequence chipText = createChip(entry, false);
+						ICharSequence chipText = CreateChip(entry, false);
 						if (chipText != null && start > -1 && end > -1)
 						{
 							editable.Replace(start, end, chipText);
@@ -1047,7 +1047,7 @@ namespace com.android.ex.chips
 			//}
 			// Find the last chip.
 			//DrawableChipSpan[] chipSpans = getSortedVisibleRecipients();
-			DrawableChipSpan[] chipSpans = getChipSpans();
+			DrawableChipSpan[] chipSpans = AllChipSpans;
 			if (chipSpans != null && chipSpans.Length > 0)
 			{
 				DrawableChipSpan last = chipSpans[chipSpans.Length - 1];
@@ -1142,7 +1142,7 @@ namespace com.android.ex.chips
 				{
 					mAlternatesPopup.Dismiss();
 				}
-				removeChip(mSelectedChip);
+				RemoveChip(mSelectedChip);
 				return true;
 			}
 
@@ -1158,7 +1158,7 @@ namespace com.android.ex.chips
 						//}
 						if (mSelectedChip != null)
 						{
-							clearSelectedChip();
+							ClearSelectedChip();
 							return true;
 						}
 						else if (focusNext())
@@ -1190,7 +1190,7 @@ namespace com.android.ex.chips
 		protected override void PerformFiltering(ICharSequence text, int keyCode)
 		{
 			//	// Do not filter if the user cannot add additional chips
-			if (getChipSpans().Length >= mMaxChipsAllowed)
+			if (AllChipSpans.Length >= mMaxChipsAllowed)
 			{
 				return;
 			}
@@ -1290,14 +1290,14 @@ namespace com.android.ex.chips
 					{
 						if (mSelectedChip != null && mSelectedChip != currentChipSpan)
 						{
-							clearSelectedChip();
-							mSelectedChip = selectChip(currentChipSpan);
+							ClearSelectedChip();
+							mSelectedChip = SelectChip(currentChipSpan);
 						}
 						else if (mSelectedChip == null)
 						{
 							SetSelection(Text.Length);
 							//commitDefault();
-							mSelectedChip = selectChip(currentChipSpan);
+							mSelectedChip = SelectChip(currentChipSpan);
 						}
 						else
 						{
@@ -1314,7 +1314,7 @@ namespace com.android.ex.chips
 			}
 			if (action == MotionEventActions.Up && !chipWasSelected)
 			{
-				clearSelectedChip();
+				ClearSelectedChip();
 			}
 			return handled;
 		}
@@ -1427,7 +1427,7 @@ namespace com.android.ex.chips
 
 		protected void submitItem(IChipEntry entry)
 		{
-			if (entry == null || getChipSpans().Length >= mMaxChipsAllowed)
+			if (entry == null || AllChipSpans.Length >= mMaxChipsAllowed)
 			{
 				//SetError(mChipOverLimitErrorHint);
 				return;
@@ -1439,7 +1439,7 @@ namespace com.android.ex.chips
 
 			IEditable editable = EditableText;
 			QwertyKeyListener.MarkAsReplaced(editable, start, end, editable.SubSequence(start, end));
-			ICharSequence chip = createChip(entry, false);
+			ICharSequence chip = CreateChip(entry, false);
 			if (chip != null && start >= 0 && end >= 0)
 			{
 				editable.Replace(start, end, chip);
@@ -1598,11 +1598,11 @@ namespace com.android.ex.chips
 			{
 				if (isInDelete(chipSpan, offset, x, y))
 				{
-					removeChip(chipSpan);
+					RemoveChip(chipSpan);
 				}
 				else
 				{
-					clearSelectedChip();
+					ClearSelectedChip();
 				}
 			}
 		}
@@ -1690,7 +1690,7 @@ namespace com.android.ex.chips
 				{
 					spannable.RemoveSpan(mMoreChip);
 				}
-				clearSelectedChip();
+				ClearSelectedChip();
 				return;
 			}
 			// Get whether there are any recipients pending addition to the
@@ -1754,7 +1754,7 @@ namespace com.android.ex.chips
 
 		public bool enoughRoomForAdditionalChip()
 		{
-			return getChipSpans().Count() < mMaxChipsAllowed;
+			return AllChipSpans.Count() < mMaxChipsAllowed;
 		}
 
 		public bool lastCharacterIsCommitCharacter(ICharSequence s)
