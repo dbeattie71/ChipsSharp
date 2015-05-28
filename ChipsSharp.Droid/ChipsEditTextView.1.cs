@@ -59,7 +59,7 @@ namespace com.android.ex.chips
 		private static int sSelectedTextColor = -1;
 
 		// Resources for displaying chips.
-		private Drawable mChipBackground = null;
+		private Drawable _chipBackground;
 
 		private Drawable mChipDelete = null;
 
@@ -113,7 +113,7 @@ namespace com.android.ex.chips
 
 		private ListPopupWindow mAlternatesPopup;
 
-		//private ListPopupWindow mAddressPopup;
+		private ListPopupWindow mAddressPopup;
 
 		//private List<DrawableRecipientChip> mTemporaryRecipients;
 
@@ -178,7 +178,7 @@ namespace com.android.ex.chips
 			}
 
 			mAlternatesPopup = new ListPopupWindow(context);
-			//mAddressPopup = new ListPopupWindow(context);
+			mAddressPopup = new ListPopupWindow(context);
 			
 			InputType = InputType | InputTypes.TextFlagNoSuggestions;
 			OnItemClickListener = this;
@@ -562,10 +562,10 @@ namespace com.android.ex.chips
 			TypedArray a = context.ObtainStyledAttributes(attrs, Resource.Styleable.RecipientEditTextView, 0, 0);
 			Resources r = Context.Resources;
 
-			mChipBackground = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipBackground);
-			if (mChipBackground == null)
+			_chipBackground = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipBackground);
+			if (_chipBackground == null)
 			{
-				mChipBackground = r.GetDrawable(Resource.Drawable.chip_background);
+				_chipBackground = r.GetDrawable(Resource.Drawable.chip_background);
 			}
 			mChipBackgroundPressed = a.GetDrawable(Resource.Styleable.RecipientEditTextView_chipBackgroundPressed);
 			if (mChipBackgroundPressed == null)
@@ -640,16 +640,16 @@ namespace com.android.ex.chips
 		}
 
 
-		private void setChipBackground(Drawable chipBackground)
-		{
-			mChipBackground = chipBackground;
-		}
+		//private void setChipBackground(Drawable chipBackground)
+		//{
+		//	ChipBackground = chipBackground;
+		//}
 
-		private Drawable getChipBackground(IChipEntry contact)
-		{
-			//return contact.isValid() ? mChipBackground : mInvalidChipBackground;
-			return mChipBackground;
-		}
+		//private Drawable getChipBackground(IChipEntry contact)
+		//{
+		//	//return contact.isValid() ? mChipBackground : mInvalidChipBackground;
+		//	return ChipBackground;
+		//}
 
 		protected void setChipHeight(int height)
 		{

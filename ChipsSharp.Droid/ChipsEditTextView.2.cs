@@ -381,7 +381,7 @@ namespace com.android.ex.chips
 
 		private DrawableChipSpan ConstructChipSpan(IChipEntry contact, bool pressed, bool leaveIconSpace)
 		{
-			if (mChipBackground == null)
+			if (_chipBackground == null)
 			{
 				throw new NullPointerException(
 					"Unable to render any chips as setChipDimensions was not called.");
@@ -436,7 +436,7 @@ namespace com.android.ex.chips
 		private Bitmap CreateUnselectedChip(IChipEntry contact, TextPaint paint,
 											bool leaveBlankIconSpacer)
 		{
-			Drawable background = getChipBackground(contact);
+			Drawable background = _chipBackground;
 			Bitmap photo = GetAvatarIcon(contact);
 			paint.Color = Context.Resources.GetColor(Android.Resource.Color.Black);
 			return CreateChipBitmap(contact, paint, photo, background);
