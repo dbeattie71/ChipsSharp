@@ -23,11 +23,11 @@ namespace com.android.ex.chips
 {
 	public partial class ChipsEditTextView
 	{
-		private void createMoreChip()
+		private void CreateMoreChip()
 		{
 			if (mNoChips)
 			{
-				createMoreChipPlainText();
+				CreateMoreChipPlainText();
 				return;
 			}
 
@@ -90,7 +90,7 @@ namespace com.android.ex.chips
 				moreChipWidth = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
 								+ mMoreItem.PaddingRight;
 			}
-			moreSpan = createMoreSpan(overage);
+			moreSpan = CreateMoreSpan(overage);
 
 			mRemovedSpans = new List<DrawableChipSpan>();
 			int totalReplaceStart = 0;
@@ -137,7 +137,61 @@ namespace com.android.ex.chips
 			//}
 		}
 
-		public void removeMoreChip()
+		private void CreateMoreChipPlainText()
+		{
+			// Take the first <= CHIP_LIMIT addresses and get to the end of the second one.
+			IEditable text = EditableText;
+			int start = 0;
+			int end = start;
+			for (int i = 0; i < CHIP_LIMIT; i++)
+			{
+				end = movePastTerminators(mTokenizer.FindTokenEnd(text, start));
+				start = end; // move to the next token and get its end.
+			}
+			// Now, count total addresses.
+			int tokenCount = countTokens(text);
+			MoreImageSpan moreSpan = CreateMoreSpan(tokenCount - CHIP_LIMIT);
+			SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
+			chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
+			text.Replace(end, text.Length(), chipText);
+			mMoreChip = moreSpan;
+		}
+
+		private MoreImageSpan CreateMoreSpan(int count)
+		{
+			var moreText = Java.Lang.String.Format(mMoreItem.Text, count);
+
+			TextPaint morePaint = new TextPaint(Paint);
+			morePaint.TextSize = mMoreItem.TextSize;
+			morePaint.Color = new Color(mMoreItem.CurrentTextColor);
+			int width = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
+						+ mMoreItem.PaddingRight;
+
+			int height;
+			int adjustedHeight;
+			Layout layout = Layout;
+			if (layout != null)
+			{
+				height = -layout.GetLineAscent(0);
+				// The +1 takes into account the rounded int, that can make the text being cropped
+				adjustedHeight = height - layout.GetLineDescent(0) + 1;
+			}
+			else
+			{
+				height = LineHeight;
+				adjustedHeight = height;
+			}
+
+			Bitmap drawable = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+			Canvas canvas = new Canvas(drawable);
+			canvas.DrawText(moreText, 0, moreText.Length, 0, adjustedHeight, morePaint);
+
+			Drawable result = new BitmapDrawable(Resources, drawable);
+			result.SetBounds(0, 0, width, height);
+			return new MoreImageSpan(result);
+		}
+
+		public void RemoveMoreChip()
 		{
 			if (mMoreChip != null)
 			{
@@ -186,64 +240,10 @@ namespace com.android.ex.chips
 			}
 		}
 
-		private ImageSpan getMoreChip()
+		private ImageSpan GetMoreChip()
 		{
 			MoreImageSpan[] moreSpans = (MoreImageSpan[])Spannable.GetSpans(0, Text.Length, Class.FromType(typeof(MoreImageSpan))).Cast<MoreImageSpan>();
-			return moreSpans != null && moreSpans.Length > 0 ? moreSpans[0] : null;
-		}
-
-		private MoreImageSpan createMoreSpan(int count)
-		{
-			var moreText = Java.Lang.String.Format(mMoreItem.Text, count);
-
-			TextPaint morePaint = new TextPaint(Paint);
-			morePaint.TextSize = mMoreItem.TextSize;
-			morePaint.Color = new Color(mMoreItem.CurrentTextColor);
-			int width = (int)morePaint.MeasureText(moreText) + mMoreItem.PaddingLeft
-						+ mMoreItem.PaddingRight;
-
-			int height;
-			int adjustedHeight;
-			Layout layout = Layout;
-			if (layout != null)
-			{
-				height = -layout.GetLineAscent(0);
-				// The +1 takes into account the rounded int, that can make the text being cropped
-				adjustedHeight = height - layout.GetLineDescent(0) + 1;
-			}
-			else
-			{
-				height = LineHeight;
-				adjustedHeight = height;
-			}
-
-			Bitmap drawable = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-			Canvas canvas = new Canvas(drawable);
-			canvas.DrawText(moreText, 0, moreText.Length, 0, adjustedHeight, morePaint);
-
-			Drawable result = new BitmapDrawable(Resources, drawable);
-			result.SetBounds(0, 0, width, height);
-			return new MoreImageSpan(result);
-		}
-
-		private void createMoreChipPlainText()
-		{
-			// Take the first <= CHIP_LIMIT addresses and get to the end of the second one.
-			IEditable text = EditableText;
-			int start = 0;
-			int end = start;
-			for (int i = 0; i < CHIP_LIMIT; i++)
-			{
-				end = movePastTerminators(mTokenizer.FindTokenEnd(text, start));
-				start = end; // move to the next token and get its end.
-			}
-			// Now, count total addresses.
-			int tokenCount = countTokens(text);
-			MoreImageSpan moreSpan = createMoreSpan(tokenCount - CHIP_LIMIT);
-			SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
-			chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
-			text.Replace(end, text.Length(), chipText);
-			mMoreChip = moreSpan;
+			return moreSpans.Length > 0 ? moreSpans[0] : null;
 		}
 	}
 }
