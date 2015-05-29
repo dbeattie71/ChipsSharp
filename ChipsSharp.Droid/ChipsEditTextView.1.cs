@@ -89,7 +89,7 @@ namespace com.android.ex.chips
 
 		private ITokenizer _tokenizer;
 
-		private IValidator _validator;
+		private IValidator _validator; //TODO: need?
 
 		private DrawableChipSpan _selectedChip;
 
@@ -103,9 +103,9 @@ namespace com.android.ex.chips
 
 		private bool _noChips = false; //TODO: need append method?
 
-		private ListPopupWindow _alternatesPopup; //TODO: need?
+		private readonly ListPopupWindow _alternatesPopup; //TODO: need?
 
-		private ListPopupWindow _addressPopup; //TODO: need?
+		private readonly ListPopupWindow _addressPopup; //TODO: need?
 
 		//private List<DrawableRecipientChip> mTemporaryRecipients; //TODO: need?
 
