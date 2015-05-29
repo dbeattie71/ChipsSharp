@@ -139,7 +139,7 @@ namespace Test.Droid.Helpers
 			var selectedObject = Adapter.GetRawItem(position);
 			//SelectedObject = selectedObject;
 
-			submitItem((IChipEntry) selectedObject);
+			SubmitItem((IChipEntry) selectedObject);
 
 			SelectedChipEntries = GetChipEntries();
 		}

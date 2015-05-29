@@ -133,14 +133,14 @@ namespace com.android.ex.chips
 			IEditable text = EditableText;
 			int start = 0;
 			int end = start;
-			for (int i = 0; i < CHIP_LIMIT; i++)
+			for (int i = 0; i < ChipLimit; i++)
 			{
-				end = movePastTerminators(_tokenizer.FindTokenEnd(text, start));
+				end = MovePastTerminators(_tokenizer.FindTokenEnd(text, start));
 				start = end; // move to the next token and get its end.
 			}
 			// Now, count total addresses.
-			int tokenCount = countTokens(text);
-			MoreImageSpan moreSpan = CreateMoreSpan(tokenCount - CHIP_LIMIT);
+			int tokenCount = CountTokens(text);
+			MoreImageSpan moreSpan = CreateMoreSpan(tokenCount - ChipLimit);
 			SpannableString chipText = new SpannableString(text.SubSequence(end, text.Length()));
 			chipText.SetSpan(moreSpan, 0, chipText.Length(), SpanTypes.ExclusiveExclusive);
 			text.Replace(end, text.Length(), chipText);

@@ -18,12 +18,12 @@ namespace com.android.ex.chips
 {
 	public partial class ChipsEditTextView
 	{
-		public ISpannable Spannable
+		private ISpannable Spannable
 		{
 			get { return (ISpannable) TextFormatted; }
 		}
 
-		public DrawableChipSpan[] VisibleChipSpans
+		private DrawableChipSpan[] VisibleChipSpans
 		{
 			get
 			{
@@ -33,7 +33,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		public DrawableChipSpan[] AllChipSpans
+		private DrawableChipSpan[] AllChipSpans
 		{
 			get
 			{
@@ -48,7 +48,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		public DrawableChipSpan LastChip
+		private DrawableChipSpan LastChip
 		{
 			get
 			{
@@ -62,6 +62,13 @@ namespace com.android.ex.chips
 			}
 		}
 
+		private bool EnoughRoomForAdditionalChip
+		{
+			get
+			{
+				return AllChipSpans.Count() < _maxChipsAllowed;
+			}
+		}
 
 		private int GetChipStart(DrawableChipSpan chipSpan)
 		{
@@ -90,7 +97,7 @@ namespace com.android.ex.chips
 			return null;
 		}
 
-		public List<IChipEntry> GetChipEntries()
+		protected List<IChipEntry> GetChipEntries()
 		{
 			var chipEntries = new List<IChipEntry>();
 			var chipSpans = AllChipSpans;
@@ -127,10 +134,10 @@ namespace com.android.ex.chips
 			DrawableChipSpan newChipSpan;
 			try
 			{
-				if (_noChips)
-				{
-					return null;
-				}
+				//if (_noChips)
+				//{
+				//	return null;
+				//}
 				newChipSpan = ConstructChipSpan(currentChipSpan.getEntry(), true, false);
 			}
 			catch (NullPointerException e)
@@ -149,11 +156,11 @@ namespace com.android.ex.chips
 				editable.SetSpan(newChipSpan, start, end, SpanTypes.ExclusiveExclusive);
 			}
 			newChipSpan.setSelected(true);
-			if (shouldShowEditableText(newChipSpan))
+			if (ShouldShowEditableText(newChipSpan))
 			{
-				scrollLineIntoView(Layout.GetLineForOffset(GetChipStart(newChipSpan)));
+				ScrollLineIntoView(Layout.GetLineForOffset(GetChipStart(newChipSpan)));
 			}
-			showAddress(newChipSpan, _addressPopup, Width);
+			ShowAddress(newChipSpan, _addressPopup, Width);
 			SetCursorVisible(false);
 			return newChipSpan;
 
@@ -310,7 +317,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		protected void RemoveChip(DrawableChipSpan chipSpan)
+		private void RemoveChip(DrawableChipSpan chipSpan)
 		{
 			ISpannable spannable = Spannable;
 			int spanStart = spannable.GetSpanStart((Object)chipSpan);
@@ -339,7 +346,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		internal void ClearSelectedChip()
+		private void ClearSelectedChip()
 		{
 			if (_selectedChip != null)
 			{
@@ -349,6 +356,19 @@ namespace com.android.ex.chips
 			SetCursorVisible(true);
 		}
 
+		private void ClearChipSpans()
+		{
+			// Clear the text field
+			Text = "";
+
+			// Clear chips that might have been stored
+			if (_removedSpans != null)
+			{
+				_removedSpans.Clear();
+			}
+			//mTemporaryRecipients = null;
+			_selectedChip = null;
+		}
 
 		private ICharSequence CreateChip(IChipEntry entry, bool pressed)
 		{
@@ -419,7 +439,7 @@ namespace com.android.ex.chips
 
 		private Bitmap CreateSelectedChip(IChipEntry contact, TextPaint paint)
 		{
-			paint.Color = new Color(sSelectedTextColor);
+			paint.Color = new Color(_selectedTextColor);
 			Bitmap photo;
 			if (_disableDelete)
 			{
@@ -477,7 +497,7 @@ namespace com.android.ex.chips
 			return _noAvatarPicture;
 		}
 
-		protected Bitmap CreateChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
+		private Bitmap CreateChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
 										  Drawable background)
 		{
 			if (background == null)
@@ -508,8 +528,8 @@ namespace com.android.ex.chips
 			float[] widths = new float[1];
 			paint.GetTextWidths(" ", widths);
 
-			var ellipsizedText = EllipsizeText(createChipDisplayText(contact), paint,
-											   calculateAvailableWidth() - iconWidth - widths[0] -
+			var ellipsizedText = EllipsizeText(CreateChipDisplayText(contact), paint,
+											   CalculateAvailableWidth() - iconWidth - widths[0] -
 											   backgroundPadding.Left - backgroundPadding.Right -
 											   moreChipWidth);
 			int textWidth = (int)paint.MeasureText(ellipsizedText, 0, ellipsizedText.Length);
@@ -554,7 +574,7 @@ namespace com.android.ex.chips
 			return tmpBitmap;
 		}
 
-		protected float GetTextYOffset(String text, TextPaint paint, int height)
+		private float GetTextYOffset(String text, TextPaint paint, int height)
 		{
 			Rect bounds = new Rect();
 			paint.GetTextBounds(text, 0, text.Length, bounds);
@@ -562,7 +582,7 @@ namespace com.android.ex.chips
 			return height - ((height - textHeight) / 2) - (int)paint.Descent() / 2;
 		}
 
-		protected void DrawIconOnCanvas(Bitmap icon, Canvas canvas, Paint paint, RectF src, RectF dst)
+		private void DrawIconOnCanvas(Bitmap icon, Canvas canvas, Paint paint, RectF src, RectF dst)
 		{
 			Matrix matrix = new Matrix();
 			matrix.SetRectToRect(src, dst, Matrix.ScaleToFit.Fill);
@@ -577,7 +597,7 @@ namespace com.android.ex.chips
 			return isRtl ? !assignedPosition : assignedPosition;
 		}
 
-		private String CreateAddressText(IChipEntry entry)
+		private string CreateAddressText(IChipEntry entry)
 		{
 
 			String display = entry.getDisplayName();
@@ -621,7 +641,7 @@ namespace com.android.ex.chips
 			}
 		}
 
-		private String createChipDisplayText(IChipEntry entry)
+		private string CreateChipDisplayText(IChipEntry entry)
 		{
 			String display = entry.getDisplayName();
 			String address = entry.getDestination();
@@ -644,7 +664,7 @@ namespace com.android.ex.chips
 		}
 
 
-		private void sanitizeEnd()
+		private void SanitizeEnd()
 		{
 			// Don't sanitize while we are waiting for pending chips to complete.
 			//if (mPendingChipsCount > 0)
