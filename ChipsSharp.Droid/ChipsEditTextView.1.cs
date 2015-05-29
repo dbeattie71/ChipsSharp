@@ -48,15 +48,15 @@ namespace com.android.ex.chips
 
 		//private static String SEPARATOR = new String(String.ValueOf(COMMIT_CHAR_COMMA) + String.ValueOf(COMMIT_CHAR_SPACE));
 
-		private static long DISMISS_DELAY = 300;
+		//private static long DISMISS_DELAY = 300;
 
 		// TODO: get correct number/ algorithm from with UX.
 		// Visible for testing. /*package*/
-		private static int CHIP_LIMIT = 2;
+		private const int ChipLimit = 2;
 
-		private static int MAX_CHIPS_PARSED = 50;
+		//private static int MAX_CHIPS_PARSED = 50;
 
-		private static int sSelectedTextColor = -1;
+		private static int _selectedTextColor = -1;
 
 		// Resources for displaying chips.
 		private Drawable _chipBackground;
@@ -65,7 +65,7 @@ namespace com.android.ex.chips
 
 		private Drawable _invalidChipBackground;
 
-		protected Drawable _chipBackgroundPressed;
+		private Drawable _chipBackgroundPressed;
 
 		private float _chipHeight;
 
@@ -99,15 +99,15 @@ namespace com.android.ex.chips
 
 		private IValidator _validator;
 
-		internal DrawableChipSpan _selectedChip;
+		private DrawableChipSpan _selectedChip;
 
 		private Bitmap _defaultContactPhoto, _noAvatarPicture;
 
-		internal ImageSpan _moreChip;
+		private ImageSpan _moreChip;
 
 		private TextView _moreItem;
 
-		private Handler _handler;
+		private Handler _handler; //TODO: need for orientation change?
 
 		private bool _noChips = false;
 
@@ -172,9 +172,9 @@ namespace com.android.ex.chips
 			//}
 
 			setChipDimensions(context, attrs);
-			if (sSelectedTextColor == -1)
+			if (_selectedTextColor == -1)
 			{
-				sSelectedTextColor = context.Resources.GetColor(Android.Resource.Color.White);
+				_selectedTextColor = context.Resources.GetColor(Android.Resource.Color.White);
 			}
 
 			_alternatesPopup = new ListPopupWindow(context);
@@ -192,7 +192,6 @@ namespace com.android.ex.chips
 			base.OnDetachedFromWindow();
 			_attachedToWindow = false;
 		}
-
 
 		protected override void OnAttachedToWindow()
 		{
