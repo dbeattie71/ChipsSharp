@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Provider;
 using Android.Runtime;
 using Android.Text;
 using Android.Text.Method;
@@ -21,14 +18,9 @@ using Android.Widget;
 using com.android.ex.chips.Spans;
 using ChipsSharp;
 using Java.Lang;
-using Java.Util.Regex;
-using Javax.Xml.Validation;
-using Exception = Java.Lang.Exception;
-using LayoutDirection = Android.Views.LayoutDirection;
 using Math = Java.Lang.Math;
 using Object = Java.Lang.Object;
 using String = System.String;
-using Uri = Android.Net.Uri;
 
 namespace com.android.ex.chips
 {
