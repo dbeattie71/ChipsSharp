@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Android.Content;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -9,8 +10,10 @@ using Android.Widget;
 using com.android.ex.chips;
 using com.android.ex.chips.Spans;
 using ChipsSharp;
+using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Binding.Droid.Views;
+using Cirrious.MvvmCross.Plugins.DownloadCache;
 
 namespace Test.Droid.Helpers
 {
@@ -73,6 +76,32 @@ namespace Test.Droid.Helpers
 			}
 		}
 
+		protected override Bitmap GetAvatarIcon(IChipEntry contact)
+		{
+			//return base.GetAvatarIcon(contact);
+
+			var foo = Mvx.Resolve<IMvxImageCache<Bitmap>>();
+			foo.RequestImage(contact.ImageUrl, bitmap =>
+			{
+				
+			}, exception =>
+			{
+				
+			});
+			//var i = Mvx.Resolve<IMvxLocalFileImageLoader<Bitmap>>();
+
+			//foo.RequestLocalFilePath(contact.ImageUrl, s =>
+			//{
+				
+			//}, exception =>
+			//{
+				
+			//});
+
+
+			return null;
+		}
+
 		[MvxSetToNullAfterBinding]
 		public IEnumerable ItemsSource
 		{
@@ -114,6 +143,7 @@ namespace Test.Droid.Helpers
 			set
 			{
 				_selectedChipEntries = value;
+
 
 				//var r =RecipientEntry.ConstructFakeEntry("test", true);
 				//SubmitItem(r);

@@ -6,6 +6,7 @@ namespace ChipsSharp
 	{
 		string getDisplayName();
 		string getDestination();
+		string ImageUrl { get; }
 	}
 
 	//public class ChipEntry

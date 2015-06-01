@@ -158,10 +158,10 @@ namespace com.android.ex.chips
 			_delayedShrink = Shrink;
 
 			//// TODO: would be nice to show chips as an example here
-			//if (IsInEditMode)
-			//{
-			//	return;
-			//}
+			if (IsInEditMode)
+			{
+				return;
+			}
 
 			SetChipDimensions(context, attrs);
 			if (_selectedTextColor == -1)
@@ -865,10 +865,10 @@ namespace com.android.ex.chips
 						{
 							ClearSelectedChip();
 						}
-						//else
-						//{
-						//	commitDefault();
-						//}
+						else
+						{
+							//commitDefault();
+						}
 					}
 					break;
 			}
@@ -893,31 +893,30 @@ namespace com.android.ex.chips
      * should search for a token to turn into a chip.
      * @return If a chip was created from a real contact.
      */
-
 		//private bool commitDefault()
 		//{
-		//	// If there is no tokenizer, don't try to commit.
-		//	if (mTokenizer == null)
-		//	{
-		//		return false;
-		//	}
-		//	IEditable editable = EditableText;
-		//	int end = SelectionEnd;
-		//	int start = mTokenizer.FindTokenStart(editable, end);
+		//	//// If there is no tokenizer, don't try to commit.
+		//	//if (_tokenizer == null)
+		//	//{
+		//	//	return false;
+		//	//}
+		//	//IEditable editable = EditableText;
+		//	//int end = SelectionEnd;
+		//	//int start = _tokenizer.FindTokenStart(editable, end);
 
-		//	if (shouldCreateChip(start, end))
-		//	{
-		//		int whatEnd = mTokenizer.FindTokenEnd(Text, start);
-		//		// In the middle of chip; treat this as an edit
-		//		// and commit the whole token.
-		//		whatEnd = movePastTerminators(whatEnd);
-		//		if (whatEnd != SelectionEnd)
-		//		{
-		//			handleEdit(start, whatEnd);
-		//			return true;
-		//		}
-		//		return commitChip(start, end, editable);
-		//	}
+		//	//if (shouldCreateChip(start, end))
+		//	//{
+		//	//	int whatEnd = _tokenizer.FindTokenEnd(Text, start);
+		//	//	// In the middle of chip; treat this as an edit
+		//	//	// and commit the whole token.
+		//	//	whatEnd = movePastTerminators(whatEnd);
+		//	//	if (whatEnd != SelectionEnd)
+		//	//	{
+		//	//		handleEdit(start, whatEnd);
+		//	//		return true;
+		//	//	}
+		//	//	return commitChip(start, end, editable);
+		//	//}
 		//	return false;
 		//}
 
@@ -1161,13 +1160,6 @@ namespace com.android.ex.chips
 
 			return base.OnKeyDown(keyCode, @event);
 		}
-
-		//internal ISpannable Spannable()
-		//{
-		//	return (ISpannable)TextFormatted;
-		//}
-
-		
 
 		/**
      * Instead of filtering on the entire contents of the edit box,
@@ -1601,9 +1593,11 @@ namespace com.android.ex.chips
 			var s = e.Text;
 			var before = e.BeforeCount;
 			var count = e.AfterCount;
+
 			// The user deleted some text OR some text was replaced; check to
 			// see if the insertion point is on a space
 			// following a chip.
+
 			if (before - count == 1)
 			{
 				// If the item deleted is a space, and the thing before the
@@ -1885,6 +1879,6 @@ namespace com.android.ex.chips
 		private void SetPostSelectedAction(ItemSelectedListener listener)
 		{
 			_itemSelectedListener = listener;
-		}
+		}		
 	}
 }

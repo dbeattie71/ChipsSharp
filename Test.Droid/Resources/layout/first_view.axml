@@ -30,6 +30,8 @@
             android:id="@+id/phone_retv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textCursorDrawable="@null"
             android:minHeight="@dimen/chips_textfield_minHeight"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/address_suffix"
@@ -70,6 +72,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/separator_width"
             android:background="@android:color/darker_gray" />
+    <!--<Button
+            android:id="@+id/test_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            app:MvxBind="Click Commands['Test']" />-->
     </LinearLayout>
 <!-- Message text field -->
     <EditText

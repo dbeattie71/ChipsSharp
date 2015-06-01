@@ -20,6 +20,8 @@ namespace Test.Core.ViewModels
 		{
 			return Name2;
 		}
+
+		public string ImageUrl { get { return Image; } }
 	}
 
 	public class FirstViewModel : MvxViewModel
@@ -39,7 +41,7 @@ namespace Test.Core.ViewModels
 
 			Commands = new MvxCommandCollectionBuilder().BuildCollectionFor(this);
 
-			//SelectedContacts = new List<Contact>();
+			SelectedContacts = new List<IChipEntry>();
 
 		}
 
@@ -137,8 +139,9 @@ namespace Test.Core.ViewModels
 
 		public void TestCommand()
 		{
-			//SelectedContacts.Add(new Contact { Name = "test" });
-			//RaisePropertyChanged(() => SelectedContacts);
+			SelectedContacts.Add(new ContactEx { Name = "test" });
+			RaisePropertyChanged(() => SelectedContacts);
+			
 		}
 
 		private async void Foo(string currentTextHint)

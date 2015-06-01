@@ -462,7 +462,7 @@ namespace com.android.ex.chips
 			return CreateChipBitmap(contact, paint, photo, background);
 		}
 
-		private Bitmap GetAvatarIcon(IChipEntry contact)
+		protected virtual Bitmap GetAvatarIcon(IChipEntry contact)
 		{
 			// Don't draw photos for recipients that have been typed in OR generated on the fly.
 			//long contactId = contact.getContactId();
