@@ -93,7 +93,9 @@ namespace com.android.ex.chips
 
 		private DrawableChipSpan _selectedChip;
 
-		private Bitmap _defaultContactPhoto, _noAvatarPicture;
+		private Bitmap _defaultContactPhoto;
+
+		public Bitmap NoAvatarPicture { get; protected set; }
 
 		private ImageSpan _moreChip;
 
@@ -577,7 +579,7 @@ namespace com.android.ex.chips
 
 			_defaultContactPhoto = BitmapFactory.DecodeResource(r, Resource.Drawable.ic_contact_picture);
 
-			_noAvatarPicture = BitmapFactory.DecodeResource(r, Resource.Drawable.no_avatar_picture);
+			NoAvatarPicture = BitmapFactory.DecodeResource(r, Resource.Drawable.no_avatar_picture);
 
 			_moreItem = (TextView)LayoutInflater.From(Context).Inflate(Resource.Layout.more_item, null);
 
@@ -974,7 +976,7 @@ namespace com.android.ex.chips
 			if (Adapter != null && Adapter.Count > 0 && EnoughToFilter() && end == SelectionEnd)
 			{
 				// Choose the first entry.
-				submitItemAtPosition(0);
+				SubmitItemAtPosition(0);
 				DismissDropDown();
 				return true;
 			}
@@ -1160,6 +1162,13 @@ namespace com.android.ex.chips
 
 			return base.OnKeyDown(keyCode, @event);
 		}
+
+		//internal ISpannable Spannable()
+		//{
+		//	return (ISpannable)TextFormatted;
+		//}
+
+		
 
 		/**
      * Instead of filtering on the entire contents of the edit box,
@@ -1390,7 +1399,7 @@ namespace com.android.ex.chips
 			{
 				return;
 			}
-			submitItemAtPosition(position);
+			SubmitItemAtPosition(position);
 
 			if (_itemSelectedListener != null)
 			{
@@ -1398,11 +1407,13 @@ namespace com.android.ex.chips
 			}
 		}
 
-		private void submitItemAtPosition(int position)
+		private void SubmitItemAtPosition(int position)
 		{
 			//var entry = createValidatedEntry((ChipEntry)Adapter.GetItem(position));
-			//var entry = ((ChipEntry)Adapter.GetItem(position));
-			//submitItem(entry);
+			Object e= Adapter.GetItem(position);
+			
+			var entry = ((IChipEntry)Adapter.GetItem(position));
+			SubmitItem(entry);
 			//submitItem(new String("SomeUserName"), new String("Number"));
 		}
 
@@ -1879,6 +1890,6 @@ namespace com.android.ex.chips
 		private void SetPostSelectedAction(ItemSelectedListener listener)
 		{
 			_itemSelectedListener = listener;
-		}		
+		}
 	}
 }

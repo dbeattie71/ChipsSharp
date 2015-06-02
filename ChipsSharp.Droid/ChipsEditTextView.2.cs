@@ -462,6 +462,7 @@ namespace com.android.ex.chips
 			return CreateChipBitmap(contact, paint, photo, background);
 		}
 
+		//TODO: fix
 		protected virtual Bitmap GetAvatarIcon(IChipEntry contact)
 		{
 			// Don't draw photos for recipients that have been typed in OR generated on the fly.
@@ -490,15 +491,14 @@ namespace com.android.ex.chips
 			//	else
 			//	{
 			//		// TODO: can the scaled down default photo be cached?
-			return _defaultContactPhoto;
+			//		return _defaultContactPhoto;
 			//	}
 			//}
 
-			return _noAvatarPicture;
+			return NoAvatarPicture;
 		}
 
-		private Bitmap CreateChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon,
-										  Drawable background)
+		private Bitmap CreateChipBitmap(IChipEntry contact, TextPaint paint, Bitmap icon, Drawable background)
 		{
 			if (background == null)
 			{

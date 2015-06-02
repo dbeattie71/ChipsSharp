@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
@@ -23,6 +26,7 @@ namespace Test.Droid.Helpers
 	{
 		//private object _selectedObject;
 		private List<IChipEntry> _selectedChipEntries;
+		private IMvxImageCache<Bitmap> _mvxImageCache;
 
 		public MvxChipsEditTextView(Context context, IAttributeSet attrs)
 			: this(context, attrs, new MvxFilteringAdapterEx(context))
@@ -39,11 +43,12 @@ namespace Test.Droid.Helpers
 										MvxFilteringAdapterEx adapter)
 			: base(context, attrs)
 		{
+			_mvxImageCache = Mvx.Resolve<IMvxImageCache<Bitmap>>();
+
 			var itemTemplateId = MvxAttributeHelpers.ReadListItemTemplateId(context, attrs);
 			adapter.ItemTemplateId = itemTemplateId;
 			Adapter = adapter;
 			//ItemClick += OnItemClick;
-
 		}
 
 		protected MvxChipsEditTextView(IntPtr javaReference, JniHandleOwnership transfer)
@@ -76,31 +81,28 @@ namespace Test.Droid.Helpers
 			}
 		}
 
-		protected override Bitmap GetAvatarIcon(IChipEntry contact)
-		{
-			//return base.GetAvatarIcon(contact);
+		//protected override Bitmap GetAvatarIcon(IChipEntry contact)
+		//{
+			
+		//	Bitmap b = GetAvatarIconAsync(contact).Result; 
+		//	return b;
+		//}
 
-			var foo = Mvx.Resolve<IMvxImageCache<Bitmap>>();
-			foo.RequestImage(contact.ImageUrl, bitmap =>
-			{
-				
-			}, exception =>
-			{
-				
-			});
-			//var i = Mvx.Resolve<IMvxLocalFileImageLoader<Bitmap>>();
+		//private Task<Bitmap> GetAvatarIconAsync(IChipEntry contact)
+		//{
+		//	var tcs = new TaskCompletionSource<Bitmap>();
+		//	_mvxImageCache.RequestImage(contact.ImageUrl, bitmap =>
+		//	{
+		//		tcs.SetResult(bitmap);
+		//	}, exception =>
+		//	{
+		//		//tcs.SetResult(NoAvatarPicture);
+		//		tcs.SetException(exception);
+		//	});
 
-			//foo.RequestLocalFilePath(contact.ImageUrl, s =>
-			//{
-				
-			//}, exception =>
-			//{
-				
-			//});
-
-
-			return null;
-		}
+			
+		//	return tcs.Task;
+		//}
 
 		[MvxSetToNullAfterBinding]
 		public IEnumerable ItemsSource

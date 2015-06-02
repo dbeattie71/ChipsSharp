@@ -63,5 +63,5 @@
         android:cropToPadding="true"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_contact_picture"
-        app:MvxBind="ImageUrl Image" />
+        app:MvxBind="ImageUrl Image; ErrorImagePath 'res:ic_contact_picture'" />
 </LinearLayout>
